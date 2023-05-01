@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "363899016913",
+    "project_id": "mandela-drawing",
+    "storage_bucket": "mandela-drawing.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:363899016913:android:85909d71104d76df50d7f0",
+        "android_client_info": {
+          "package_name": "com.example.mandeladrawing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "363899016913-l3nsr572mrgo6j4drta4if1qmuvdnp48.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWwAwqo8CYpH13qveoFQug-kO_9Y4_FsU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "363899016913-l3nsr572mrgo6j4drta4if1qmuvdnp48.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
