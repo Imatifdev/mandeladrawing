@@ -464,6 +464,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.0"
+  open_file:
+    dependency: "direct dev"
+    description:
+      name: open_file
+      sha256: c85fbdc6ea2f44adcd999a74821a1436e620f9dfc167cda1ad0c9fb243616257
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.3.1"
   path:
     dependency: transitive
     description:
@@ -489,7 +497,7 @@ packages:
     source: hosted
     version: "1.0.1"
   path_provider:
-    dependency: transitive
+    dependency: "direct dev"
     description:
       name: path_provider
       sha256: c7edf82217d4b2952b2129a61d3ad60f1075b9299e629e149a8d2e39c2e6aad4

@@ -1,5 +1,6 @@
 // ignore_for_file: sized_box_for_whitespace, prefer_const_constructors
 
+import 'dart:io';
 import 'dart:ui';
 
 import 'package:flutter/material.dart' hide Image;
@@ -9,18 +10,20 @@ import 'package:mandeladrawing/widgets/drawcanvas.dart';
 
 import '../../models/drawingmode.dart';
 import '../../models/sketch.dart';
+import '../../models/sketchmodel.dart';
 import '../../utils/mycolors.dart';
 import '../../widgets/create.dart';
 import '../settings/settingsscreen.dart';
+import 'package:path/path.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
 
 class DrawingPage extends HookWidget {
-  const DrawingPage({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    final _sliderValue = useState(200.0);
-    void _updateSlider(double value) {
-      _sliderValue.value = value;
+    final sliderValue = useState(200.0);
+    void updateSlider(double value) {
+      sliderValue.value = value;
     }
 
     final selectedColor = useState(Colors.black);
@@ -40,6 +43,7 @@ class DrawingPage extends HookWidget {
       duration: const Duration(milliseconds: 150),
       initialValue: 1,
     );
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -111,6 +115,9 @@ class DrawingPage extends HookWidget {
           ),
           Center(
             child: Container(
+              decoration: BoxDecoration(
+                  //    image: DecorationImage(image: AssetImage(skecthpic.url))),
+                  ),
               width: MediaQuery.of(context).size.width - 30,
               height: MediaQuery.of(context).size.height / 2.6,
               child: Stack(
@@ -121,8 +128,8 @@ class DrawingPage extends HookWidget {
                           color: kCanvasColor,
                           border: Border.all(
                               color: Colors.grey.shade200, width: 1)),
-                      width: _sliderValue.value,
-                      height: _sliderValue.value,
+                      width: sliderValue.value,
+                      height: sliderValue.value,
                       child: DrawingCanvas(
                         height: MediaQuery.of(context).size.height,
                         width: MediaQuery.of(context).size.width,
@@ -180,11 +187,11 @@ class DrawingPage extends HookWidget {
                     color: Colors.transparent,
                     height: 50,
                     child: Slider(
-                      label: _sliderValue.toString(),
-                      value: _sliderValue.value,
+                      label: sliderValue.toString(),
+                      value: sliderValue.value,
                       min: 200,
                       max: 1000,
-                      onChanged: _updateSlider,
+                      onChanged: updateSlider,
                     ),
                   ),
                 ),

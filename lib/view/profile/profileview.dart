@@ -10,7 +10,6 @@ import 'package:mandeladrawing/methods/authmodels.dart';
 import 'package:mandeladrawing/widgets/mybutton.dart';
 
 import '../../models/usermodel.dart';
-import '../../providers/userprovider.dart';
 import '../../utils/mycolors.dart';
 import '../dashboard.dart';
 import 'editprofile.dart';

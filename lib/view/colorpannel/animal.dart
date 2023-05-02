@@ -3,8 +3,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mandeladrawing/models/sketch.dart';
 import 'package:mandeladrawing/utils/mycolors.dart';
+import 'package:mandeladrawing/view/colorpannel/detailmandela.dart';
 
+import '../../models/sketchmodel.dart';
+import '../createpannel/drawpage.dart';
 import '../settings/settingsscreen.dart';
 
 class AnimalMandel extends StatelessWidget {
@@ -86,24 +90,45 @@ class AnimalMandel extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: GridView.builder(
-                  itemCount: 10,
+                  itemCount: UsersData.users.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       mainAxisSpacing: 15,
                       crossAxisSpacing: 15,
                       crossAxisCount: 2),
                   itemBuilder: (context, index) {
-                    return Container(
-                      height: 200,
-                      width: 200,
-                      decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(10)),
-                    );
+                    final show = UsersData.users[index];
+                    return InkWell(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DetailMandela(
+                                sketch: show,
+                              ),
+                            ),
+                          );
+                        },
+                        child: ShowGrid(sketchpic: show));
                   }),
             ),
           ),
         ],
       ),
+    );
+  }
+}
+
+class ShowGrid extends StatelessWidget {
+  final SketchModel sketchpic;
+
+  const ShowGrid({super.key, required this.sketchpic});
+  @override
+  Widget build(BuildContext context) {
+    return Image(
+      fit: BoxFit.cover,
+      height: 200,
+      width: 200,
+      image: AssetImage(sketchpic.url),
     );
   }
 }

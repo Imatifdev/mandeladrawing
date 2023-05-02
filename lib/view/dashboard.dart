@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mandeladrawing/methods/authmodels.dart';
 import 'package:mandeladrawing/view/profile/profileview.dart';
 
+import '../models/sketchmodel.dart';
 import 'colorpannel/fillcolor.dart';
 import '../widgets/create.dart';
 import 'createpannel/drawpage.dart';
@@ -26,7 +27,7 @@ class _HomeState extends State<Home> {
   final List<Widget> pages = [
     Coloring(),
     ProfileView(),
-    DrawingPage(),
+    //DrawingPage(),
     MyLibrary(),
   ];
   List<int> listofpages = [];

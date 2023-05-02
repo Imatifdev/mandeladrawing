@@ -18,6 +18,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../models/drawingmode.dart';
 import '../models/sketch.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:open_file/open_file.dart';
 
 class MyDrawing extends HookWidget {
   final ValueNotifier<Color> selectedColor;
@@ -83,83 +85,13 @@ class MyDrawing extends HookWidget {
                   icon: Icon(Icons.undo)),
             ],
           ),
-          // Container(
-          //   height: 100,
-          //   child: ListView(
-          //     padding: const EdgeInsets.all(10.0),
-          //     controller: scrollController,
-          //     children: [
-          //       const Text(
-          //         'Actions',
-          //         style: TextStyle(fontWeight: FontWeight.bold),
-          //       ),
-          //       const Divider(),
-          //       Wrap(
-          //         children: [
-          //           TextButton(
-          //             onPressed: allSketches.value.isNotEmpty
-          //                 ? () => undoRedoStack.value.undo()
-          //                 : null,
-          //             child: const Text('Undo'),
-          //           ),
-          //           ValueListenableBuilder<bool>(
-          //             valueListenable: undoRedoStack.value._canRedo,
-          //             builder: (_, canRedo, __) {
-          //               return TextButton(
-          //                 onPressed:
-          //                     canRedo ? () => undoRedoStack.value.redo() : null,
-          //                 child: const Text('Redo'),
-          //               );
-          //             },
-          //           ),
-          //           TextButton(
-          //             child: const Text('Clear'),
-          //             onPressed: () => undoRedoStack.value.clear(),
-          //           ),
-          //         ],
-          //       ),
-          //       const SizedBox(height: 20),
-          //       const Text(
-          //         'Export',
-          //         style: TextStyle(fontWeight: FontWeight.bold),
-          //       ),
-          //       const Divider(),
-          //       Row(
-          //         children: [
-          //           SizedBox(
-          //             width: 140,
-          //             child: TextButton(
-          //               child: const Text('Export PNG'),
-          //               onPressed: () async {
-          //                 Uint8List? pngBytes = await getBytes();
-          //                 if (pngBytes != null) saveFile(pngBytes, 'png');
-          //                 print('sava');
-          //               },
-          //             ),
-          //           ),
-          //           SizedBox(
-          //             width: 140,
-          //             child: TextButton(
-          //               child: const Text('Export JPEG'),
-          //               onPressed: () async {
-          //                 Uint8List? pngBytes = await getBytes();
-          //                 if (pngBytes != null) saveFile(pngBytes, 'jpeg');
-          //               },
-          //             ),
-          //           ),
-          //         ],
-          //       ),
-          //       // add about me button or follow buttons
-          //     ],
-          //   ),
-          // ),
         ],
       ),
     );
   }
 
   void saveFile(Uint8List bytes, String extension) async {
-    if (kIsWeb) {
+    if (Platform.isAndroid) {
       html.AnchorElement()
         ..href = '${Uri.dataFromBytes(bytes, mimeType: 'image/$extension')}'
         ..download =

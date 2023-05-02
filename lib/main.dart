@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, depend_on_referenced_packages
+// ignore_for_file: prefer_const_constructors, depend_on_referenced_packages, unused_import
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -6,9 +6,11 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:mandeladrawing/providers/userprovider.dart';
 import 'package:mandeladrawing/view/authview/signup.dart';
-import 'package:mandeladrawing/view/colorpannel/imagecoloring.dart';
+import 'package:mandeladrawing/view/colorpannel/colorslistpage.dart';
+import 'package:mandeladrawing/view/colorpannel/createpalette.dart';
+import 'package:mandeladrawing/view/colorpannel/detailmandela.dart';
+import 'package:mandeladrawing/view/colorpannel/imagetexture.dart';
 import 'package:mandeladrawing/view/createpannel/drawpage.dart';
 import 'package:mandeladrawing/widgets/create.dart';
 import 'package:mandeladrawing/view/profile/profileview.dart';
@@ -20,6 +22,7 @@ import 'package:mandeladrawing/view/dashboard.dart';
 
 import 'controllers/authenticationmodels.dart';
 import 'firebase_options.dart';
+import 'my.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,7 +71,7 @@ class MyApp extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
-          return ImageColoring();
+          return SignupPage();
         },
       ),
     );

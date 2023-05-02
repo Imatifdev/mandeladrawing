@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mandeladrawing/models/sketchmodel.dart';
 import 'package:mandeladrawing/view/settings/settingsscreen.dart';
 import 'package:mandeladrawing/utils/mycolors.dart';
 import 'package:mandeladrawing/view/colorpannel/animal.dart';
@@ -93,7 +94,7 @@ class Coloring extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Animal mandeladrawing",
+                          "Animal mandelad",
                           style: TextStyle(
                               fontSize: 25, fontWeight: FontWeight.bold),
                         ),
@@ -115,17 +116,14 @@ class Coloring extends StatelessWidget {
                   Container(
                     height: MediaQuery.of(context).size.height * 1 / 5,
                     child: ListView.builder(
-                        itemCount: 7,
+                        itemCount: UsersData.users.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              height: 100,
-                              width: 150,
-                              color: Colors.red,
-                            ),
-                          );
+                              padding: const EdgeInsets.all(8.0),
+                              child: ShowGrid(
+                                skectpic: UsersData.users[index],
+                              ));
                         }),
                   ),
                   SizedBox(
@@ -260,6 +258,21 @@ class Coloring extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class ShowGrid extends StatelessWidget {
+  final SketchModel skectpic;
+
+  const ShowGrid({super.key, required this.skectpic});
+  @override
+  Widget build(BuildContext context) {
+    return Image(
+      fit: BoxFit.cover,
+      height: 200,
+      width: 200,
+      image: AssetImage(skectpic.url),
     );
   }
 }
