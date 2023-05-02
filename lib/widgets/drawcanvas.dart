@@ -100,8 +100,8 @@ class DrawingCanvas extends HookWidget {
 
   Widget buildAllSketches(BuildContext context) {
     return SizedBox(
-      height: height,
-      width: width,
+      height: 300,
+      width: 300,
       child: ValueListenableBuilder<List<Sketch>>(
         valueListenable: allSketches,
         builder: (context, sketches, _) {
@@ -109,10 +109,12 @@ class DrawingCanvas extends HookWidget {
             key: canvasGlobalKey,
             child: Center(
               child: Container(
-                height: height,
-                width: width,
+                height: 300,
+                width: 300,
                 color: appbg,
                 child: CustomPaint(
+                  size:
+                      Size(300, 300), // Set the width and height of the canvas
                   painter: SketchPainter(
                     sketches: sketches,
                     backgroundImage: backgroundImage.value,
@@ -136,10 +138,15 @@ class DrawingCanvas extends HookWidget {
         builder: (context, sketch, child) {
           return RepaintBoundary(
             child: SizedBox(
-              height: height,
-              width: width,
+              height: 300,
+              width: 300,
               child: CustomPaint(
+                size: const Size(
+                    300, 300), // Set the width and height of the canvas
+
                 painter: SketchPainter(
+                  // size: Size(300, 300), // Set the width and height of the canvas
+
                   sketches: sketch == null ? [] : [sketch],
                 ),
               ),

@@ -17,7 +17,7 @@ import 'package:mandeladrawing/view/profile/profileview.dart';
 import 'package:mandeladrawing/view/settings/settingsscreen.dart';
 import 'package:mandeladrawing/view/authview/login.dart';
 import 'package:mandeladrawing/view/colorpannel/animal.dart';
-import 'package:mandeladrawing/view/colorpannel/fillcolor.dart';
+import 'package:mandeladrawing/view/colorpannel/viewmandelas.dart';
 import 'package:mandeladrawing/view/dashboard.dart';
 
 import 'controllers/authenticationmodels.dart';
@@ -61,7 +61,7 @@ class MyApp extends StatelessWidget {
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.active) {
             if (snapshot.hasData) {
-              return DrawingPage();
+              return DrawingRoomScreen();
             }
           } else if (snapshot.hasError) {
             return const Center(
@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
-          return SignupPage();
+          return LoginPage();
         },
       ),
     );

@@ -277,86 +277,88 @@ class _SignupPageState extends State<SignupPage> {
                   //     ),
                   //   ),
                   // ),
-                  ElevatedButton(
-                    onPressed: _isSigningUp
-                        ? null
-                        : () async {
-                            if (formGlobalKey.currentState!.validate()) {
-                              setState(() {
-                                _isSigningUp = true;
-                              });
-                              // call Firebase function to sign up user
-                              bool isRegistered = false;
-                              isRegistered = await _registerVM.register(
-                                  _emailController.text.trim(),
-                                  _passController.text.trim(),
-                                  _fnameController.text.trim(),
-                                  _lastnameController.text.trim(),
-                                  _mobilecontroller.text.trim());
-                              if (isRegistered) {
-                                print("register");
-                                var userId =
-                                    FirebaseAuth.instance.currentUser!.uid;
-                                await FirebaseFirestore.instance
-                                    .collection("UsersData")
-                                    .doc(userId)
-                                    .set({
-                                  "First Name": _fnameController.text.trim(),
-                                  "Last Name": _lastnameController.text.trim(),
-                                  "Email": _emailController.text.trim()
-                                });
+                  // ElevatedButton(
+                  //   onPressed: _isSigningUp
+                  //       ? null
+                  //       : () async {
+                  //           if (formGlobalKey.currentState!.validate()) {
+                  //             setState(() {
+                  //               _isSigningUp = true;
+                  //             });
+                  //             // call Firebase function to sign up user
+                  //             bool isRegistered = false;
+                  //             isRegistered = await _registerVM.register(
+                  //                 _emailController.text.trim(),
+                  //                 _passController.text.trim(),
+                  //                 _fnameController.text.trim(),
+                  //                 _lastnameController.text.trim(),
+                  //                 _mobilecontroller.text.trim());
+                  //             if (isRegistered) {
+                  //               print("register");
+                  //               var userId =
+                  //                   FirebaseAuth.instance.currentUser!.uid;
+                  //               await FirebaseFirestore.instance
+                  //                   .collection("UsersData")
+                  //                   .doc(userId)
+                  //                   .set({
+                  //                 "First Name": _fnameController.text.trim(),
+                  //                 "Last Name": _lastnameController.text.trim(),
+                  //                 "Email": _emailController.text.trim()
+                  //               });
 
-                                print("user is stored");
-                                Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (ctx) => const Home()),
-                                    (Route<dynamic> route) => false);
-                              } else {
-                                print(_registerVM.message);
-                              }
-                            }
-                          },
-                    child: _isSigningUp
-                        ? const CircularProgressIndicator()
-                        : const Text('Sign Up'),
-                  ),
-                  // MyCustomButton(
-                  //     title: "Sign Up ",
-                  //     borderrad: 25,
-                  //     onaction: () {
-                  //       if (formGlobalKey.currentState!.validate()) {
-                  //         if (_isChecked == true) {
-                  //           final user = UserModel(
-                  //               email: controller.email.text.trim(),
-                  //               fname: controller.fname.text.toString(),
-                  //               lname: controller.lname.text.trim(),
-                  //               pass: controller.pass.text.trim(),
-                  //               phone: controller.phone.text.trim());
-                  //           SignupController.instance.registeruser(
-                  //               controller.email.text.trim(),
-                  //               controller.pass.text.trim());
-                  //           SignupController.instance.createUser(user
-                  //               // controller.email.text.trim(),
-                  //               // controller.pass.text.trim()
-                  //               );
-                  // FirebaseAuthMethod().signupUser(
-                  //     email: _emailController.text,
-                  //     fname: _fnameController.text,
-                  //     lname: _lastnameController.text,
-                  //     mobilenum: _mobilecontroller.text,
-                  //     pass: _passController.text,
-                  //       //     file: _image!);
-                  //       Get.to(() => Home());
-                  //       _showetoast("Signup Successfully");
-                  //     } else
-                  //       _showetoast(
-                  //           "Please Accept our terms and conditions");
-                  //   }
-                  // },
-                  // color1: gd2,
-                  // color2: gd1,
-                  // width: MediaQuery.of(context).size.width - 40),
+                  //               print("user is stored");
+                  //               Navigator.pushAndRemoveUntil(
+                  //                   context,
+                  //                   MaterialPageRoute(
+                  //                       builder: (ctx) => const Home()),
+                  //                   (Route<dynamic> route) => false);
+                  //             } else {
+                  //               print(_registerVM.message);
+                  //             }
+                  //           }
+                  //         },
+                  //   child: _isSigningUp
+                  //       ? const CircularProgressIndicator()
+                  //       : const Text('Sign Up'),
+                  // ),
+                  MyCustomButton(
+                      title: "Sign Up ",
+                      borderrad: 25,
+                      onaction: () {
+                        if (formGlobalKey.currentState!.validate()) {
+                          if (_isChecked == true) {
+                            final user = UserModel(
+                                email: controller.email.text.trim(),
+                                fname: controller.fname.text.toString(),
+                                lname: controller.lname.text.trim(),
+                                pass: controller.pass.text.trim(),
+                                phone: controller.phone.text.trim());
+                            SignupController.instance.registeruser(
+                                controller.email.text.trim(),
+                                controller.pass.text.trim());
+                            SignupController.instance.createUser(
+                              user,
+                            );
+                          }
+                        }
+                      },
+                      //     FirebaseAuthMethod().signupUser(
+                      //         email: _emailController.text,
+                      //         fname: _fnameController.text,
+                      //         lname: _lastnameController.text,
+                      //         mobilenum: _mobilecontroller.text,
+                      //         pass: _passController.text,
+                      //         //     file: _image!);
+                      //         Get.to(() => Home()));
+                      //     _showetoast("Signup Successfully");
+                      //   } else
+                      //     _showetoast(
+                      //         "Please Accept our terms and conditions");
+                      // }
+
+                      color1: gd2,
+                      color2: gd1,
+                      width: MediaQuery.of(context).size.width - 40),
                   SizedBox(
                     height: 20,
                   ),

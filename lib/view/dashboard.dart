@@ -5,7 +5,7 @@ import 'package:mandeladrawing/methods/authmodels.dart';
 import 'package:mandeladrawing/view/profile/profileview.dart';
 
 import '../models/sketchmodel.dart';
-import 'colorpannel/fillcolor.dart';
+import 'colorpannel/viewmandelas.dart';
 import '../widgets/create.dart';
 import 'createpannel/drawpage.dart';
 import 'library/mylibrary.dart';
@@ -25,10 +25,10 @@ class _HomeState extends State<Home> {
   }
 
   final List<Widget> pages = [
-    Coloring(),
-    ProfileView(),
+    ViewMandelas(),
     //DrawingPage(),
     MyLibrary(),
+    ProfileView(),
   ];
   List<int> listofpages = [];
   @override

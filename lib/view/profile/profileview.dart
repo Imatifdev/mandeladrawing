@@ -35,161 +35,171 @@ Future<void> getData() async {
 }
 
 class _ProfileViewState extends State<ProfileView> {
-  String email = "";
-  String fName = "";
-  String lName = "";
-  int num = 0;
-  getInfo() async {
-    var collection = FirebaseFirestore.instance.collection('Users');
-    var docSnapshot = await collection.doc().get();
+  var userid = FirebaseAuth.instance.currentUser!.uid;
+  String fname = 'nam';
+  String phone = '';
+  double num = 1;
+  void getEmissionLevel(BuildContext context) async {
+    //double emission = 0;
+    var collection = FirebaseFirestore.instance.collection('users');
+    var docSnapshot = await collection.doc(userid).get();
     if (docSnapshot.exists) {
       Map<String, dynamic>? data = docSnapshot.data();
+      var value1 = data?["First Name"];
+      var value2 = data?["Phone"];
+      print(value1);
       setState(() {
-        email = data?["Email"];
-        fName = data?["First Name"];
-        lName = data?["Last Name"];
+        fname = value1;
+        phone = value2;
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    if (num == 0) {
+      WidgetsBinding.instance
+          .addPostFrameCallback((_) => getEmissionLevel(context));
+      num++;
+    }
     final controller = Get.put(ProfileController());
     return Scaffold(
+      backgroundColor: appbar,
+      appBar: AppBar(
+        elevation: 0,
         backgroundColor: appbar,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: appbar,
-          leading: IconButton(
-              onPressed: () {
-                Get.to(() => Home());
-              },
-              icon: Icon(
-                CupertinoIcons.left_chevron,
-                color: Colors.black,
-              )),
-          title: Text(
-            email,
-            style: TextStyle(fontSize: 26, color: appbartitle),
-          ),
-          actions: [
-            const Padding(
-              padding: EdgeInsets.all(12.0),
-              child: Icon(
-                CupertinoIcons.settings,
-                color: Colors.black,
-                size: 30,
-              ),
-            ),
-          ],
+        leading: IconButton(
+            onPressed: () {
+              Get.to(() => Home());
+            },
+            icon: Icon(
+              CupertinoIcons.left_chevron,
+              color: Colors.black,
+            )),
+        title: Text(
+          fname,
+          style: TextStyle(fontSize: 26, color: appbartitle),
         ),
-        body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: SingleChildScrollView(
-              child: StreamBuilder(
-//                future: controller.getUserData(),
-                stream: FirebaseFirestore.instance
-                    .collection('Users')
-                    .doc(documentId)
-                    .snapshots(),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    if (snapshot.hasData) {
-                      final data =
-                          snapshot.data!.data() as Map<String, dynamic>;
-                      final email = data['Email'] as String?;
-                      print(email);
-                      // UserModel userdata = snapshot.data as UserModel;
-                      return Column(
-                        children: [
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          Center(
-                            child: Stack(children: [
-                              const CircleAvatar(
-                                radius: 80,
-                                backgroundImage: AssetImage('assets/dp.jpg'),
-                              ),
-                            ]),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 1 / 40,
-                          ),
-                          Text(
-                            '',
-                            //                   user!.email,
-                            style: TextStyle(
-                                fontSize: 40, fontWeight: FontWeight.w400),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 1 / 20,
-                          ),
-                          TextFormField(
-                            initialValue: documentId,
-                            // user.email.toString(),
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          TextFormField(
-                            initialValue: email,
-                            // user.email.toString(),
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          SizedBox(
-                            height:
-                                MediaQuery.of(context).size.height * 1 / 7.5,
-                          ),
-                          MyCustomButton(
-                              title: "Edit Profile",
-                              borderrad: 25,
-                              onaction: () {
-                                Get.to(() => EditProfile());
-                              },
-                              color1: gd2,
-                              color2: gd1,
-                              width: MediaQuery.of(context).size.width - 40),
-                          const SizedBox(
-                            height: 30,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              IconButton(
-                                  onPressed: () {
-                                    // FirebaseAuthMethod().signOut();
-                                  },
-                                  icon: Icon(
-                                    Icons.logout_rounded,
-                                    color: red,
-                                    size: 40,
-                                  )),
-                              const Text(
-                                "Log out",
-                                style: TextStyle(
-                                    color: red,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          )
-                        ],
-                      );
-                    } else if (snapshot.hasError) {
-                      return Center(
-                        child: Text(snapshot.error.toString()),
-                      );
-                    } else {
-                      return Center(
-                        child: Text("Something went wrong"),
-                      );
-                    }
-                  } else {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
-              ),
-            )));
+        actions: [
+          const Padding(
+            padding: EdgeInsets.all(12.0),
+            child: Icon(
+              CupertinoIcons.settings,
+              color: Colors.black,
+              size: 30,
+            ),
+          ),
+        ],
+      ),
+      body: Center(child: Text(fname)),
+//         body: Padding(
+//             padding: const EdgeInsets.symmetric(horizontal: 20),
+//             child: SingleChildScrollView(
+//               child: StreamBuilder(
+// //                future: controller.getUserData(),
+//                 stream: FirebaseFirestore.instance
+//                     .collection('Users')
+//                     .doc(documentId)
+//                     .snapshots(),
+//                 builder: (context, snapshot) {
+//                   if (snapshot.connectionState == ConnectionState.done) {
+//                     if (snapshot.hasData) {
+//                       final data =
+//                           snapshot.data!.data() as Map<String, dynamic>;
+//                       final email = data['Email'] as String?;
+//                       print(email);
+//                       // UserModel userdata = snapshot.data as UserModel;
+//                       return Column(
+//                         children: [
+//                           const SizedBox(
+//                             height: 20,
+//                           ),
+//                           Center(
+//                             child: Stack(children: [
+//                               const CircleAvatar(
+//                                 radius: 80,
+//                                 backgroundImage: AssetImage('assets/dp.jpg'),
+//                               ),
+//                             ]),
+//                           ),
+//                           SizedBox(
+//                             height: MediaQuery.of(context).size.height * 1 / 40,
+//                           ),
+//                           Text(
+//                             fname,
+//                             //                   user!.email,
+//                             style: TextStyle(
+//                                 fontSize: 40, fontWeight: FontWeight.w400),
+//                           ),
+//                           SizedBox(
+//                             height: MediaQuery.of(context).size.height * 1 / 20,
+//                           ),
+//                           TextFormField(
+//                             initialValue: documentId,
+//                             // user.email.toString(),
+//                             style: TextStyle(fontSize: 20),
+//                           ),
+//                           TextFormField(
+//                             initialValue: email,
+//                             // user.email.toString(),
+//                             style: TextStyle(fontSize: 20),
+//                           ),
+//                           SizedBox(
+//                             height:
+//                                 MediaQuery.of(context).size.height * 1 / 7.5,
+//                           ),
+//                           MyCustomButton(
+//                               title: "Edit Profile",
+//                               borderrad: 25,
+//                               onaction: () {
+//                                 Get.to(() => EditProfile());
+//                               },
+//                               color1: gd2,
+//                               color2: gd1,
+//                               width: MediaQuery.of(context).size.width - 40),
+//                           const SizedBox(
+//                             height: 30,
+//                           ),
+//                           Row(
+//                             mainAxisAlignment: MainAxisAlignment.center,
+//                             children: [
+//                               IconButton(
+//                                   onPressed: () {
+//                                     // FirebaseAuthMethod().signOut();
+//                                   },
+//                                   icon: Icon(
+//                                     Icons.logout_rounded,
+//                                     color: red,
+//                                     size: 40,
+//                                   )),
+//                               const Text(
+//                                 "Log out",
+//                                 style: TextStyle(
+//                                     color: red,
+//                                     fontSize: 20,
+//                                     fontWeight: FontWeight.bold),
+//                               )
+//                             ],
+//                           )
+//                         ],
+//                       );
+//                     } else if (snapshot.hasError) {
+//                       return Center(
+//                         child: Text(snapshot.error.toString()),
+//                       );
+//                     } else {
+//                       return Center(
+//                         child: Text("Something went wrong"),
+//                       );
+//                     }
+//                   } else {
+//                     return Center(
+//                       child: CircularProgressIndicator(),
+//                     );
+//                   }
+//                 },
+//               ),
+//             )));
+    );
   }
 }

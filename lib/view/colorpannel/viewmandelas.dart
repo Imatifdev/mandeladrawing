@@ -8,8 +8,8 @@ import 'package:mandeladrawing/view/settings/settingsscreen.dart';
 import 'package:mandeladrawing/utils/mycolors.dart';
 import 'package:mandeladrawing/view/colorpannel/animal.dart';
 
-class Coloring extends StatelessWidget {
-  const Coloring({super.key});
+class ViewMandelas extends StatelessWidget {
+  const ViewMandelas({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +94,7 @@ class Coloring extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          "Animal mandelad",
+                          "Animal mandela",
                           style: TextStyle(
                               fontSize: 25, fontWeight: FontWeight.bold),
                         ),

@@ -1,21 +1,20 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, unused_field, prefer_const_constructors, use_build_context_synchronously
+// ignore_for_file: prefer_const_literals_to_create_immutables, unused_field, prefer_const_constructors
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:mandeladrawing/utils/mycolors.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:mandeladrawing/view/authview/authhome.dart';
 import 'package:mandeladrawing/view/authview/forgotpassword.dart';
 import 'package:mandeladrawing/view/authview/signup.dart';
 import 'package:mandeladrawing/view/dashboard.dart';
-import 'package:mandeladrawing/view/splash.dart';
 import 'package:mandeladrawing/widgets/mybutton.dart';
 import 'package:mandeladrawing/widgets/textformfield.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../controllers/logincontroller.dart';
+import '../../controllers/signupcontroller.dart';
 import '../../methods/authmodels.dart';
-import '../../models/loginviewmodel.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -28,8 +27,6 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
 
   final TextEditingController _passController = TextEditingController();
-  bool _isLoggingIn = false;
-  final LoginViewModel _loginVM = LoginViewModel();
 
   bool _isChecked = false;
   String _textFieldValue = '';
@@ -70,6 +67,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(LoginController());
+
     return GestureDetector(
       onTap: () {
         FocusScopeNode currentFocus = FocusScope.of(context);
@@ -174,36 +173,23 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(
                   height: 30,
                 ),
-                InkWell(
-                  onTap: _isLoggingIn
-                      ? null
-                      : () async {
-                          if (formGlobalKey.currentState!.validate()) {
-                            setState(() {
-                              _isLoggingIn = true;
-                            });
-                            bool isLoggedIn = await _loginVM.login(
-                                _emailController.text, _passController.text);
-                            if (isLoggedIn) {
-                              Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (ctx) => const Home()),
-                                  (Route<dynamic> route) => false);
-                            }
-                          }
-                        },
-                  child: Container(
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [gd2, gd1],
-                        ),
-                        borderRadius: BorderRadius.circular(20)),
-                    child: _isLoggingIn
-                        ? const CircularProgressIndicator()
-                        : const Text('Log In'),
-                  ),
-                ),
+
+                MyCustomButton(
+                    title: "Sign In ",
+                    borderrad: 25,
+                    onaction: () {
+                      if (formGlobalKey.currentState!.validate()) {
+                        LoginController.instance.LoginUser(
+                            controller.email.text.trim(),
+                            controller.pass.text.trim());
+                        Get.to(() => Home());
+                        _showetoast("Sigin Successfully");
+                      } else
+                        _showetoast("Please enter valid pass or email");
+                    },
+                    color1: gd2,
+                    color2: gd1,
+                    width: MediaQuery.of(context).size.width - 40),
                 SizedBox(
                   height: 20,
                 ),
