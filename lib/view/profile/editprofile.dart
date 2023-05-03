@@ -28,11 +28,15 @@ class _EditProfileState extends State<EditProfile> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: appbar,
-        leading: const Icon(
-          CupertinoIcons.left_chevron,
-          color: Colors.black,
-          size: 30,
-        ),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              CupertinoIcons.left_chevron,
+              color: Colors.black,
+              size: 30,
+            )),
         title: const Text(
           "Hi, Abc",
           style: TextStyle(fontSize: 26, color: appbartitle),

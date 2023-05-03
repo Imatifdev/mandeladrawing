@@ -2,9 +2,18 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:mandeladrawing/utils/mycolors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mandeladrawing/view/authview/login.dart';
 
 class SettingsScreen extends StatelessWidget {
+  void _signOut() {
+    FirebaseAuth.instance.signOut();
+    Get.to(() => LoginPage());
+  } //print('$user');
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,8 +143,9 @@ class SettingsScreen extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
                   selectedColor: Colors.white,
-                  leading: Icon(
-                    Icons.logout_rounded,
+                  leading: IconButton(
+                    onPressed: _signOut,
+                    icon: Icon(Icons.logout_rounded),
                   ),
                   title: Text(
                     "Logout",

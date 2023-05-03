@@ -53,8 +53,7 @@ class _ImageTextureState extends State<ImageTexture> {
               children: [
                 IconButton(
                   onPressed: () {
-                    onTap:
-                    () => Navigator.pop(context);
+                    Navigator.pop(context);
                   },
                   icon: Icon(
                     Icons.turn_left,

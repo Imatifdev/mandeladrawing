@@ -52,8 +52,8 @@ class CanvasSideBar extends HookWidget {
     ));
     final scrollController = useScrollController();
     return Container(
-      width: 400,
-      height: MediaQuery.of(context).size.height / 3,
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height / 7,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.horizontal(right: Radius.circular(10)),
         boxShadow: [
@@ -92,74 +92,74 @@ class CanvasSideBar extends HookWidget {
                 : const SizedBox.shrink(),
           ),
           const SizedBox(height: 10),
-          const Text(
-            'Colors',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
+          // const Text(
+          //   'Colors',
+          //   style: TextStyle(fontWeight: FontWeight.bold),
+          // ),
           const Divider(),
           ColorPalette(
             selectedColor: selectedColor,
           ),
-          const Text(
-            'Actions',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          const Divider(),
-          Wrap(
-            children: [
-              TextButton(
-                onPressed: allSketches.value.isNotEmpty
-                    ? () => undoRedoStack.value.undo()
-                    : null,
-                child: const Text('Undo'),
-              ),
-              ValueListenableBuilder<bool>(
-                valueListenable: undoRedoStack.value._canRedo,
-                builder: (_, canRedo, __) {
-                  return TextButton(
-                    onPressed:
-                        canRedo ? () => undoRedoStack.value.redo() : null,
-                    child: const Text('Redo'),
-                  );
-                },
-              ),
-              TextButton(
-                child: const Text('Clear'),
-                onPressed: () => undoRedoStack.value.clear(),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          const Text(
-            'Export',
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          const Divider(),
-          Row(
-            children: [
-              SizedBox(
-                width: 140,
-                child: TextButton(
-                  child: const Text('Export PNG'),
-                  onPressed: () async {
-                    Uint8List? pngBytes = await getBytes();
-                    if (pngBytes != null) saveFile(pngBytes, 'png');
-                  },
-                ),
-              ),
-              SizedBox(
-                width: 140,
-                child: TextButton(
-                  child: const Text('Export JPEG'),
-                  onPressed: () async {
-                    Uint8List? pngBytes = await getBytes();
-                    if (pngBytes != null) saveFile(pngBytes, 'jpeg');
-                  },
-                ),
-              ),
-            ],
-          ),
-          // add about me button or follow buttons
+          // const Text(
+          //   'Actions',
+          //   style: TextStyle(fontWeight: FontWeight.bold),
+          // ),
+          // const Divider(),
+          // Wrap(
+          //   children: [
+          //     TextButton(
+          //       onPressed: allSketches.value.isNotEmpty
+          //           ? () => undoRedoStack.value.undo()
+          //           : null,
+          //       child: const Text('Undo'),
+          //     ),
+          //     ValueListenableBuilder<bool>(
+          //       valueListenable: undoRedoStack.value._canRedo,
+          //       builder: (_, canRedo, __) {
+          //         return TextButton(
+          //           onPressed:
+          //               canRedo ? () => undoRedoStack.value.redo() : null,
+          //           child: const Text('Redo'),
+          //         );
+          //       },
+          //     ),
+          //     TextButton(
+          //       child: const Text('Clear'),
+          //       onPressed: () => undoRedoStack.value.clear(),
+          //     ),
+          //   ],
+          // ),
+          // const SizedBox(height: 20),
+          // const Text(
+          //   'Export',
+          //   style: TextStyle(fontWeight: FontWeight.bold),
+          // ),
+          // const Divider(),
+          // Row(
+          //   children: [
+          //     SizedBox(
+          //       width: 140,
+          //       child: TextButton(
+          //         child: const Text('Export PNG'),
+          //         onPressed: () async {
+          //           Uint8List? pngBytes = await getBytes();
+          //           if (pngBytes != null) saveFile(pngBytes, 'png');
+          //         },
+          //       ),
+          //     ),
+          //     SizedBox(
+          //       width: 140,
+          //       child: TextButton(
+          //         child: const Text('Export JPEG'),
+          //         onPressed: () async {
+          //           Uint8List? pngBytes = await getBytes();
+          //           if (pngBytes != null) saveFile(pngBytes, 'jpeg');
+          //         },
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          // // add about me button or follow buttons
         ],
       ),
     );

@@ -12,6 +12,7 @@ import 'package:mandeladrawing/view/colorpannel/createpalette.dart';
 import 'package:mandeladrawing/view/colorpannel/detailmandela.dart';
 import 'package:mandeladrawing/view/colorpannel/imagetexture.dart';
 import 'package:mandeladrawing/view/createpannel/drawpage.dart';
+import 'package:mandeladrawing/view/splash.dart';
 import 'package:mandeladrawing/widgets/create.dart';
 import 'package:mandeladrawing/view/profile/profileview.dart';
 import 'package:mandeladrawing/view/settings/settingsscreen.dart';
@@ -56,24 +57,27 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.active) {
-            if (snapshot.hasData) {
-              return DrawingRoomScreen();
-            }
-          } else if (snapshot.hasError) {
-            return const Center(
-              child: Text('\${snapshot.error}'),
-            );
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          return LoginPage();
-        },
-      ),
+      home: FirebaseAuth.instance.currentUser != null
+          ? const Home()
+          : SplashScreen(),
+      // StreamBuilder(
+      //   stream: FirebaseAuth.instance.authStateChanges(),
+      //   builder: (context, snapshot) {
+      //     if (snapshot.connectionState == ConnectionState.active) {
+      //       if (snapshot.hasData) {
+      //         return Home();
+      //       }
+      //     } else if (snapshot.hasError) {
+      //       return const Center(
+      //         child: Text('\${snapshot.error}'),
+      //       );
+      //     }
+      //     if (snapshot.connectionState == ConnectionState.waiting) {
+      //       return const Center(child: CircularProgressIndicator());
+      //     }
+      //     return Home();
+      //   },
+      // ),
     );
   }
 }

@@ -26,7 +26,7 @@ class _HomeState extends State<Home> {
 
   final List<Widget> pages = [
     ViewMandelas(),
-    //DrawingPage(),
+    DrawingPage(),
     MyLibrary(),
     ProfileView(),
   ];

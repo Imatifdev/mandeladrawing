@@ -109,9 +109,9 @@ class DrawingCanvas extends HookWidget {
             key: canvasGlobalKey,
             child: Center(
               child: Container(
-                height: 300,
-                width: 300,
-                color: appbg,
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                color: Colors.transparent,
                 child: CustomPaint(
                   size:
                       Size(300, 300), // Set the width and height of the canvas

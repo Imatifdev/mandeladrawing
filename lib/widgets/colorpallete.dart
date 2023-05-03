@@ -30,11 +30,24 @@ class ColorPalette extends HookWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            SvgPicture.asset(
-              'assets/svgs/color_wheel.svg',
-              height: 35,
-              width: 35,
+            MouseRegion(
+              cursor: SystemMouseCursors.click,
+              child: GestureDetector(
+                onTap: () {
+                  showColorWheel(context, selectedColor);
+                },
+                child: Image.asset(
+                  'assets/art/colorpicker.png',
+                  height: 30,
+                  width: 30,
+                ),
+              ),
             ),
+            // Image.asset(
+            //   'assets/art/colorpicker.png',
+            //   height: 35,
+            //   width: 35,
+            // ),
             Wrap(
               alignment: WrapAlignment.spaceAround,
               spacing: 12,
@@ -46,8 +59,8 @@ class ColorPalette extends HookWidget {
                     child: GestureDetector(
                       onTap: () => selectedColor.value = color,
                       child: Container(
-                        height: 35,
-                        width: 35,
+                        height: 30,
+                        width: 30,
                         decoration: BoxDecoration(
                           color: color,
                           borderRadius:
@@ -74,19 +87,19 @@ class ColorPalette extends HookWidget {
               ),
             ),
             const SizedBox(width: 10),
-            MouseRegion(
-              cursor: SystemMouseCursors.click,
-              child: GestureDetector(
-                onTap: () {
-                  showColorWheel(context, selectedColor);
-                },
-                child: SvgPicture.asset(
-                  'assets/svgs/color_wheel.svg',
-                  height: 30,
-                  width: 30,
-                ),
-              ),
-            ),
+            // MouseRegion(
+            //   cursor: SystemMouseCursors.click,
+            //   child: GestureDetector(
+            //     onTap: () {
+            //       showColorWheel(context, selectedColor);
+            //     },
+            //     child: Image.asset(
+            //       'assets/art/colorpicker.png',
+            //       height: 30,
+            //       width: 30,
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ],

@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, unnecessary_string_interpolations, prefer_const_constructors, curly_braces_in_flow_control_structures
 
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,77 +23,213 @@ class ProfileView extends StatefulWidget {
   State<ProfileView> createState() => _ProfileViewState();
 }
 
-String? documentId;
+// String? documentId;
 
-FirebaseFirestore firestore = FirebaseFirestore.instance;
-CollectionReference usersRef = firestore.collection('Users');
-Future<void> getData() async {
-  QuerySnapshot? users = await usersRef.get();
-  if (users != null) {
-    users.docs.forEach((doc) {
-      print(doc.data());
-    });
-  }
-}
+// FirebaseFirestore firestore = FirebaseFirestore.instance;
+// CollectionReference usersRef = firestore.collection('Users');
+// Future<void> getData() async {
+//   QuerySnapshot? users = await usersRef.get();
+//   if (users != null) {
+//     users.docs.forEach((doc) {
+//       print(doc.data());
+//     });
+//   }
+// }
+// User? user = FirebaseAuth.instance.currentUser;
 
+// // Check if the user is signed in
+// if (user != null) {
+//   String uid = user.uid; // <-- User ID
+//   String? email = user.email; // <-- Their email
+// }
 class _ProfileViewState extends State<ProfileView> {
-  var userid = FirebaseAuth.instance.currentUser!.uid;
-  String fname = 'nam';
-  String phone = '';
-  double num = 1;
-  void getEmissionLevel(BuildContext context) async {
-    //double emission = 0;
-    var collection = FirebaseFirestore.instance.collection('users');
-    var docSnapshot = await collection.doc(userid).get();
-    if (docSnapshot.exists) {
-      Map<String, dynamic>? data = docSnapshot.data();
-      var value1 = data?["First Name"];
-      var value2 = data?["Phone"];
-      print(value1);
-      setState(() {
-        fname = value1;
-        phone = value2;
-      });
-    }
-  }
+  // var userid = FirebaseAuth.instance.currentUser!.uid;
+  // String email = '';
+  // String phone = '';
+  // double num = 0;
+  // void getEmissionLevel(BuildContext context) async {
+  //   //double emission = 0;
+  //   var collection = FirebaseFirestore.instance.collection('users');
+  //   var docSnapshot = await collection.doc(userid).get();
+  //   if (docSnapshot.exists) {
+  //     print("object");
+  //     Map<String, dynamic>? data = docSnapshot.data();
+  //     var value1 = data?["Email"];
+  //     var value2 = data?["Phone"];
+  //     print(value1);
+  //     setState(() {
+  //       email = value1;
+  //       phone = value2;
+  //     });
+  //   }
+  // }
+  // final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  // void getCurrentUserEmail() {
+  //   User? user = _auth.currentUser;
+  //   if (user != null) {
+  //     String email = user.email.toString();
+  //     print('User email: $email');
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
-    if (num == 0) {
-      WidgetsBinding.instance
-          .addPostFrameCallback((_) => getEmissionLevel(context));
-      num++;
-    }
+    // if (num == 0) {
+    //   WidgetsBinding.instance
+    //       .addPostFrameCallback((_) => getEmissionLevel(context));
+    //   num++;
+    // }
     final controller = Get.put(ProfileController());
     return Scaffold(
-      backgroundColor: appbar,
-      appBar: AppBar(
-        elevation: 0,
         backgroundColor: appbar,
-        leading: IconButton(
-            onPressed: () {
-              Get.to(() => Home());
-            },
-            icon: Icon(
-              CupertinoIcons.left_chevron,
-              color: Colors.black,
-            )),
-        title: Text(
-          fname,
-          style: TextStyle(fontSize: 26, color: appbartitle),
-        ),
-        actions: [
-          const Padding(
-            padding: EdgeInsets.all(12.0),
-            child: Icon(
-              CupertinoIcons.settings,
-              color: Colors.black,
-              size: 30,
-            ),
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: appbar,
+          leading: IconButton(
+              onPressed: () {
+                Get.to(() => Home());
+              },
+              icon: Icon(
+                CupertinoIcons.left_chevron,
+                color: Colors.black,
+              )),
+          title: Text(
+            "user.e",
+            style: TextStyle(fontSize: 26, color: appbartitle),
           ),
-        ],
-      ),
-      body: Center(child: Text(fname)),
+          actions: [
+            const Padding(
+              padding: EdgeInsets.all(12.0),
+              child: Icon(
+                CupertinoIcons.settings,
+                color: Colors.black,
+                size: 30,
+              ),
+            ),
+          ],
+        ),
+        body: Column(
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            Center(
+              child: Stack(children: [
+                const CircleAvatar(
+                  radius: 80,
+                  backgroundImage: AssetImage('assets/dp.jpg'),
+                ),
+              ]),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 1 / 40,
+            ),
+            Center(
+              child: Text(
+                "Emily",
+                //                   user!.email,
+                style: TextStyle(fontSize: 30, fontWeight: FontWeight.w400),
+              ),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 1 / 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(children: [
+                TextFormField(
+                  initialValue: "emily123@g,ail.cp,",
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+
+                      borderRadius:
+                          BorderRadius.circular(20), // Set border radius here
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+
+                      borderRadius:
+                          BorderRadius.circular(20), // Set border radius here
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+                      borderRadius:
+                          BorderRadius.circular(20), // Set border radius here
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xffeceff6),
+                    contentPadding: const EdgeInsets.all(8),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  initialValue: "1243582992",
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+
+                      borderRadius:
+                          BorderRadius.circular(20), // Set border radius here
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+
+                      borderRadius:
+                          BorderRadius.circular(20), // Set border radius here
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+                      borderRadius:
+                          BorderRadius.circular(20), // Set border radius here
+                    ),
+                    filled: true,
+                    fillColor: const Color(0xffeceff6),
+                    contentPadding: const EdgeInsets.all(8),
+                  ),
+                ),
+                // user.email.toString(),
+              ]),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 20,
+            ),
+            MyCustomButton(
+                title: "Edit Profile",
+                borderrad: 25,
+                onaction: () {
+                  Get.to(() => EditProfile());
+                },
+                color1: gd2,
+                color2: gd1,
+                width: MediaQuery.of(context).size.width - 40),
+            const SizedBox(
+              height: 30,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                    onPressed: () {
+                      // FirebaseAuthMethod().signOut();
+                    },
+                    icon: Icon(
+                      Icons.logout_rounded,
+                      color: red,
+                      size: 40,
+                    )),
+                const Text(
+                  "Log out",
+                  style: TextStyle(
+                      color: red, fontSize: 20, fontWeight: FontWeight.bold),
+                )
+              ],
+            )
+          ],
+        )
 //         body: Padding(
 //             padding: const EdgeInsets.symmetric(horizontal: 20),
 //             child: SingleChildScrollView(
@@ -200,6 +338,6 @@ class _ProfileViewState extends State<ProfileView> {
 //                 },
 //               ),
 //             )));
-    );
+        );
   }
 }

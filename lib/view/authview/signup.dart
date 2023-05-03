@@ -94,7 +94,7 @@ class _SignupPageState extends State<SignupPage> {
         }
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        // resizeToAvoidBottomInset: false,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: Form(
@@ -219,7 +219,7 @@ class _SignupPageState extends State<SignupPage> {
                       Text(
                         "I accept all terms and conditions ",
                         style: TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.w400),
+                            fontSize: 13, fontWeight: FontWeight.w400),
                       ),
                     ],
                   ),
@@ -339,7 +339,9 @@ class _SignupPageState extends State<SignupPage> {
                             SignupController.instance.createUser(
                               user,
                             );
+                            Get.to(() => Home());
                           }
+                          print(controller.email);
                         }
                       },
                       //     FirebaseAuthMethod().signupUser(

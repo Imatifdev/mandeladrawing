@@ -96,7 +96,7 @@ class ViewMandelas extends StatelessWidget {
                         Text(
                           "Animal mandela",
                           style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.bold),
+                              fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         GestureDetector(
                           onTap: () {
@@ -105,7 +105,7 @@ class ViewMandelas extends StatelessWidget {
                           child: Text(
                             "View More...",
                             style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 18,
                                 color: gd2,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -137,14 +137,14 @@ class ViewMandelas extends StatelessWidget {
                         Text(
                           "Kids Special",
                           style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.bold),
+                              fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         GestureDetector(
                           onTap: () {},
                           child: Text(
                             "View More...",
                             style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 18,
                                 color: gd2,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -155,17 +155,14 @@ class ViewMandelas extends StatelessWidget {
                   Container(
                     height: MediaQuery.of(context).size.height * 1 / 5,
                     child: ListView.builder(
-                        itemCount: 7,
+                        itemCount: UsersData.users.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              height: 100,
-                              width: 150,
-                              color: Colors.red,
-                            ),
-                          );
+                              padding: const EdgeInsets.all(8.0),
+                              child: ShowGrid(
+                                skectpic: UsersData.users[index],
+                              ));
                         }),
                   ),
                   SizedBox(
@@ -179,14 +176,14 @@ class ViewMandelas extends StatelessWidget {
                         Text(
                           "Kids Special",
                           style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.bold),
+                              fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         GestureDetector(
                           onTap: () {},
                           child: Text(
                             "View More...",
                             style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 18,
                                 color: gd2,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -197,17 +194,14 @@ class ViewMandelas extends StatelessWidget {
                   Container(
                     height: MediaQuery.of(context).size.height * 1 / 5,
                     child: ListView.builder(
-                        itemCount: 7,
+                        itemCount: UsersData.users.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              height: 100,
-                              width: 150,
-                              color: Colors.red,
-                            ),
-                          );
+                              padding: const EdgeInsets.all(8.0),
+                              child: ShowGrid(
+                                skectpic: UsersData.users[index],
+                              ));
                         }),
                   ),
                   SizedBox(
@@ -221,14 +215,14 @@ class ViewMandelas extends StatelessWidget {
                         Text(
                           "Level up Mandela",
                           style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.bold),
+                              fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         GestureDetector(
                           onTap: () {},
                           child: Text(
                             "View More...",
                             style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 18,
                                 color: gd2,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -239,17 +233,14 @@ class ViewMandelas extends StatelessWidget {
                   Container(
                     height: MediaQuery.of(context).size.height * 1 / 5,
                     child: ListView.builder(
-                        itemCount: 7,
+                        itemCount: UsersData.users.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              height: 100,
-                              width: 150,
-                              color: Colors.red,
-                            ),
-                          );
+                              padding: const EdgeInsets.all(8.0),
+                              child: ShowGrid(
+                                skectpic: UsersData.users[index],
+                              ));
                         }),
                   ),
                 ],

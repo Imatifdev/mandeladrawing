@@ -247,7 +247,7 @@ class _LoginPageState extends State<LoginPage> {
                       Text(
                         "Don't have an Accound?",
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                         ),
                       ),
                       SizedBox(
@@ -260,7 +260,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Text(
                           "Create new one",
                           style: TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold),
+                              fontSize: 16, fontWeight: FontWeight.bold),
                         ),
                       ),
                     ],
