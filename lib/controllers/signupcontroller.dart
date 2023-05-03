@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mandeladrawing/controllers/usercontroller.dart';
@@ -16,16 +17,21 @@ class SignupController extends GetxController {
 
   final pass = TextEditingController();
   final userrepo = Get.put(UserRepo());
-  void registeruser(String email, String pass) {
-    //String? error =
-    AuthRepo.instance.createUserWithEmailAndPassword(email, pass);
-    //as String?;
-    // if (error != null) {
-    //   Get.showSnackbar(GetSnackBar(message: error.toString()));
-    // }
-  }
+  //final userId = FirebaseAuth.instance.currentUser!.uid;
+//   Future<bool> registeruser(String email, String pass) async{
+//     //String? error =
+//     AuthRepo.instance.createUserWithEmailAndPassword(email, pass);
 
-  Future<void> createUser(UserModel user) async {
-    await userrepo.createUser(user);
-  }
+
+
+   
+//     //as String?;
+//     // if (error != null) {
+//     //   Get.showSnackbar(GetSnackBar(message: error.toString()));
+//     // }
+//   }
+
+//   // Future<void> createUser(UserModel user) async {
+//   //   await userrepo.createUser(user);
+//   // }
 }

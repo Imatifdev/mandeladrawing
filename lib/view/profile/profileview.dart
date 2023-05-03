@@ -43,9 +43,26 @@ class ProfileView extends StatefulWidget {
 //   String? email = user.email; // <-- Their email
 // }
 class _ProfileViewState extends State<ProfileView> {
-  // var userid = FirebaseAuth.instance.currentUser!.uid;
-  // String email = '';
-  // String phone = '';
+  final userId = FirebaseAuth.instance.currentUser!.uid;
+  int check = 0;
+  String name = "name";
+  String email = "example@gmail.com";
+  String phone = '9999999999';
+
+  void getInfo()async{
+    var collection = FirebaseFirestore.instance.collection('users');
+    var docSnapshot = await collection.doc(userId).get();
+    if (docSnapshot.exists) {
+      print("ok");
+      Map<String, dynamic>? data = docSnapshot.data();
+      setState(() {
+        name = data?["First Name"];
+        email = data?["Email"];
+        phone = data?["Phone"];
+      });
+    }
+    print(userId);
+  }
   // double num = 0;
   // void getEmissionLevel(BuildContext context) async {
   //   //double emission = 0;
@@ -75,11 +92,11 @@ class _ProfileViewState extends State<ProfileView> {
 
   @override
   Widget build(BuildContext context) {
-    // if (num == 0) {
-    //   WidgetsBinding.instance
-    //       .addPostFrameCallback((_) => getEmissionLevel(context));
-    //   num++;
-    // }
+    if (check == 0) {
+      WidgetsBinding.instance
+          .addPostFrameCallback((_) => getInfo());
+      check++;
+    }
     final controller = Get.put(ProfileController());
     return Scaffold(
         backgroundColor: appbar,
@@ -95,7 +112,7 @@ class _ProfileViewState extends State<ProfileView> {
                 color: Colors.black,
               )),
           title: Text(
-            "user.e",
+            name,
             style: TextStyle(fontSize: 26, color: appbartitle),
           ),
           actions: [
@@ -127,7 +144,7 @@ class _ProfileViewState extends State<ProfileView> {
             ),
             Center(
               child: Text(
-                "Emily",
+                name,
                 //                   user!.email,
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.w400),
               ),
@@ -139,7 +156,7 @@ class _ProfileViewState extends State<ProfileView> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(children: [
                 TextFormField(
-                  initialValue: "emily123@g,ail.cp,",
+                  initialValue: email,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderSide: const BorderSide(color: Colors.transparent),
@@ -167,7 +184,7 @@ class _ProfileViewState extends State<ProfileView> {
                   height: 20,
                 ),
                 TextFormField(
-                  initialValue: "1243582992",
+                  initialValue: phone,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderSide: const BorderSide(color: Colors.transparent),
@@ -227,9 +244,14 @@ class _ProfileViewState extends State<ProfileView> {
                       color: red, fontSize: 20, fontWeight: FontWeight.bold),
                 )
               ],
-            )
+            ),
+            ElevatedButton(onPressed: (){
+              getInfo();
+            }, child: Text("Get Info")),
+            Text(email),
+            Text(phone)
           ],
-        )
+        ),
 //         body: Padding(
 //             padding: const EdgeInsets.symmetric(horizontal: 20),
 //             child: SingleChildScrollView(

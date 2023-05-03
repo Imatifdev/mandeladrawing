@@ -15,6 +15,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../../controllers/logincontroller.dart';
 import '../../controllers/signupcontroller.dart';
 import '../../methods/authmodels.dart';
+import '../../models/loginviewmodel.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -24,6 +25,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  LoginViewModel loginVM = LoginViewModel();
   final TextEditingController _emailController = TextEditingController();
 
   final TextEditingController _passController = TextEditingController();
@@ -177,13 +179,15 @@ class _LoginPageState extends State<LoginPage> {
                 MyCustomButton(
                     title: "Sign In ",
                     borderrad: 25,
-                    onaction: () {
+                    onaction: () async{
                       if (formGlobalKey.currentState!.validate()) {
-                        LoginController.instance.LoginUser(
-                            controller.email.text.trim(),
-                            controller.pass.text.trim());
-                        Get.to(() => Home());
+                        
+                        loginVM.login(controller.email.text.trim(),controller.pass.text.trim());    
+                        
+                          print("ok");
+                          Get.to(() => Home());
                         _showetoast("Sigin Successfully");
+                        
                       } else
                         _showetoast("Please enter valid pass or email");
                     },

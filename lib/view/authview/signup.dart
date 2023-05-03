@@ -3,6 +3,7 @@
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,7 +19,6 @@ import '../../models/registeruserviewmodel.dart';
 import '../../utils/mycolors.dart';
 import '../../widgets/mybutton.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -28,6 +28,7 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  RegisterViewModel registerVM = RegisterViewModel();
   //controllers for managing data
   final TextEditingController _emailController = TextEditingController();
 
@@ -324,8 +325,8 @@ class _SignupPageState extends State<SignupPage> {
                   MyCustomButton(
                       title: "Sign Up ",
                       borderrad: 25,
-                      onaction: () {
-                        if (formGlobalKey.currentState!.validate()) {
+                      onaction: () async{
+                        if (formGlobalKey.currentState!.validate()){
                           if (_isChecked == true) {
                             final user = UserModel(
                                 email: controller.email.text.trim(),
@@ -333,12 +334,29 @@ class _SignupPageState extends State<SignupPage> {
                                 lname: controller.lname.text.trim(),
                                 pass: controller.pass.text.trim(),
                                 phone: controller.phone.text.trim());
-                            SignupController.instance.registeruser(
-                                controller.email.text.trim(),
-                                controller.pass.text.trim());
-                            SignupController.instance.createUser(
-                              user,
-                            );
+                                bool isRegistered = false;
+                                isRegistered = await registerVM.register(
+                                controller.phone.text.trim(),
+                                controller.email.text.trim(), 
+                                controller.pass.text.trim(),
+                                controller.fname.text.toString(),
+                                controller.lname.text.trim());
+                                if(isRegistered){
+                                  final userId = FirebaseAuth.instance.currentUser!.uid;
+                                  await FirebaseFirestore.instance.collection('users').doc(userId).set(user.toJson())
+        .whenComplete(() => Get.snackbar(
+            "Success", "Your Account has been successfuly created",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.green.withOpacity(0.6),
+            colorText: Colors.white))
+        .catchError((error, stackTrace) {
+      Get.snackbar("Error", "Something went wrong. Please try again",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red.withOpacity(0.1),
+          colorText: Colors.white);});
+                                }
+                            
+                           
                             Get.to(() => Home());
                           }
                           print(controller.email);
