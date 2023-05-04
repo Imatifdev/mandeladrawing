@@ -13,8 +13,6 @@ import '../../models/sketch.dart';
 import '../../utils/mycolors.dart';
 
 class ImageTexture extends StatefulWidget {
-  const ImageTexture({super.key});
-
   @override
   State<ImageTexture> createState() => _ImageTextureState();
 }
@@ -123,7 +121,7 @@ class _ImageTextureState extends State<ImageTexture> {
                   child: Image(
                       height: 300,
                       width: 300,
-                      image: AssetImage('assets/art/22.png'))),
+                      image: AssetImage('assets/art/20.png'))),
             ),
             // ElevatedButton(
             //   onPressed: () async {

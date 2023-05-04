@@ -53,7 +53,7 @@ class CanvasSideBar extends HookWidget {
     final scrollController = useScrollController();
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height / 7,
+      height: MediaQuery.of(context).size.height / 5,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.horizontal(right: Radius.circular(10)),
         boxShadow: [
@@ -98,7 +98,7 @@ class CanvasSideBar extends HookWidget {
           // ),
           const Divider(),
           ColorPalette(
-            selectedColor: selectedColor,
+            selectColor: selectedColor,
           ),
           // const Text(
           //   'Actions',

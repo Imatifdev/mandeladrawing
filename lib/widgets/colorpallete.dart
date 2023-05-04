@@ -4,20 +4,28 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 
 class ColorPalette extends HookWidget {
-  final ValueNotifier<Color> selectedColor;
+  final ValueNotifier<Color> selectColor;
 
-  const ColorPalette({
+  final Color initialColor = Colors.red;
+  final double initialOpacity = 0.1;
+
+  ColorPalette({
     Key? key,
-    required this.selectedColor,
+    required this.selectColor,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final selectedColor = useState<Color>(initialColor);
+    final selectedOpacity = useState<double>(initialOpacity);
+
     List<Color> colors = [
       Colors.black,
       Colors.orange,
       Colors.red,
       Colors.green,
+      Colors.purple,
+      Colors.limeAccent,
       Colors.pink,
       Colors.yellow,
       Colors.indigo
@@ -27,65 +35,116 @@ class ColorPalette extends HookWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            MouseRegion(
-              cursor: SystemMouseCursors.click,
-              child: GestureDetector(
-                onTap: () {
-                  showColorWheel(context, selectedColor);
-                },
-                child: Image.asset(
-                  'assets/art/colorpicker.png',
-                  height: 30,
-                  width: 30,
-                ),
-              ),
-            ),
-            // Image.asset(
-            //   'assets/art/colorpicker.png',
-            //   height: 35,
-            //   width: 35,
-            // ),
-            Wrap(
-              alignment: WrapAlignment.spaceAround,
-              spacing: 12,
-              runSpacing: 2,
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Expanded(
+            child: Row(
               children: [
-                for (Color color in colors)
-                  MouseRegion(
-                    cursor: SystemMouseCursors.click,
-                    child: GestureDetector(
-                      onTap: () => selectedColor.value = color,
-                      child: Container(
-                        height: 30,
-                        width: 30,
-                        decoration: BoxDecoration(
-                          color: color,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(50)),
-                        ),
-                      ),
+                Container(
+                  height: MediaQuery.of(context).size.height / 25,
+                  width: MediaQuery.of(context).size.width - 120,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        selectColor.value.withOpacity(0),
+                        selectColor.value.withOpacity(selectedOpacity.value),
+                      ],
                     ),
                   ),
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Container(
+                  height: 25,
+                  width: 25,
+                  decoration: BoxDecoration(
+                    color: selectColor.value,
+                    border: Border.all(color: Colors.blue, width: 1.5),
+                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                  ),
+                ),
               ],
             ),
-          ],
+          ),
+        ),
+        Slider(
+          value: selectedOpacity.value,
+          min: 0,
+          max: 1,
+          onChanged: (value) {
+            selectedOpacity.value = value;
+          },
+          onChangeEnd: (value) {
+            selectColor.value = selectColor.value.withOpacity(value);
+          },
+          activeColor: selectColor.value,
+        ),
+        Container(
+          height: 50,
+          child: ListView(scrollDirection: Axis.horizontal, children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: GestureDetector(
+                    onTap: () {
+                      showColorWheel(context, selectColor);
+                    },
+                    child: Image.asset(
+                      'assets/art/colorpicker.png',
+                      height: 30,
+                      width: 30,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 7,
+                ),
+                Center(
+                  child: Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: 10,
+                    runSpacing: 2,
+                    children: [
+                      for (Color color in colors)
+                        MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: () => selectColor.value = color,
+                            child: Container(
+                              height: 30,
+                              width: 30,
+                              decoration: BoxDecoration(
+                                color: color,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(50)),
+                              ),
+                            ),
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+
+                // Container(
+                //   height: 30,
+                //   width: 30,
+                //   decoration: BoxDecoration(
+                //     color: selectColor.value,
+                //     border: Border.all(color: Colors.blue, width: 1.5),
+                //     borderRadius: const BorderRadius.all(Radius.circular(20)),
+                //   ),
+                // ),
+              ],
+            ),
+          ]),
         ),
         const SizedBox(height: 10),
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              height: 30,
-              width: 30,
-              decoration: BoxDecoration(
-                color: selectedColor.value,
-                border: Border.all(color: Colors.blue, width: 1.5),
-                borderRadius: const BorderRadius.all(Radius.circular(5)),
-              ),
-            ),
             const SizedBox(width: 10),
             // MouseRegion(
             //   cursor: SystemMouseCursors.click,

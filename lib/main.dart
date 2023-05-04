@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:mandeladrawing/models/colorpalletemodel.dart';
 import 'package:mandeladrawing/view/authview/signup.dart';
 import 'package:mandeladrawing/view/colorpannel/colorslistpage.dart';
 import 'package:mandeladrawing/view/colorpannel/createpalette.dart';
@@ -24,6 +25,7 @@ import 'package:mandeladrawing/view/dashboard.dart';
 import 'controllers/authenticationmodels.dart';
 import 'firebase_options.dart';
 import 'my.dart';
+import 'my2.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -57,9 +59,8 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: FirebaseAuth.instance.currentUser != null
-          ? const Home()
-          : SplashScreen(),
+      home:
+          FirebaseAuth.instance.currentUser != null ? Home() : ColorListPage(),
       // StreamBuilder(
       //   stream: FirebaseAuth.instance.authStateChanges(),
       //   builder: (context, snapshot) {

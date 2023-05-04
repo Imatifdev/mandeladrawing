@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable, prefer_const_constructors
+
 import 'dart:io';
 import 'dart:ui';
 
@@ -18,14 +20,22 @@ import 'imagetexture.dart';
 class DetailMandela extends HookWidget {
   final SketchModel sketch;
 
-  const DetailMandela({super.key, required this.sketch});
-
+  DetailMandela({super.key, required this.sketch});
+  final List<String> backgrounds = [
+    'assets/textures/2.png',
+    'assets/textures/3.png',
+    'assets/textures/4.png',
+    'assets/textures/5.png',
+    'assets/textures/6.png',
+  ];
   @override
   Widget build(BuildContext context) {
-    // final sliderValue = useState(200.0);
-    // void updateSlider(double value) {
-    //   sliderValue.value = value;
-    // }
+    // String selectedBackground = 'assets/textures/6.png';
+
+    final selectedBackgroundState = useState(0);
+
+    final selectedBackground = backgrounds[selectedBackgroundState.value];
+    // final value = useState(false);
 
     final selectedColor = useState(Colors.black);
     final strokeSize = useState<double>(10);
@@ -34,6 +44,7 @@ class DetailMandela extends HookWidget {
     final filled = useState<bool>(false);
     final polygonSides = useState<int>(3);
     final backgroundImage = useState<Image?>(null);
+    final showList = useState<bool>(false);
 
     final canvasGlobalKey = GlobalKey();
     ValueNotifier<Sketch?> currentSketch = useState(null);
@@ -43,14 +54,7 @@ class DetailMandela extends HookWidget {
       duration: const Duration(milliseconds: 150),
       initialValue: 1,
     );
-    String _selectedBackground = 'assets/art/2.png';
-    final List<String> _backgrounds = [
-      'assets/art/3.png',
-      'assets/art/4.png',
-      'assets/art/5.png',
-      'assets/art/6.png'
-    ];
-    bool check = true;
+
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
@@ -76,8 +80,7 @@ class DetailMandela extends HookWidget {
               ),
               IconButton(
                 onPressed: () {
-                  onTap:
-                  () => Navigator.pop(context);
+                  Navigator.pop(context);
                 },
                 icon: Icon(
                   Icons.undo,
@@ -86,16 +89,16 @@ class DetailMandela extends HookWidget {
                 ),
               ),
               IconButton(
-                onPressed: () {
-                  onTap:
-                  () => Navigator.pop(context);
-                },
+                onPressed: () {},
                 icon: IconButton(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ImageTexture()));
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => ImageTexture()));
+                      // _isvisible.value = true;
+                      //_isvisible.value = false;
+                      showList.value = !showList.value;
                     },
                     icon: Icon(
                       Icons.check_circle_outline,
@@ -105,8 +108,7 @@ class DetailMandela extends HookWidget {
               ),
               IconButton(
                 onPressed: () {
-                  onTap:
-                  () => Navigator.pop(context);
+                  Navigator.pop(context);
                 },
                 icon: Icon(
                   Icons.redo,
@@ -116,8 +118,7 @@ class DetailMandela extends HookWidget {
               ),
               IconButton(
                 onPressed: () {
-                  onTap:
-                  () => Navigator.pop(context);
+                  Navigator.pop(context);
                 },
                 icon: Icon(
                   Icons.settings,
@@ -133,19 +134,31 @@ class DetailMandela extends HookWidget {
           Stack(
             children: [
               Container(
-                height: 200,
-                width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage(sketch.url),
+                    image: DecorationImage(
+                      image: AssetImage(selectedBackground),
+                      fit: BoxFit.cover,
+                    ),
+                    borderRadius: BorderRadius.circular(20)),
+                height: height / 1.8,
+                width: width,
+              ),
+              Center(
+                child: Container(
+                  height: height / 2,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage(sketch.url),
+                    ),
                   ),
+                  //  child: DrawingCanvas(),
                 ),
-                //  child: DrawingCanvas(),
               ),
               DrawingCanvas(
-                width: 300,
-                height: 300,
+                width: width,
+                height: height,
 
                 // width: MediaQuery.of(context).size.width,
                 // height: MediaQuery.of(context).size.height,
@@ -163,17 +176,41 @@ class DetailMandela extends HookWidget {
               ),
             ],
           ),
-          CanvasSideBar(
-              selectedColor: selectedColor,
-              strokeSize: strokeSize,
-              eraserSize: eraserSize,
-              drawingMode: drawingMode,
-              currentSketch: currentSketch,
-              allSketches: allSketches,
-              canvasGlobalKey: canvasGlobalKey,
-              filled: filled,
-              polygonSides: polygonSides,
-              backgroundImage: backgroundImage)
+          // ignore: unrelated_type_equality_checks
+          // _isvisible.value?
+          showList.value
+              ? CanvasSideBar(
+                  selectedColor: selectedColor,
+                  strokeSize: strokeSize,
+                  eraserSize: eraserSize,
+                  drawingMode: drawingMode,
+                  currentSketch: currentSketch,
+                  allSketches: allSketches,
+                  canvasGlobalKey: canvasGlobalKey,
+                  filled: filled,
+                  polygonSides: polygonSides,
+                  backgroundImage: backgroundImage)
+              : SizedBox(
+                  height: 100,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: backgrounds.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                          onTap: () => selectedBackgroundState.value = index,
+                          child: Container(
+                            margin: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage(backgrounds[index]),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            width: 100,
+                            height: 100,
+                          ),
+                        );
+                      })),
         ],
       ),
     );

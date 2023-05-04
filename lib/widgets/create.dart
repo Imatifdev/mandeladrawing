@@ -12,14 +12,20 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/get_core.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:universal_html/html.dart' as html;
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/drawingmode.dart';
 import '../models/sketch.dart';
+
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+
 import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
+import 'package:image_painter/image_painter.dart';
 
 class MyDrawing extends HookWidget {
   final ValueNotifier<Color> selectedColor;
@@ -32,8 +38,9 @@ class MyDrawing extends HookWidget {
   final ValueNotifier<bool> filled;
   final ValueNotifier<int> polygonSides;
   final ValueNotifier<ui.Image?> backgroundImage;
+  GlobalKey _globalKey = GlobalKey();
 
-  const MyDrawing({
+  MyDrawing({
     Key? key,
     required this.selectedColor,
     required this.strokeSize,
@@ -71,13 +78,11 @@ class MyDrawing extends HookWidget {
                       : null,
                   icon: Icon(Icons.redo)),
               IconButton(
-                  onPressed: () async {
-                    Uint8List? pngBytes = await getBytes();
-                    if (pngBytes != null) saveFile(pngBytes, 'png');
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Image saved to gallery')));
+                  onPressed: () {
+                    print("object");
+                    saveDrawing();
                   },
-                  icon: Icon(Icons.check_box)),
+                  icon: Icon(Icons.check_circle)),
               IconButton(
                   onPressed: allSketches.value.isNotEmpty
                       ? () => undoRedoStack.value.undo()
@@ -90,8 +95,92 @@ class MyDrawing extends HookWidget {
     );
   }
 
+  Future<void> saveDrawing() async {
+    try {
+      print("object");
+      // Find the RenderRepaintBoundary of the widget
+      RenderRepaintBoundary boundary = canvasGlobalKey.currentContext!
+          .findRenderObject() as RenderRepaintBoundary;
+
+      // Convert the boundary to an image
+      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+
+      // Convert the image to a byte buffer
+      ByteData? byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
+      Uint8List pngBytes = byteData!.buffer.asUint8List();
+
+      // Save the image to the device's gallery
+      await ImageGallerySaver.saveImage(pngBytes);
+    } catch (e) {
+      print("no");
+
+      print(e);
+    }
+  }
+
+  Future<Uint8List?> _capturePng() async {
+    try {
+      RenderRepaintBoundary boundary = canvasGlobalKey.currentContext!
+          .findRenderObject() as RenderRepaintBoundary;
+      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+      ByteData? byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
+      Uint8List pngBytes = byteData!.buffer.asUint8List();
+      final result =
+          await ImageGallerySaver.saveImage(pngBytes); // Save image to gallery
+      print('save');
+      return pngBytes;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+  // void saveImage() async {
+  //   final image = await canvasGlobalKey.currentState!;
+  //   final directory = (await getApplicationDocumentsDirectory()).path;
+  //   await Directory('$directory/sample').create(recursive: true);
+
+  //   final fullPath =
+  //       '$directory/sample/${DateTime.now().millisecondsSinceEpoch}.png';
+  //   imgFile = File(fullPath);
+  //   imgFile.writeAsBytesSync(image as List<int>);
+  //   Get.snackbar("Success", "Image Downloaded successfully.",
+  //       mainButton: TextButton(
+  //           onPressed: () => OpenFile.open("$fullPath"),
+  //           child: Text(
+  //             "Open",
+  //             style: TextStyle(
+  //               color: Colors.blue[200],
+  //             ),
+  //             //           ),, child: child) );
+  //             // ScaffoldMessenger.of(context).showSnackBar(
+  //             //   SnackBar(
+  //             //     backgroundColor: Colors.grey[700],
+  //             //     padding: const EdgeInsets.only(left: 10),
+  //             //     content: Row(
+  //             //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //             //       children: [
+  //             //         const Text(,
+  //             //             style: TextStyle(color: Colors.white)),
+  //             //         TextButton(
+  //             //           onPressed: () => OpenFile.open("$fullPath"),
+  //             //           child: Text(
+  //             //             "Open",
+  //             //             style: TextStyle(
+  //             //               color: Colors.blue[200],
+  //             //             ),
+  //             //           ),
+  //             //         )
+  //             //       ],
+  //             //     ),
+  //             //   ),
+  //           )));
+  // }
+
   void saveFile(Uint8List bytes, String extension) async {
     if (Platform.isAndroid) {
+      print("web");
       html.AnchorElement()
         ..href = '${Uri.dataFromBytes(bytes, mimeType: 'image/$extension')}'
         ..download =
@@ -105,6 +194,7 @@ class MyDrawing extends HookWidget {
         extension,
         mimeType: extension == 'png' ? MimeType.PNG : MimeType.JPEG,
       );
+      print("android");
     }
   }
 

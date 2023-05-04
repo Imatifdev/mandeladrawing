@@ -14,18 +14,12 @@ class UsersData {
     SketchModel('assets/art/7.png'),
     SketchModel('assets/art/8.png'),
     SketchModel('assets/art/9.png'),
-    SketchModel('assets/art/10.png'),
     SketchModel('assets/art/11.png'),
     SketchModel('assets/art/12.png'),
     SketchModel('assets/art/13.png'),
     SketchModel('assets/art/14.png'),
-    SketchModel('assets/art/15.png'),
-    SketchModel('assets/art/16.png'),
-    SketchModel('assets/art/17.png'),
-    SketchModel('assets/art/18.png'),
     SketchModel('assets/art/19.png'),
     SketchModel('assets/art/20.png'),
     SketchModel('assets/art/21.png'),
-    SketchModel('assets/art/22.png'),
   ];
 }

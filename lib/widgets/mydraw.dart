@@ -75,6 +75,7 @@ class MyDrawing extends HookWidget {
                   icon: Icon(Icons.redo)),
               IconButton(
                   onPressed: () async {
+                    print("press");
                     Uint8List? pngBytes = await getBytes();
                     if (pngBytes != null) saveFile(pngBytes, 'png');
                     ScaffoldMessenger.of(context).showSnackBar(
@@ -95,6 +96,7 @@ class MyDrawing extends HookWidget {
 
   void saveFile(Uint8List bytes, String extension) async {
     if (kIsWeb) {
+      print("web");
       html.AnchorElement()
         ..href = '${Uri.dataFromBytes(bytes, mimeType: 'image/$extension')}'
         ..download =
@@ -108,6 +110,8 @@ class MyDrawing extends HookWidget {
         extension,
         mimeType: extension == 'png' ? MimeType.PNG : MimeType.JPEG,
       );
+
+      print("and");
     }
   }
 

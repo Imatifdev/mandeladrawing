@@ -99,7 +99,7 @@ class DrawingCanvas extends HookWidget {
           ),
           const Divider(),
           ColorPalette(
-            selectedColor: selectedColor,
+            selectColor: selectedColor,
           ),
           const Text(
             'Actions',
