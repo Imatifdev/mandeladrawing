@@ -44,7 +44,7 @@ class DetailMandela extends HookWidget {
     final filled = useState<bool>(false);
     final polygonSides = useState<int>(3);
     final backgroundImage = useState<Image?>(null);
-    final showList = useState<bool>(false);
+    final showList = useState<bool>(true);
 
     final canvasGlobalKey = GlobalKey();
     ValueNotifier<Sketch?> currentSketch = useState(null);
@@ -59,11 +59,12 @@ class DetailMandela extends HookWidget {
     final height = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      backgroundColor: appbg,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           SizedBox(
-            height: height / 20,
+            height: height / 50,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -128,9 +129,6 @@ class DetailMandela extends HookWidget {
               )
             ],
           ),
-          SizedBox(
-            height: height / 30,
-          ),
           Stack(
             children: [
               Container(
@@ -157,11 +155,8 @@ class DetailMandela extends HookWidget {
                 ),
               ),
               DrawingCanvas(
-                width: width,
-                height: height,
-
-                // width: MediaQuery.of(context).size.width,
-                // height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
                 drawingMode: drawingMode,
                 selectedColor: selectedColor,
                 strokeSize: strokeSize,
@@ -190,27 +185,41 @@ class DetailMandela extends HookWidget {
                   filled: filled,
                   polygonSides: polygonSides,
                   backgroundImage: backgroundImage)
-              : SizedBox(
-                  height: 100,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: backgrounds.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(
-                          onTap: () => selectedBackgroundState.value = index,
-                          child: Container(
-                            margin: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: AssetImage(backgrounds[index]),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            width: 100,
-                            height: 100,
-                          ),
-                        );
-                      })),
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Text(
+                        "Textures",
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    SizedBox(
+                        height: 100,
+                        child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: backgrounds.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return GestureDetector(
+                                onTap: () =>
+                                    selectedBackgroundState.value = index,
+                                child: Container(
+                                  margin: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: AssetImage(backgrounds[index]),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  width: 100,
+                                  height: 100,
+                                ),
+                              );
+                            })),
+                  ],
+                ),
         ],
       ),
     );

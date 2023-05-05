@@ -113,8 +113,8 @@ class DrawingCanvas extends HookWidget {
                 width: MediaQuery.of(context).size.width,
                 color: Colors.transparent,
                 child: CustomPaint(
-                  size:
-                      Size(300, 300), // Set the width and height of the canvas
+                  // size:
+                  // Size(300, 300), // Set the width and height of the canvas
                   painter: SketchPainter(
                     sketches: sketches,
                     backgroundImage: backgroundImage.value,
@@ -141,9 +141,6 @@ class DrawingCanvas extends HookWidget {
               height: 300,
               width: 300,
               child: CustomPaint(
-                size: const Size(
-                    300, 300), // Set the width and height of the canvas
-
                 painter: SketchPainter(
                   // size: Size(300, 300), // Set the width and height of the canvas
 

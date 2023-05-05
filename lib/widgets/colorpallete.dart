@@ -37,35 +37,33 @@ class ColorPalette extends HookWidget {
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Expanded(
-            child: Row(
-              children: [
-                Container(
-                  height: MediaQuery.of(context).size.height / 25,
-                  width: MediaQuery.of(context).size.width - 120,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        selectColor.value.withOpacity(0),
-                        selectColor.value.withOpacity(selectedOpacity.value),
-                      ],
-                    ),
+          child: Row(
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height / 25,
+                width: MediaQuery.of(context).size.width - 120,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      selectColor.value.withOpacity(0),
+                      selectColor.value.withOpacity(selectedOpacity.value),
+                    ],
                   ),
                 ),
-                SizedBox(
-                  width: 20,
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Container(
+                height: 25,
+                width: 25,
+                decoration: BoxDecoration(
+                  color: selectColor.value,
+                  border: Border.all(color: Colors.blue, width: 1.5),
+                  borderRadius: const BorderRadius.all(Radius.circular(20)),
                 ),
-                Container(
-                  height: 25,
-                  width: 25,
-                  decoration: BoxDecoration(
-                    color: selectColor.value,
-                    border: Border.all(color: Colors.blue, width: 1.5),
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
         Slider(
@@ -142,25 +140,6 @@ class ColorPalette extends HookWidget {
           ]),
         ),
         const SizedBox(height: 10),
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(width: 10),
-            // MouseRegion(
-            //   cursor: SystemMouseCursors.click,
-            //   child: GestureDetector(
-            //     onTap: () {
-            //       showColorWheel(context, selectedColor);
-            //     },
-            //     child: Image.asset(
-            //       'assets/art/colorpicker.png',
-            //       height: 30,
-            //       width: 30,
-            //     ),
-            //   ),
-            // ),
-          ],
-        ),
       ],
     );
   }
@@ -174,12 +153,6 @@ class ColorPalette extends HookWidget {
           content: SingleChildScrollView(
             child: Column(
               children: [
-                ColorPicker(
-                  pickerColor: color.value,
-                  onColorChanged: (value) {
-                    color.value = value;
-                  },
-                ),
                 ColorPicker(
                   pickerColor: color.value,
                   onColorChanged: (value) {

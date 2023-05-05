@@ -83,9 +83,12 @@ class MyDrawing extends HookWidget {
                   },
                   icon: Icon(Icons.check_box)),
               IconButton(
-                  onPressed: allSketches.value.isNotEmpty
-                      ? () => undoRedoStack.value.undo()
-                      : null,
+                  onPressed: () {
+                    print("object");
+                    allSketches.value.isNotEmpty
+                        ? () => undoRedoStack.value.undo()
+                        : null;
+                  },
                   icon: Icon(Icons.undo)),
             ],
           ),
@@ -146,19 +149,6 @@ class MyDrawing extends HookWidget {
     }
 
     return completer.future;
-  }
-
-  Future<void> _launchUrl(String url) async {
-    if (kIsWeb) {
-      html.window.open(
-        url,
-        url,
-      );
-    } else {
-      if (!await launchUrl(Uri.parse(url))) {
-        throw 'Could not launch $url';
-      }
-    }
   }
 
   Future<Uint8List?> getBytes() async {

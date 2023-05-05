@@ -13,6 +13,7 @@ import 'package:mandeladrawing/view/colorpannel/createpalette.dart';
 import 'package:mandeladrawing/view/colorpannel/detailmandela.dart';
 import 'package:mandeladrawing/view/colorpannel/imagetexture.dart';
 import 'package:mandeladrawing/view/createpannel/drawpage.dart';
+import 'package:mandeladrawing/view/plans/showplans.dart';
 import 'package:mandeladrawing/view/splash.dart';
 import 'package:mandeladrawing/widgets/create.dart';
 import 'package:mandeladrawing/view/profile/profileview.dart';
@@ -59,8 +60,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home:
-          FirebaseAuth.instance.currentUser != null ? Home() : ColorListPage(),
+      home: FirebaseAuth.instance.currentUser != null ? Home() : Plans(),
       // StreamBuilder(
       //   stream: FirebaseAuth.instance.authStateChanges(),
       //   builder: (context, snapshot) {
