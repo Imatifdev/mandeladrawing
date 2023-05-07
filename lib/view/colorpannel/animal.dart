@@ -124,11 +124,18 @@ class ShowGrid extends StatelessWidget {
   const ShowGrid({super.key, required this.sketchpic});
   @override
   Widget build(BuildContext context) {
-    return Image(
-      fit: BoxFit.cover,
-      height: 200,
-      width: 200,
-      image: AssetImage(sketchpic.url),
+    return Card(
+      elevation: 5,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Image(
+          fit: BoxFit.cover,
+          height: 200,
+          width: 200,
+          image: AssetImage(sketchpic.url),
+        ),
+      ),
     );
   }
 }

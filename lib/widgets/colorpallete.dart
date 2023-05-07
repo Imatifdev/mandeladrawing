@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:mandeladrawing/view/colorpannel/colorslistpage.dart';
 
 class ColorPalette extends HookWidget {
   final ValueNotifier<Color> selectColor;
@@ -88,7 +89,11 @@ class ColorPalette extends HookWidget {
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
                     onTap: () {
-                      showColorWheel(context, selectColor);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ColorsScreen()));
+                      //showColorWheel(context, selectColor);
                     },
                     child: Image.asset(
                       'assets/art/colorpicker.png',

@@ -69,9 +69,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: FirebaseAuth.instance.currentUser != null
-          ? PalletScreen()
-          : SplashScreen(),
+      home: FirebaseAuth.instance.currentUser != null ? Home() : SplashScreen(),
       routes: {PalletScreen.routeName: (ctx) => PalletScreen()},
       // StreamBuilder(
       //   stream: FirebaseAuth.instance.authStateChanges(),

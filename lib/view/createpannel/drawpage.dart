@@ -197,6 +197,7 @@ class DrawingPage extends HookWidget {
                     ),
                   ),
                 ),
+                Center(child: Text("Adjust the Drawing board Size")),
                 Expanded(
                   child: MyDrawing(
                       selectedColor: selectedColor,
