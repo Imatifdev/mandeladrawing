@@ -1,100 +1,67 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+// ignore_for_file: avoid_print, prefer_typing_uninitialized_variables, unnecessary_null_comparison, use_build_context_synchronously
 
-class ColorPickerScreen extends StatefulWidget {
+import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+
   @override
-  _ColorPickerScreenState createState() => _ColorPickerScreenState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ColorPickerScreenState extends State<ColorPickerScreen> {
-  List<Color> _colors = [];
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+class _ProfileScreenState extends State<ProfileScreen> {
+  String profilePicLink = "";
+  var _image;
+  final _picker = ImagePicker();
+  int num = 0;
+  var userid = FirebaseAuth.instance.currentUser!.uid;
 
-  void _addColor(Color color) {
-    if (_colors.length < 8) {
+  Future<void> _openImagePicker() async {
+    final XFile? pickedImage =
+        await _picker.pickImage(source: ImageSource.gallery);
+    Reference ref = FirebaseStorage.instance.ref().child("Profile Pic/$userid");
+    num++;
+    _image = File(pickedImage!.path);
+    await ref.putFile(_image);
+    ref.getDownloadURL().then((value) async {
       setState(() {
-        _colors.add(color);
+        profilePicLink = value;
+        print(value);
       });
-    }
-  }
-
-  void _saveColors() async {
-    for (int i = 0; i < _colors.length; i++) {
-      await _firestore.collection('colors').add({
-        'color': _colors[i].value.toString(),
-        'order': i,
+    });
+    if (pickedImage != null) {
+      setState(() {
+        _image = File(pickedImage.path);
       });
+      await FirebaseAuth.instance.currentUser!.updatePhotoURL(profilePicLink);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Color Picker'),
-      ),
       body: Column(
         children: [
-          Expanded(
-            child: GridView.builder(
-              padding: EdgeInsets.all(10),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-              ),
-              itemCount: _colors.length,
-              itemBuilder: (context, index) {
-                return Container(
-                  color: _colors[index],
-                );
-              },
-            ),
+          ElevatedButton(
+              onPressed: _openImagePicker, child: const Text("Pick Image")),
+          Container(
+            alignment: Alignment.center,
+            width: double.infinity,
+            height: 300,
+            color: Colors.grey[300],
+            child: _image != null
+                ? Image.file(_image, fit: BoxFit.cover)
+                : const Text('Please select an image'),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text('Pick a color'),
-                          content: SingleChildScrollView(
-                            child: ColorPicker(
-                              pickerColor: Colors.red,
-                              onColorChanged: (color) {
-                                _addColor(color);
-                              },
-                              showLabel: true,
-                              pickerAreaHeightPercent: 0.8,
-                            ),
-                          ),
-                          actions: <Widget>[
-                            TextButton(
-                              child: const Text('OK'),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                  },
-                  child: Text('Add color'),
-                ),
-                ElevatedButton(
-                  onPressed: _colors.isNotEmpty ? _saveColors : null,
-                  child: Text('Save colors'),
-                ),
-              ],
-            ),
-          ),
+          ElevatedButton(onPressed: () {}, child: const Text("Done")),
+          ElevatedButton(onPressed: () {}, child: const Text("Log out")),
+          ElevatedButton(
+              onPressed: () {}, child: const Text("Waste Reduction Tool"))
         ],
       ),
     );

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:mandeladrawing/methods/authmodels.dart';
 import 'package:mandeladrawing/utils/mycolors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mandeladrawing/view/authview/login.dart';
@@ -144,7 +145,17 @@ class SettingsScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10)),
                   selectedColor: Colors.white,
                   leading: IconButton(
-                    onPressed: _signOut,
+                    onPressed: () {
+                      final FirebaseAuth auth = FirebaseAuth.instance;
+                      signOut() async {
+                        print('object');
+                        await auth.signOut();
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginPage()));
+                      }
+                    },
                     icon: Icon(Icons.logout_rounded),
                   ),
                   title: Text(

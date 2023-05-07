@@ -15,7 +15,9 @@ import 'package:mandeladrawing/view/colorpannel/createpalette.dart';
 import 'package:mandeladrawing/view/colorpannel/detailmandela.dart';
 import 'package:mandeladrawing/view/colorpannel/imagetexture.dart';
 import 'package:mandeladrawing/view/createpannel/drawpage.dart';
+import 'package:mandeladrawing/view/plans/showmainpage.dart';
 import 'package:mandeladrawing/view/plans/showplans.dart';
+import 'package:mandeladrawing/view/plans/stripepayment.dart';
 import 'package:mandeladrawing/view/splash.dart';
 import 'package:mandeladrawing/widgets/create.dart';
 import 'package:mandeladrawing/view/profile/profileview.dart';
@@ -29,10 +31,15 @@ import 'controllers/authenticationmodels.dart';
 import 'firebase_options.dart';
 import 'my.dart';
 import 'my2.dart';
+import 'package:stripe_android/stripe_android.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Stripe.publishableKey = 'your publish key';
+
+  // await Stripe.instance.applySettings();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   ).then((value) => Get.put(() => AuthRepo()));
@@ -63,9 +70,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: FirebaseAuth.instance.currentUser != null ? Home() : SignupPage(),
-      routes: {
-        PalletScreen.routeName : (ctx)=>PalletScreen()
-      },
+      routes: {PalletScreen.routeName: (ctx) => PalletScreen()},
       // StreamBuilder(
       //   stream: FirebaseAuth.instance.authStateChanges(),
       //   builder: (context, snapshot) {

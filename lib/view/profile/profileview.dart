@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:mandeladrawing/controllers/profilecontroller.dart';
 import 'package:mandeladrawing/methods/authmodels.dart';
+import 'package:mandeladrawing/view/authview/login.dart';
 import 'package:mandeladrawing/widgets/mybutton.dart';
 
 import '../../models/usermodel.dart';
@@ -43,13 +44,21 @@ class ProfileView extends StatefulWidget {
 //   String? email = user.email; // <-- Their email
 // }
 class _ProfileViewState extends State<ProfileView> {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  signOut() async {
+    print('object');
+    await auth.signOut();
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => LoginPage()));
+  }
+
   final userId = FirebaseAuth.instance.currentUser!.uid;
   int check = 0;
   String name = "name";
   String email = "example@gmail.com";
   String phone = '9999999999';
 
-  void getInfo()async{
+  void getInfo() async {
     var collection = FirebaseFirestore.instance.collection('users');
     var docSnapshot = await collection.doc(userId).get();
     if (docSnapshot.exists) {
@@ -93,40 +102,40 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     if (check == 0) {
-      WidgetsBinding.instance
-          .addPostFrameCallback((_) => getInfo());
+      WidgetsBinding.instance.addPostFrameCallback((_) => getInfo());
       check++;
     }
-    final controller = Get.put(ProfileController());
+    // final controller = Get.put(ProfileController());
     return Scaffold(
+      backgroundColor: appbar,
+      appBar: AppBar(
+        elevation: 0,
         backgroundColor: appbar,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: appbar,
-          leading: IconButton(
-              onPressed: () {
-                Get.to(() => Home());
-              },
-              icon: Icon(
-                CupertinoIcons.left_chevron,
-                color: Colors.black,
-              )),
-          title: Text(
-            name,
-            style: TextStyle(fontSize: 26, color: appbartitle),
-          ),
-          actions: [
-            const Padding(
-              padding: EdgeInsets.all(12.0),
-              child: Icon(
-                CupertinoIcons.settings,
-                color: Colors.black,
-                size: 30,
-              ),
-            ),
-          ],
+        leading: IconButton(
+            onPressed: () {
+              Get.to(() => Home());
+            },
+            icon: Icon(
+              CupertinoIcons.left_chevron,
+              color: Colors.black,
+            )),
+        title: Text(
+          name,
+          style: TextStyle(fontSize: 26, color: appbartitle),
         ),
-        body: Column(
+        actions: [
+          const Padding(
+            padding: EdgeInsets.all(12.0),
+            child: Icon(
+              CupertinoIcons.settings,
+              color: Colors.black,
+              size: 30,
+            ),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
           children: [
             const SizedBox(
               height: 20,
@@ -155,60 +164,30 @@ class _ProfileViewState extends State<ProfileView> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(children: [
-                TextFormField(
-                  initialValue: email,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.transparent),
-
-                      borderRadius:
-                          BorderRadius.circular(20), // Set border radius here
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.transparent),
-
-                      borderRadius:
-                          BorderRadius.circular(20), // Set border radius here
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.transparent),
-                      borderRadius:
-                          BorderRadius.circular(20), // Set border radius here
-                    ),
-                    filled: true,
-                    fillColor: const Color(0xffeceff6),
-                    contentPadding: const EdgeInsets.all(8),
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                TextFormField(
-                  initialValue: phone,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.transparent),
-
-                      borderRadius:
-                          BorderRadius.circular(20), // Set border radius here
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.transparent),
-
-                      borderRadius:
-                          BorderRadius.circular(20), // Set border radius here
-                    ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.transparent),
-                      borderRadius:
-                          BorderRadius.circular(20), // Set border radius here
-                    ),
-                    filled: true,
-                    fillColor: const Color(0xffeceff6),
-                    contentPadding: const EdgeInsets.all(8),
-                  ),
-                ),
-                // user.email.toString(),
+                Container(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        color: appbg, borderRadius: BorderRadius.circular(20)),
+                    child: ListTile(
+                      leading: Icon(Icons.mark_email_read_sharp),
+                      title: Text(
+                        email,
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    )),
+                Container(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                        color: appbg, borderRadius: BorderRadius.circular(20)),
+                    child: ListTile(
+                      leading: Icon(Icons.phone_callback_sharp),
+                      title: Text(
+                        phone,
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    )),
               ]),
             ),
             SizedBox(
@@ -226,32 +205,33 @@ class _ProfileViewState extends State<ProfileView> {
             const SizedBox(
               height: 30,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                    onPressed: () {
-                      // FirebaseAuthMethod().signOut();
-                    },
-                    icon: Icon(
-                      Icons.logout_rounded,
-                      color: red,
-                      size: 40,
-                    )),
-                const Text(
-                  "Log out",
-                  style: TextStyle(
-                      color: red, fontSize: 20, fontWeight: FontWeight.bold),
-                )
-              ],
+            InkWell(
+              onTap: () {
+                signOut();
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        //signOut();
+                      },
+                      icon: Icon(
+                        Icons.logout_rounded,
+                        color: red,
+                        size: 40,
+                      )),
+                  const Text(
+                    "Log out",
+                    style: TextStyle(
+                        color: red, fontSize: 20, fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
             ),
-            ElevatedButton(onPressed: (){
-              getInfo();
-            }, child: Text("Get Info")),
-            Text(email),
-            Text(phone)
           ],
         ),
+      ),
 //         body: Padding(
 //             padding: const EdgeInsets.symmetric(horizontal: 20),
 //             child: SingleChildScrollView(
@@ -360,6 +340,6 @@ class _ProfileViewState extends State<ProfileView> {
 //                 },
 //               ),
 //             )));
-        );
+    );
   }
 }

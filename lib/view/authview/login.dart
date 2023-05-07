@@ -11,7 +11,9 @@ import 'package:mandeladrawing/view/dashboard.dart';
 import 'package:mandeladrawing/widgets/mybutton.dart';
 import 'package:mandeladrawing/widgets/textformfield.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../controllers/authenticationmodels.dart';
 import '../../controllers/logincontroller.dart';
 import '../../controllers/signupcontroller.dart';
 import '../../methods/authmodels.dart';
@@ -179,15 +181,36 @@ class _LoginPageState extends State<LoginPage> {
                 MyCustomButton(
                     title: "Sign In ",
                     borderrad: 25,
-                    onaction: () async{
+                    onaction: () async {
                       if (formGlobalKey.currentState!.validate()) {
-                        
-                        loginVM.login(controller.email.text.trim(),controller.pass.text.trim());    
-                        
-                          print("ok");
-                          Get.to(() => Home());
-                        _showetoast("Sigin Successfully");
-                        
+                        bool loggedIn = false;
+                        try {
+                          UserCredential userCredential = await FirebaseAuth
+                              .instance
+                              .signInWithEmailAndPassword(
+                            email: _emailController.text.trim(),
+                            password: _passController.text.trim(),
+                          );
+                          // User is signed in
+                        } on FirebaseAuthException catch (e) {
+                          if (e.code == 'user-not-found') {
+                            print('No user found for that email.');
+                          } else if (e.code == 'wrong-password') {
+                            print('Wrong password provided for that user.');
+                          }
+                        }
+
+                        // loggedIn =
+                        // await loginVM.login(
+                        //     controller.email.text.trim(),
+                        //     controller.pass.text.trim());
+                        // if (loggedIn) {
+                        print("ok");
+                        Get.to(() => Home());
+                        //   _showetoast("Sigin Successfully");
+                        // } else {
+                        //   _showetoast(loginVM.message);
+                        // }
                       } else
                         _showetoast("Please enter valid pass or email");
                     },

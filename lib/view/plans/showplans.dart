@@ -170,14 +170,14 @@ class MyPlanButton extends StatelessWidget {
                 Text(
                   lefttitle,
                   style: const TextStyle(
-                      fontSize: 24,
+                      fontSize: 22,
                       color: Colors.white,
                       fontWeight: FontWeight.bold),
                 ),
                 Text(
                   righttitle,
                   style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: 13,
                       color: Colors.white,
                       fontWeight: FontWeight.bold),
                 ),

@@ -15,6 +15,7 @@ import 'package:mandeladrawing/widgets/textformfield.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../controllers/signupcontroller.dart';
+import '../../methods/authmodels.dart';
 import '../../models/registeruserviewmodel.dart';
 import '../../utils/mycolors.dart';
 import '../../widgets/mybutton.dart';
@@ -325,8 +326,8 @@ class _SignupPageState extends State<SignupPage> {
                   MyCustomButton(
                       title: "Sign Up ",
                       borderrad: 25,
-                      onaction: () async{
-                        if (formGlobalKey.currentState!.validate()){
+                      onaction: () async {
+                        if (formGlobalKey.currentState!.validate()) {
                           if (_isChecked == true) {
                             final user = UserModel(
                                 email: controller.email.text.trim(),
@@ -334,29 +335,36 @@ class _SignupPageState extends State<SignupPage> {
                                 lname: controller.lname.text.trim(),
                                 pass: controller.pass.text.trim(),
                                 phone: controller.phone.text.trim());
-                                bool isRegistered = false;
-                                isRegistered = await registerVM.register(
+                            bool isRegistered = false;
+                            isRegistered = await registerVM.register(
                                 controller.phone.text.trim(),
-                                controller.email.text.trim(), 
+                                controller.email.text.trim(),
                                 controller.pass.text.trim(),
                                 controller.fname.text.toString(),
                                 controller.lname.text.trim());
-                                if(isRegistered){
-                                  final userId = FirebaseAuth.instance.currentUser!.uid;
-                                  await FirebaseFirestore.instance.collection('users').doc(userId).set(user.toJson())
-        .whenComplete(() => Get.snackbar(
-            "Success", "Your Account has been successfuly created",
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.green.withOpacity(0.6),
-            colorText: Colors.white))
-        .catchError((error, stackTrace) {
-      Get.snackbar("Error", "Something went wrong. Please try again",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red.withOpacity(0.1),
-          colorText: Colors.white);});
-                                }
-                            
-                           
+                            if (isRegistered) {
+                              final userId =
+                                  FirebaseAuth.instance.currentUser!.uid;
+                              await FirebaseFirestore.instance
+                                  .collection('users')
+                                  .doc(userId)
+                                  .set(user.toJson())
+                                  .whenComplete(() => Get.snackbar("Success",
+                                      "Your Account has been successfuly created",
+                                      snackPosition: SnackPosition.BOTTOM,
+                                      backgroundColor:
+                                          Colors.green.withOpacity(0.6),
+                                      colorText: Colors.white))
+                                  .catchError((error, stackTrace) {
+                                Get.snackbar("Error",
+                                    "Something went wrong. Please try again",
+                                    snackPosition: SnackPosition.BOTTOM,
+                                    backgroundColor:
+                                        Colors.red.withOpacity(0.1),
+                                    colorText: Colors.white);
+                              });
+                            }
+
                             Get.to(() => Home());
                           }
                           print(controller.email);
@@ -422,15 +430,15 @@ class _SignupPageState extends State<SignupPage> {
                         width: 50,
                       ),
                       GestureDetector(
-                        // onTap: () async {
-                        //   User? user =
-                        //       await FirebaseAuthMethod().signInWithGoogle();
-                        //   if (user != null) {
-                        //     await FirebaseAuthMethod().addUserToFirestore(user);
-                        //   }
+                        onTap: () async {
+                          User? user =
+                              await FirebaseAuthMethod().signInWithGoogle();
+                          if (user != null) {
+                            await FirebaseAuthMethod().addUserToFirestore(user);
+                          }
 
-                        //   FirebaseAuthMethod().signInWithGoogle();
-                        // },
+                          FirebaseAuthMethod().signInWithGoogle();
+                        },
                         child: Image(
                             fit: BoxFit.cover,
                             height: 60,

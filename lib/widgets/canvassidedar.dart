@@ -166,7 +166,7 @@ class CanvasSideBar extends HookWidget {
   }
 
   void saveFile(Uint8List bytes, String extension) async {
-    if (kIsWeb) {
+    if (!kIsWeb) {
       html.AnchorElement()
         ..href = '${Uri.dataFromBytes(bytes, mimeType: 'image/$extension')}'
         ..download =
