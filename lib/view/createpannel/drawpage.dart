@@ -14,6 +14,7 @@ import '../../models/sketchmodel.dart';
 import '../../utils/mycolors.dart';
 import '../../widgets/canvassidedar.dart';
 import '../../widgets/create.dart';
+import '../../widgets/drawingboardcanvas.dart';
 import '../settings/settingsscreen.dart';
 import 'package:path/path.dart';
 import 'package:open_file/open_file.dart';
@@ -131,7 +132,7 @@ class DrawingPage extends HookWidget {
                   width: sliderValue.value,
                   height: sliderValue.value,
                   child: Center(
-                    child: DrawingCanvas(
+                    child: DrawingBoardCanvas(
                       width: 300,
                       height: 300,
 

@@ -28,6 +28,7 @@ class _ColorSliderState extends State<ColorSlider> {
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Container(
               decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(30),
                 gradient: LinearGradient(
                   colors: [
                     Colors.transparent,

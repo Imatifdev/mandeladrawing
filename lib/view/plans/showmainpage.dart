@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mandeladrawing/view/authview/login.dart';
+import 'package:mandeladrawing/view/colorpannel/viewmandelas.dart';
+import 'package:mandeladrawing/view/plans/showplans.dart';
 
 import '../../utils/mycolors.dart';
 import '../../widgets/mybutton.dart';
@@ -27,7 +29,7 @@ class ShowingMainPage extends StatelessWidget {
             ),
             Text(
               "Full Access",
-              style: TextStyle(fontSize: 25),
+              style: TextStyle(fontSize: 55, fontWeight: FontWeight.bold),
             ),
             Text(
               "Get it now",
@@ -77,7 +79,7 @@ class ShowingMainPage extends StatelessWidget {
                 title: "Try free and subscribe anually",
                 borderrad: 25,
                 onaction: () {
-                  Get.to(() => SignupPage());
+                  Get.to(() => LoginPage());
                 },
                 color1: gd2,
                 color2: gd1),
@@ -86,10 +88,10 @@ class ShowingMainPage extends StatelessWidget {
             ),
             MyCustomButton(
                 width: MediaQuery.of(context).size.width - 70,
-                title: "View Pages",
+                title: "View Packages",
                 borderrad: 25,
                 onaction: () {
-                  Get.to(() => LoginPage());
+                  Get.to(() => Plans());
                 },
                 color1: green,
                 color2: green),

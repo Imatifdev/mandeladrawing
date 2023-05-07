@@ -79,9 +79,10 @@ class ColorListPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  palletName,
+                  "palletName",
                   style: TextStyle(
                     fontSize: 20,
+                    color: Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

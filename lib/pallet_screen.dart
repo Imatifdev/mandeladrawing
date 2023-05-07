@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mandeladrawing/colors_screen.dart';
 
 import 'models/colorpalletemodel.dart';
 
@@ -13,7 +14,6 @@ class PalletScreen extends StatefulWidget {
 }
 
 class _PalletScreenState extends State<PalletScreen> {
-
   final userId = FirebaseAuth.instance.currentUser!.uid;
 
   Widget _buildListItem(MyColorPallet pallet) {
@@ -26,26 +26,25 @@ class _PalletScreenState extends State<PalletScreen> {
           Container(
             height: 200,
             child: ListView.builder(
+              scrollDirection: Axis.vertical,
               itemCount: pallet.mycolors.length,
               itemBuilder: (context, index) {
-              return Row(
-                children: [
-                  Container(
+                return Container(
                   height: 50,
-                  width: 50,
+                  width: 150,
                   color: Color(pallet.mycolors[index]),
-                )],
-              );
-            },),
+                );
+              },
+            ),
           ),
         ],
-      )
+      ),
     );
   }
 
   Widget _buildList(QuerySnapshot<Object?>? snapshot) {
     if (snapshot!.docs.isEmpty) {
-      return const Center(child: Text("No Pallets Yet!"));
+      return const Center(child: Center(child: Text("Create a New Pallet")));
     } else {
       return ListView.builder(
         itemCount: snapshot.docs.length,
@@ -63,20 +62,34 @@ class _PalletScreenState extends State<PalletScreen> {
       padding: const EdgeInsets.all(8.0),
       child: Column(children: [
         StreamBuilder<QuerySnapshot>(
-            stream:
-                FirebaseFirestore.instance.collection("Pallets").doc("$userId Pallet").collection("User Pallets").snapshots(),
+            stream: FirebaseFirestore.instance
+                .collection("Pallets")
+                .doc("$userId Pallet")
+                .collection("User Pallets")
+                .snapshots(),
             builder: ((context, snapshot) {
               if (!snapshot.hasData) return const LinearProgressIndicator();
-              return Expanded(child: _buildList(snapshot.data));
+              return Container(height: 200, child: _buildList(snapshot.data));
             }))
       ]),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Pallets")),
-      body: _buildBody(context),
+      body: Column(
+        children: [
+          _buildBody(context),
+          FloatingActionButton.extended(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ColorsScreen()));
+              },
+              label: Text("Create a New Pallete"))
+        ],
+      ),
     );
   }
 }
