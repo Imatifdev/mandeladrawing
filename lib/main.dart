@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:mandeladrawing/colors_screen.dart';
 import 'package:mandeladrawing/models/colorpalletemodel.dart';
+import 'package:mandeladrawing/pallet_screen.dart';
 import 'package:mandeladrawing/view/authview/signup.dart';
 import 'package:mandeladrawing/view/colorpannel/colorslistpage.dart';
 import 'package:mandeladrawing/view/colorpannel/createpalette.dart';
@@ -60,7 +62,10 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: FirebaseAuth.instance.currentUser != null ? Home() : Plans(),
+      home: FirebaseAuth.instance.currentUser != null ? Home() : SignupPage(),
+      routes: {
+        PalletScreen.routeName : (ctx)=>PalletScreen()
+      },
       // StreamBuilder(
       //   stream: FirebaseAuth.instance.authStateChanges(),
       //   builder: (context, snapshot) {
