@@ -45,7 +45,7 @@ class _ColorsScreenState extends State<ColorsScreen> {
       currentColor = color;
       colorMap.update("color$index", (value) => color.value);
       print(color);
-      colorMap.length < 8;
+      // colorMap.length < 8;
       index++;
     });
   }
@@ -74,7 +74,7 @@ class _ColorsScreenState extends State<ColorsScreen> {
               padding: const EdgeInsets.all(16.0),
               child: InkWell(
                 onTap: () {
-                  Get.to(() => const Settings());
+                  Get.to(() => Settings());
                 },
                 child: const Icon(
                   Icons.settings,

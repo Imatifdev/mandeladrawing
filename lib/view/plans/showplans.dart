@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mandeladrawing/utils/mycolors.dart';
+import 'package:mandeladrawing/view/colorpannel/selectmandelas.dart';
 import 'package:mandeladrawing/widgets/mybutton.dart';
 
 import '../settings/settingsscreen.dart';
@@ -54,7 +55,14 @@ class Plans extends StatelessWidget {
                 lefttitle: "KSH. 2000",
                 righttitle: "Enjoy All Mandelas \nfor a Year",
                 borderrad: 25,
-                onaction: () {},
+                onaction: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SelectMandelas(
+                                package: 9,
+                              )));
+                },
                 color1: gd2,
                 color2: gd1,
                 width: MediaQuery.of(context).size.width),
@@ -65,7 +73,14 @@ class Plans extends StatelessWidget {
                 lefttitle: "KSH. 50",
                 righttitle: "for 2 Mandelas",
                 borderrad: 25,
-                onaction: () {},
+                onaction: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SelectMandelas(
+                                package: 2,
+                              )));
+                },
                 color1: const Color(0xff2c36ba),
                 color2: const Color(0xff74bcea),
                 width: MediaQuery.of(context).size.width),
@@ -76,7 +91,14 @@ class Plans extends StatelessWidget {
                 lefttitle: "KSH. 100",
                 righttitle: "for 5 Mandelas",
                 borderrad: 25,
-                onaction: () {},
+                onaction: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SelectMandelas(
+                                package: 5,
+                              )));
+                },
                 color1: const Color(0xffdf6617),
                 color2: const Color(0xffebc73d),
                 width: MediaQuery.of(context).size.width),
@@ -87,7 +109,14 @@ class Plans extends StatelessWidget {
                 lefttitle: "KSH. 200",
                 righttitle: "for 11 Mandelas",
                 borderrad: 25,
-                onaction: () {},
+                onaction: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SelectMandelas(
+                                package: 11,
+                              )));
+                },
                 color1: const Color(0xff418fa9),
                 color2: const Color(0xff90d0ca),
                 width: MediaQuery.of(context).size.width),
@@ -98,7 +127,14 @@ class Plans extends StatelessWidget {
                 lefttitle: "KSH. 500",
                 righttitle: "for 29 Mandelas",
                 borderrad: 25,
-                onaction: () {},
+                onaction: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SelectMandelas(
+                                package: 29,
+                              )));
+                },
                 color1: const Color(0xfff9977c),
                 color2: const Color(0xffe55088),
                 width: MediaQuery.of(context).size.width),

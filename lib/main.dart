@@ -12,6 +12,7 @@ import 'package:mandeladrawing/view/colorpannel/colorslistpage.dart';
 import 'package:mandeladrawing/view/colorpannel/createpalette.dart';
 import 'package:mandeladrawing/view/colorpannel/detailmandela.dart';
 import 'package:mandeladrawing/view/colorpannel/imagetexture.dart';
+import 'package:mandeladrawing/view/colorpannel/selectmandelas.dart';
 import 'package:mandeladrawing/view/createpannel/drawpage.dart';
 import 'package:mandeladrawing/view/plans/showmainpage.dart';
 import 'package:mandeladrawing/view/plans/showplans.dart';
@@ -25,6 +26,7 @@ import 'package:mandeladrawing/view/colorpannel/animal.dart';
 import 'package:mandeladrawing/view/colorpannel/viewmandelas.dart';
 import 'package:mandeladrawing/view/dashboard.dart';
 
+import 'checkscreen.dart';
 import 'controllers/authenticationmodels.dart';
 import 'firebase_options.dart';
 import 'my.dart';
@@ -34,10 +36,10 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  Stripe.publishableKey =
-      'pk_test_51N3ozXKuYtdF845ofkT3mnJPklviwqoYWXmh4rBRta7f4ULTStn7H5FPUizInnktKg2yDp2YdeiU9liipwYjv8hj00OyAY8oAp';
+  // Stripe.publishableKey =
+  //     'pk_test_51N3ozXKuYtdF845ofkT3mnJPklviwqoYWXmh4rBRta7f4ULTStn7H5FPUizInnktKg2yDp2YdeiU9liipwYjv8hj00OyAY8oAp';
 
-  await Stripe.instance.applySettings();
+  // await Stripe.instance.applySettings();
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -59,9 +61,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: FirebaseAuth.instance.currentUser != null
-          ? StripeCheck()
-          : SplashScreen(),
+      home:
+          FirebaseAuth.instance.currentUser != null ? Plans() : SplashScreen(),
       routes: {PalletScreen.routeName: (ctx) => PalletScreen()},
     );
   }

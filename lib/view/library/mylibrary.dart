@@ -4,12 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mandeladrawing/models/sketchmodel.dart';
+import 'package:mandeladrawing/view/colorpannel/purchasedmandelas.dart';
 import 'package:mandeladrawing/view/settings/settingsscreen.dart';
 import 'package:mandeladrawing/utils/mycolors.dart';
 import 'package:mandeladrawing/view/colorpannel/animal.dart';
 
 class MyLibrary extends StatelessWidget {
-  MyLibrary({super.key});
+  final List<String> selectedImages;
+
+  MyLibrary({super.key, required this.selectedImages});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,7 @@ class MyLibrary extends StatelessWidget {
       backgroundColor: appbg,
       appBar: AppBar(
         title: Text(
-          "Fill Color",
+          "Library",
           style: TextStyle(fontSize: 30, color: Colors.black),
         ),
         toolbarHeight: MediaQuery.of(context).size.height * 1 / 10,
@@ -98,7 +101,12 @@ class MyLibrary extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Get.to(() => AnimalMandel());
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PurchasedMandelas(
+                                    selectedgridImages: selectedImages),
+                              ));
                         },
                         child: Text(
                           "View More...",
@@ -114,53 +122,12 @@ class MyLibrary extends StatelessWidget {
                 Container(
                   height: MediaQuery.of(context).size.height * 1 / 5,
                   child: ListView.builder(
-                      itemCount: UsersData.users.length,
+                      itemCount: selectedImages.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         return Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: ShowGrid(
-                              skectpic: UsersData.users[index],
-                            ));
-                      }),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 1 / 30,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "My Work",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
-                      GestureDetector(
-                        onTap: () {},
-                        child: Text(
-                          "View More...",
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: gd2,
-                              fontWeight: FontWeight.bold),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.height * 1 / 5,
-                  child: ListView.builder(
-                      itemCount: UsersData.users.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: ShowGrid(
-                              skectpic: UsersData.users[index],
-                            ));
+                            child: Image.asset(selectedImages[index]));
                       }),
                 ),
               ]),
