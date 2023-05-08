@@ -98,35 +98,35 @@ class FirebaseAuthMethod {
 
   //google signin
 
-  Future<User?> signInWithGoogle() async {
-    final GoogleSignInAccount? googleSignInAccount =
-        await _googleSignIn.signIn();
-    final GoogleSignInAuthentication googleSignInAuthentication =
-        await googleSignInAccount!.authentication;
+  // Future<User?> signInWithGoogle() async {
+  //   final GoogleSignInAccount? googleSignInAccount =
+  //       await _googleSignIn.signIn();
+  //   final GoogleSignInAuthentication googleSignInAuthentication =
+  //       await googleSignInAccount!.authentication;
 
-    final AuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleSignInAuthentication.accessToken,
-      idToken: googleSignInAuthentication.idToken,
-    );
+  //   final AuthCredential credential = GoogleAuthProvider.credential(
+  //     accessToken: googleSignInAuthentication.accessToken,
+  //     idToken: googleSignInAuthentication.idToken,
+  //   );
 
-    final UserCredential authResult =
-        await _auth.signInWithCredential(credential);
-    final User? user = authResult.user;
-    return user;
-  }
+  //   final UserCredential authResult =
+  //       await _auth.signInWithCredential(credential);
+  //   final User? user = authResult.user;
+  //   return user;
+  // }
 
-  Future<void> addUserToFirestore(User user) async {
-    DocumentReference userRef = _fireStore.collection('users').doc(user.uid);
+  // Future<void> addUserToFirestore(User user) async {
+  //   DocumentReference userRef = _fireStore.collection('users').doc(user.uid);
 
-    Map<String, dynamic> userData = {
-      'name': user.displayName,
-      'email': user.email,
-      'photoUrl': user.photoURL,
-      'phonenum': user.phoneNumber
-    };
+  //   Map<String, dynamic> userData = {
+  //     'name': user.displayName,
+  //     'email': user.email,
+  //     'photoUrl': user.photoURL,
+  //     'phonenum': user.phoneNumber
+  //   };
 
-    await userRef.set(userData);
-  }
+  //   await userRef.set(userData);
+  // }
 
   // Future<model.UserModel> getUserDetails() async {
   //   User? currentUser = _auth.currentUser;
@@ -136,6 +136,21 @@ class FirebaseAuthMethod {
 
   //   return model.UserModel.fromSnap(documentSnapshot);
   // }
+
+  final GoogleSignIn _googleSignInfun = GoogleSignIn();
+
+  Future<UserCredential> signInWithGoogle() async {
+    final GoogleSignInAccount? googleUser = await _googleSignInfun.signIn();
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser!.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    return FirebaseAuth.instance.signInWithCredential(credential);
+  }
 
   void _showetoast(String message) {
     Fluttertoast.showToast(

@@ -431,13 +431,38 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                       GestureDetector(
                         onTap: () async {
-                          User? user =
-                              await FirebaseAuthMethod().signInWithGoogle();
-                          if (user != null) {
-                            await FirebaseAuthMethod().addUserToFirestore(user);
-                          }
+                          // User? user =
+                          //     await FirebaseAuthMethod().signInWithGoogle();
+                          // if (user != null) {
+                          //   await FirebaseAuthMethod().addUserToFirestore(user);
+                          // }
 
-                          FirebaseAuthMethod().signInWithGoogle();
+                          // FirebaseAuthMethod().signInWithGoogle();
+                          final googleSignIn = GoogleSignIn();
+                          final googleUser = await googleSignIn.signIn();
+                          final googleAuth = await googleUser!.authentication;
+
+                          final credential = GoogleAuthProvider.credential(
+                            accessToken: googleAuth.accessToken,
+                            idToken: googleAuth.idToken,
+                          );
+
+                          final userCredential = await FirebaseAuth.instance
+                              .signInWithCredential(credential);
+
+                          final user = userCredential.user;
+                          final displayName = user!.displayName;
+                          final email = user.email;
+
+                          // Save user data to Firestore
+                          FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(user.uid)
+                              .set({
+                            'First Name': displayName,
+                            'Email': email,
+                            // Add more fields as needed
+                          });
                         },
                         child: Image(
                             fit: BoxFit.cover,

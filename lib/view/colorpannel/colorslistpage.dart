@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:get/get.dart';
-import 'package:mandeladrawing/pallet_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mandeladrawing/utils/mycolors.dart';
 

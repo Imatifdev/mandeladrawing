@@ -4,6 +4,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mandeladrawing/view/colorpannel/colorslistpage.dart';
 
+import '../view/colorpannel/createpalette.dart';
+
 class ColorPalette extends HookWidget {
   final ValueNotifier<Color> selectColor;
 
@@ -17,6 +19,8 @@ class ColorPalette extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<Color> colorscoming;
+
     final selectedColor = useState<Color>(initialColor);
     final selectedOpacity = useState<double>(initialOpacity);
 
@@ -92,7 +96,7 @@ class ColorPalette extends HookWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ColorsScreen()));
+                              builder: (context) => PalletScreen()));
                       //showColorWheel(context, selectColor);
                     },
                     child: Image.asset(

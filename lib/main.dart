@@ -6,9 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
-import 'package:mandeladrawing/colors_screen.dart';
 import 'package:mandeladrawing/models/colorpalletemodel.dart';
-import 'package:mandeladrawing/pallet_screen.dart';
 import 'package:mandeladrawing/view/authview/signup.dart';
 import 'package:mandeladrawing/view/colorpannel/colorslistpage.dart';
 import 'package:mandeladrawing/view/colorpannel/createpalette.dart';
@@ -37,9 +35,10 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Stripe.publishableKey = 'your publish key';
+  Stripe.publishableKey =
+      'pk_test_51N3ozXKuYtdF845ofkT3mnJPklviwqoYWXmh4rBRta7f4ULTStn7H5FPUizInnktKg2yDp2YdeiU9liipwYjv8hj00OyAY8oAp';
 
-  // await Stripe.instance.applySettings();
+  await Stripe.instance.applySettings();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   ).then((value) => Get.put(() => AuthRepo()));
@@ -69,7 +68,9 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: FirebaseAuth.instance.currentUser != null ? Home() : SplashScreen(),
+      home: FirebaseAuth.instance.currentUser != null
+          ? AnimalMandel()
+          : SplashScreen(),
       routes: {PalletScreen.routeName: (ctx) => PalletScreen()},
       // StreamBuilder(
       //   stream: FirebaseAuth.instance.authStateChanges(),
