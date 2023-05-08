@@ -1,30 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:mandeladrawing/view/colorpannel/colorslistpage.dart';
+import 'package:mandeladrawing/models/colorpalletemodel.dart';
 
 import '../view/colorpannel/createpalette.dart';
 
 class ColorPalette extends HookWidget {
   final ValueNotifier<Color> selectColor;
-
   final Color initialColor = Colors.red;
   final double initialOpacity = 0.1;
 
-  ColorPalette({
+  List colorList;
+  static MyColorPallet initialColorPallet = MyColorPallet("", []);
+  // = [];
+    
+
+  ColorPalette(
+    {
     Key? key,
-    required this.selectColor,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final List<Color> colorscoming;
-
-    final selectedColor = useState<Color>(initialColor);
-    final selectedOpacity = useState<double>(initialOpacity);
-
-    List<Color> colors = [
+    this.colorList = const [
       Colors.black,
       Colors.orange,
       Colors.red,
@@ -34,7 +28,37 @@ class ColorPalette extends HookWidget {
       Colors.pink,
       Colors.yellow,
       Colors.indigo
-    ];
+    ] ,
+    required this.selectColor,
+  }) : super(key: key);
+      MyColorPallet colorPallet = useState(initialColorPallet).value;
+
+
+    String text = "test";
+    List colorsX = [Colors.green];
+
+  @override
+  Widget build(BuildContext context) {
+    final List<Color> colorscoming;
+    final selectedColor = useState<Color>(initialColor);
+    final selectedOpacity = useState<double>(initialOpacity);
+    navFunc()async{
+       MyColorPallet result =  await Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => const PalletScreen()),
+  );
+  colorsX = result.mycolors;
+  print(result.pallete_nme);
+  print(result.mycolors);
+    }
+    useEffect(() {
+      final newColorList = colorPallet.mycolors;
+      newColorList.add(colorsX[0]);
+      text = "hehhe";
+      colorPallet.mycolors = newColorList;
+      return null;
+    }, [colorPallet.pallete_nme]);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -56,7 +80,7 @@ class ColorPalette extends HookWidget {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 20,
               ),
               Container(
@@ -92,11 +116,8 @@ class ColorPalette extends HookWidget {
                 MouseRegion(
                   cursor: SystemMouseCursors.click,
                   child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PalletScreen()));
+                    onTap: (){
+                      navFunc();
                       //showColorWheel(context, selectColor);
                     },
                     child: Image.asset(
@@ -106,7 +127,7 @@ class ColorPalette extends HookWidget {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 7,
                 ),
                 Center(
@@ -115,7 +136,7 @@ class ColorPalette extends HookWidget {
                     spacing: 10,
                     runSpacing: 2,
                     children: [
-                      for (Color color in colors)
+                      for (Color color in colorPallet.mycolors)
                         MouseRegion(
                           cursor: SystemMouseCursors.click,
                           child: GestureDetector(
@@ -148,6 +169,7 @@ class ColorPalette extends HookWidget {
             ),
           ]),
         ),
+        Text(text),
         const SizedBox(height: 10),
       ],
     );

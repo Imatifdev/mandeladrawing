@@ -39,7 +39,7 @@ void main() async {
   // Stripe.publishableKey =
   //     'pk_test_51N3ozXKuYtdF845ofkT3mnJPklviwqoYWXmh4rBRta7f4ULTStn7H5FPUizInnktKg2yDp2YdeiU9liipwYjv8hj00OyAY8oAp';
 
-  // await Stripe.instance.applySettings();
+  //await Stripe.instance.applySettings();
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -61,8 +61,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:
-          FirebaseAuth.instance.currentUser != null ? Plans() : SplashScreen(),
+      home: FirebaseAuth.instance.currentUser != null
+          ? Home()
+          : SplashScreen(),
       routes: {PalletScreen.routeName: (ctx) => PalletScreen()},
     );
   }

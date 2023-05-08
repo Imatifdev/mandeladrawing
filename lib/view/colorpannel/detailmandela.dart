@@ -15,6 +15,7 @@ import '../../models/sketchmodel.dart';
 import '../../utils/mycolors.dart';
 import '../../widgets/create.dart';
 import '../settings/settingsscreen.dart';
+import 'createpalette.dart';
 import 'imagetexture.dart';
 
 class DetailMandela extends HookWidget {
@@ -28,6 +29,11 @@ class DetailMandela extends HookWidget {
     'assets/textures/5.png',
     'assets/textures/6.png',
   ];
+  int index=0;
+  MyColorPallet result= MyColorPallet("pallete_nme", []);
+  Future<void> getInfo(BuildContext context)async{
+      }
+
   @override
   Widget build(BuildContext context) {
     // String selectedBackground = 'assets/textures/6.png';
@@ -57,7 +63,12 @@ class DetailMandela extends HookWidget {
 
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
-
+// if(index==0){
+//   WidgetsBinding.instance
+//           .addPostFrameCallback((_) => getInfo(context));
+//           index++;
+// }
+      
     return Scaffold(
       backgroundColor: appbg,
       body: Column(
@@ -184,7 +195,9 @@ class DetailMandela extends HookWidget {
                   canvasGlobalKey: canvasGlobalKey,
                   filled: filled,
                   polygonSides: polygonSides,
-                  backgroundImage: backgroundImage)
+                  backgroundImage: backgroundImage,
+                  colorList: result.mycolors,
+                  )
               : Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

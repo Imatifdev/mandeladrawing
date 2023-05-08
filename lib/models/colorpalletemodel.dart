@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class MyColorPallet {
   final String pallete_nme;
-  final List mycolors;
+  List mycolors;
 
   MyColorPallet(this.pallete_nme, this.mycolors);
 

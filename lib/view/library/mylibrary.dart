@@ -101,12 +101,12 @@ class MyLibrary extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PurchasedMandelas(
-                                    selectedgridImages: selectedImages),
-                              ));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) => PurchasedMandelas(
+                          //           selectedgridImages: selectedImages),
+                          //     ));
                         },
                         child: Text(
                           "View More...",

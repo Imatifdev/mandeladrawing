@@ -1,6 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 import 'dart:ui' as ui;
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
+
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:path_provider/path_provider.dart';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:file_saver/file_saver.dart';
@@ -29,6 +35,7 @@ class CanvasSideBar extends HookWidget {
   final ValueNotifier<bool> filled;
   final ValueNotifier<int> polygonSides;
   final ValueNotifier<ui.Image?> backgroundImage;
+  final List colorList;
 
   const CanvasSideBar({
     Key? key,
@@ -42,6 +49,7 @@ class CanvasSideBar extends HookWidget {
     required this.filled,
     required this.polygonSides,
     required this.backgroundImage,
+    required this.colorList
   }) : super(key: key);
 
   @override
@@ -99,6 +107,7 @@ class CanvasSideBar extends HookWidget {
           const Divider(),
           ColorPalette(
             selectColor: selectedColor,
+            colorList: colorList,
           ),
           // const Text(
           //   'Actions',
@@ -135,53 +144,73 @@ class CanvasSideBar extends HookWidget {
           //   style: TextStyle(fontWeight: FontWeight.bold),
           // ),
           // const Divider(),
-          // Row(
-          //   children: [
-          //     SizedBox(
-          //       width: 140,
-          //       child: TextButton(
-          //         child: const Text('Export PNG'),
-          //         onPressed: () async {
-          //           Uint8List? pngBytes = await getBytes();
-          //           if (pngBytes != null) saveFile(pngBytes, 'png');
-          //         },
-          //       ),
-          //     ),
-          //     SizedBox(
-          //       width: 140,
-          //       child: TextButton(
-          //         child: const Text('Export JPEG'),
-          //         onPressed: () async {
-          //           Uint8List? pngBytes = await getBytes();
-          //           if (pngBytes != null) saveFile(pngBytes, 'jpeg');
-          //         },
-          //       ),
-          //     ),
-          //   ],
-          // ),
+          Row(
+            children: [
+              SizedBox(
+                width: 140,
+                child: TextButton(
+                  child: const Text('Export PNG'),
+                  onPressed: () async {
+                    Uint8List? pngBytes = await getBytes();
+                    if (pngBytes != null) saveFile(pngBytes, 'png');
+                  },
+                ),
+              ),
+              SizedBox(
+                width: 140,
+                child: TextButton(
+                  child: const Text('Export JPEG'),
+                  onPressed: () async {
+                    Uint8List? pngBytes = await getBytes();
+                    if (pngBytes != null) saveFile(pngBytes, 'jpeg');
+                  },
+                ),
+              ),
+            ],
+          ),
           // // add about me button or follow buttons
         ],
       ),
     );
   }
 
+  // void saveFile(Uint8List bytes, String extension) async {
+  //   if (kIsWeb) {
+  //     html.AnchorElement()
+  //       ..href = '${Uri.dataFromBytes(bytes, mimeType: 'image/$extension')}'
+  //       ..download =
+  //           'FlutterLetsDraw-${DateTime.now().toIso8601String()}.$extension'
+  //       ..style.display = 'none'
+  //       ..click();
+  //   } else {
+  //     await FileSaver.instance.saveFile(
+  //       'FlutterLetsDraw-${DateTime.now().toIso8601String()}.$extension',
+  //       bytes,
+  //       extension,
+  //       mimeType: extension == 'png' ? MimeType.PNG : MimeType.JPEG,
+  //     );
+  //   }
+  // }
+
   void saveFile(Uint8List bytes, String extension) async {
-    if (!kIsWeb) {
-      html.AnchorElement()
-        ..href = '${Uri.dataFromBytes(bytes, mimeType: 'image/$extension')}'
-        ..download =
-            'FlutterLetsDraw-${DateTime.now().toIso8601String()}.$extension'
-        ..style.display = 'none'
-        ..click();
-    } else {
-      await FileSaver.instance.saveFile(
-        'FlutterLetsDraw-${DateTime.now().toIso8601String()}.$extension',
-        bytes,
-        extension,
-        mimeType: extension == 'png' ? MimeType.PNG : MimeType.JPEG,
-      );
+  String fileName = 'FlutterLetsDraw-${DateTime.now().toIso8601String()}.$extension';
+
+  if (kIsWeb) {
+    // Saving files not supported on web
+    return;
+  } else {
+    Directory? appDocDir = await getExternalStorageDirectory();
+
+    if (appDocDir != null) {
+      String filePath = '${appDocDir.path}/$fileName';
+
+      await File(filePath).writeAsBytes(bytes);
+
+      // Refresh media gallery to show the saved file
+      await ImageGallerySaver.saveFile(filePath);
     }
   }
+}
 
   Future<ui.Image> get _getImage async {
     final completer = Completer<ui.Image>();
@@ -230,11 +259,16 @@ class CanvasSideBar extends HookWidget {
   }
 
   Future<Uint8List?> getBytes() async {
+    print("test 1 okay");
     RenderRepaintBoundary boundary = canvasGlobalKey.currentContext
         ?.findRenderObject() as RenderRepaintBoundary;
+        print("test 2 okay");
     ui.Image image = await boundary.toImage();
+    print("test 3 okay");
     ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    print("test 4 okay");
     Uint8List? pngBytes = byteData?.buffer.asUint8List();
+    print("test 5 okay");
     return pngBytes;
   }
 }
