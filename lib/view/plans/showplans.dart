@@ -61,6 +61,8 @@ class Plans extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => SelectMandelas(
                                 package: 9,
+                                price: 2000,
+                                money: "2000",
                               )));
                 },
                 color1: gd2,
@@ -79,6 +81,8 @@ class Plans extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => SelectMandelas(
                                 package: 2,
+                                price: 50,
+                                money: "50",
                               )));
                 },
                 color1: const Color(0xff2c36ba),
@@ -97,6 +101,8 @@ class Plans extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => SelectMandelas(
                                 package: 5,
+                                price: 100,
+                                money: "100",
                               )));
                 },
                 color1: const Color(0xffdf6617),
@@ -115,6 +121,8 @@ class Plans extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => SelectMandelas(
                                 package: 11,
+                                price: 200,
+                                money: "200",
                               )));
                 },
                 color1: const Color(0xff418fa9),
@@ -133,6 +141,8 @@ class Plans extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => SelectMandelas(
                                 package: 29,
+                                price: 500,
+                                money: '',
                               )));
                 },
                 color1: const Color(0xfff9977c),

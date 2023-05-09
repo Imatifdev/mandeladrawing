@@ -36,10 +36,10 @@ import 'package:flutter_stripe/flutter_stripe.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Stripe.publishableKey =
-  //     'pk_test_51N3ozXKuYtdF845ofkT3mnJPklviwqoYWXmh4rBRta7f4ULTStn7H5FPUizInnktKg2yDp2YdeiU9liipwYjv8hj00OyAY8oAp';
+  Stripe.publishableKey =
+      'pk_test_51N3ozXKuYtdF845ofkT3mnJPklviwqoYWXmh4rBRta7f4ULTStn7H5FPUizInnktKg2yDp2YdeiU9liipwYjv8hj00OyAY8oAp';
 
-  //await Stripe.instance.applySettings();
+//  await Stripe.instance.applySettings();
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -60,10 +60,13 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        iconTheme: IconThemeData(
+          color: Colors.blue,
+          size: 24.0,
+        ),
       ),
-      home: FirebaseAuth.instance.currentUser != null
-          ? Home()
-          : SplashScreen(),
+      home: FirebaseAuth.instance.currentUser != null ? Plans() : Plans(),
       routes: {PalletScreen.routeName: (ctx) => PalletScreen()},
     );
   }
