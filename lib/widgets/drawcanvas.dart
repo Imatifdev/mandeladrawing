@@ -19,7 +19,7 @@ class DrawingCanvas extends HookWidget {
   final AnimationController sideBarController;
   final ValueNotifier<Sketch?> currentSketch;
   final ValueNotifier<List<Sketch>> allSketches;
-  final GlobalKey canvasGlobalKey;
+  final GlobalKey canvasGlobalKey3;
   final ValueNotifier<int> polygonSides;
   final ValueNotifier<bool> filled;
 
@@ -34,7 +34,7 @@ class DrawingCanvas extends HookWidget {
     required this.sideBarController,
     required this.currentSketch,
     required this.allSketches,
-    required this.canvasGlobalKey,
+    required this.canvasGlobalKey3,
     required this.filled,
     required this.polygonSides,
     required this.backgroundImage,
@@ -106,7 +106,7 @@ class DrawingCanvas extends HookWidget {
         valueListenable: allSketches,
         builder: (context, sketches, _) {
           return RepaintBoundary(
-            key: canvasGlobalKey,
+          //  key: canvasGlobalKey3,
             child: Center(
               child: Container(
                 height: MediaQuery.of(context).size.height,

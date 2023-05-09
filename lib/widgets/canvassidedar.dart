@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:ui' as ui;
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:ui';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -151,6 +152,7 @@ class CanvasSideBar extends HookWidget {
                 child: TextButton(
                   child: const Text('Export PNG'),
                   onPressed: () async {
+                   // _saveImage();
                     Uint8List? pngBytes = await getBytes();
                     if (pngBytes != null) saveFile(pngBytes, 'png');
                   },
@@ -191,6 +193,80 @@ class CanvasSideBar extends HookWidget {
   //     );
   //   }
   // }
+
+  //gpt-start
+   Future<void> _saveImage() async {
+    // Convert the background image to bytes
+    Uint8List? backgroundImageBytes = await encodeImageToBytes(await loadImage(backgroundImage.value!.toByteData() as Uint8List), 'png');
+
+    // Convert the drawing image to bytes
+    Uint8List? drawingImageBytes = getBytes() as Uint8List?;
+
+    // Combine the background and drawing images
+    Uint8List? combinedImageBytes = await encodeImageToBytes(mergeImages(await loadImage(backgroundImageBytes!), await loadImage(drawingImageBytes!)) as ui.Image,"png");
+
+    // Save the combined image to the gallery
+    await saveFile2(combinedImageBytes!, 'png');
+  }
+
+  Future<void> saveFile2(Uint8List bytes, String extension) async {
+  String fileName = 'FlutterLetsDraw-${DateTime.now().toIso8601String()}.$extension';
+
+  if (Platform.isAndroid) {
+    Directory? appDocDir = await getExternalStorageDirectory();
+
+    if (appDocDir != null) {
+      String filePath = '${appDocDir.path}/$fileName';
+
+      // Save the combined image bytes to a file
+      await File(filePath).writeAsBytes(bytes);
+
+      // Refresh media gallery to show the saved file
+      await ImageGallerySaver.saveFile(filePath);
+    }
+  }
+}
+
+Future<ui.Image> loadImage(Uint8List bytes) async {
+  final ui.Codec codec = await ui.instantiateImageCodec(bytes);
+  final ui.FrameInfo frameInfo = await codec.getNextFrame();
+  return frameInfo.image;
+}
+
+Future<ui.Image> loadImageFromMemory(Uint8List bytes) async {
+  ui.Codec codec = await ui.instantiateImageCodec(bytes);
+  ui.FrameInfo frameInfo = await codec.getNextFrame();
+  return frameInfo.image;
+}
+
+Future<ui.Image> mergeImages(ui.Image backgroundImage, ui.Image drawingImage) async {
+  ui.PictureRecorder recorder = ui.PictureRecorder();
+  ui.Canvas canvas = ui.Canvas(recorder);
+
+  canvas.drawImage(backgroundImage, 
+      Offset.zero,
+      Paint()..filterQuality = FilterQuality.high);
+
+  canvas.drawImage(drawingImage, 
+      Offset.zero,
+      Paint()..filterQuality = FilterQuality.high);
+
+  ui.Image combinedImage = await recorder.endRecording().toImage(
+      backgroundImage.width, 
+      backgroundImage.height);
+
+  return combinedImage;
+}
+
+Future<Uint8List?> encodeImageToBytes(ui.Image image, String format) async {
+  ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+
+  if (byteData != null) {
+    return byteData.buffer.asUint8List();
+  }
+else{return null;}
+}
+  //gpt-end
 
   void saveFile(Uint8List bytes, String extension) async {
   String fileName = 'FlutterLetsDraw-${DateTime.now().toIso8601String()}.$extension';

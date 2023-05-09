@@ -66,7 +66,9 @@ class MyApp extends StatelessWidget {
           size: 24.0,
         ),
       ),
-      home: FirebaseAuth.instance.currentUser != null ? Plans() : Plans(),
+      home: FirebaseAuth.instance.currentUser != null
+          ? Home()
+          : LoginPage(),
       routes: {PalletScreen.routeName: (ctx) => PalletScreen()},
     );
   }

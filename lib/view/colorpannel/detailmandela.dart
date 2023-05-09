@@ -3,8 +3,13 @@
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:flutter/rendering.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:ui' as ui;
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart' hide Image;
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:mandeladrawing/widgets/canvassidedar.dart';
 import 'package:mandeladrawing/widgets/drawcanvas.dart';
 
@@ -31,8 +36,8 @@ class DetailMandela extends HookWidget {
   ];
   int index=0;
   MyColorPallet result= MyColorPallet("pallete_nme", []);
-  Future<void> getInfo(BuildContext context)async{
-      }
+
+  
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +58,7 @@ class DetailMandela extends HookWidget {
     final showList = useState<bool>(true);
 
     final canvasGlobalKey = GlobalKey();
+    final canvasGlobalKey2 = GlobalKey();
     ValueNotifier<Sketch?> currentSketch = useState(null);
     ValueNotifier<List<Sketch>> allSketches = useState([]);
 
@@ -68,7 +74,39 @@ class DetailMandela extends HookWidget {
 //           .addPostFrameCallback((_) => getInfo(context));
 //           index++;
 // }
-      
+Future<Uint8List?> getBytes() async {
+    print("test 1 okay");
+    RenderRepaintBoundary boundary = canvasGlobalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
+        print("test 2 okay");
+    ui.Image image = await boundary.toImage();
+    print("test 3 okay");
+    ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
+    print("test 4 okay");
+    Uint8List? pngBytes = byteData?.buffer.asUint8List();
+    print("test 5 okay");
+    return pngBytes;
+  }
+
+  void saveFile(Uint8List bytes, String extension) async {
+  String fileName = 'FlutterLetsDraw-${DateTime.now().toIso8601String()}.$extension';
+  if (kIsWeb) {
+    // Saving files not supported on web
+    return;
+  } else {
+    Directory? appDocDir = await getExternalStorageDirectory();
+
+    if (appDocDir != null) {
+      String filePath = '${appDocDir.path}/$fileName';
+
+      await File(filePath).writeAsBytes(bytes);
+
+      // Refresh media gallery to show the saved file
+      await ImageGallerySaver.saveFile(filePath);
+    }
+  }
+}
+    List<Offset> _points = <Offset>[];
+
     return Scaffold(
       backgroundColor: appbg,
       body: Column(
@@ -129,6 +167,17 @@ class DetailMandela extends HookWidget {
                 ),
               ),
               IconButton(
+                onPressed: () async{
+                   Uint8List? pngBytes = await getBytes();
+                    if (pngBytes != null) saveFile(pngBytes, 'png');
+                },
+                icon: Icon(
+                  Icons.save_alt,
+                  color: Colors.black,
+                  size: 30,
+                ),
+              ),
+              IconButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -140,47 +189,50 @@ class DetailMandela extends HookWidget {
               )
             ],
           ),
-          Stack(
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: AssetImage(selectedBackground),
-                      fit: BoxFit.cover,
-                    ),
-                    borderRadius: BorderRadius.circular(20)),
-                height: height / 1.8,
-                width: width,
-              ),
-              Center(
-                child: Container(
-                  height: height / 2,
-                  width: MediaQuery.of(context).size.width,
+          RepaintBoundary(
+           key: canvasGlobalKey,
+            child: Stack(
+              children: [
+                Container(
                   decoration: BoxDecoration(
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage(sketch.url),
-                    ),
-                  ),
-                  //  child: DrawingCanvas(),
+                      image: DecorationImage(
+                        image: AssetImage(selectedBackground),
+                        fit: BoxFit.cover,
+                      ),
+                      borderRadius: BorderRadius.circular(20)),
+                  height: height / 1.8,
+                  width: width,
                 ),
-              ),
-              DrawingCanvas(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                drawingMode: drawingMode,
-                selectedColor: selectedColor,
-                strokeSize: strokeSize,
-                eraserSize: eraserSize,
-                sideBarController: animationController,
-                currentSketch: currentSketch,
-                allSketches: allSketches,
-                canvasGlobalKey: canvasGlobalKey,
-                filled: filled,
-                polygonSides: polygonSides,
-                backgroundImage: backgroundImage,
-              ),
-            ],
+                Center(
+                  child: Container(
+                    height: height / 2,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage(sketch.url),
+                      ),
+                    ),
+                    //  child: DrawingCanvas(),
+                  ),
+                ),
+                DrawingCanvas(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  drawingMode: drawingMode,
+                  selectedColor: selectedColor,
+                  strokeSize: strokeSize,
+                  eraserSize: eraserSize,
+                  sideBarController: animationController,
+                  currentSketch: currentSketch,
+                  allSketches: allSketches,
+                  canvasGlobalKey3: canvasGlobalKey,
+                  filled: filled,
+                  polygonSides: polygonSides,
+                  backgroundImage: backgroundImage,
+                ),
+              ],
+            ),
           ),
           // ignore: unrelated_type_equality_checks
           // _isvisible.value?
