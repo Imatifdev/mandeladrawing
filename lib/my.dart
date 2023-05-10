@@ -1,3 +1,6 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mandeladrawing/view/colorpannel/createpalette.dart';
 
@@ -66,6 +69,8 @@ class _DrawingBoardState extends State<DrawingBoard> {
     }
   }
 
+  bool check = false;
+
   double drawBoard = 0.09;
   Color selectedColor = Colors.black;
   double strokeWidth = 5;
@@ -95,202 +100,247 @@ class _DrawingBoardState extends State<DrawingBoard> {
     final height = MediaQuery.of(context).size.height;
 // i
     return Scaffold(
-      appBar: AppBar(
-        title:
-            const Text("Drawing Board", style: TextStyle(color: Colors.black)),
-        backgroundColor: const Color.fromRGBO(178, 145, 186, 1),
-        elevation: 0,
-        actions: [
-          IconButton(
-            onPressed: () async {
-              Uint8List? pngBytes = await getBytes();
-              if (pngBytes != null) saveFile(pngBytes, 'png');
-            },
-            icon: Icon(
-              Icons.save_alt,
-              color: Colors.black,
-              size: 30,
-            ),
+      body: Column(
+        children: [
+          SizedBox(
+            height: height / 18,
           ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            RepaintBoundary(
-              key: canvaskey,
-              child: Stack(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        // increment the current image index and wrap around if necessary
-                        _currentImageIndex =
-                            (_currentImageIndex + 1) % backgrounds.length;
-                      });
-                    },
-                    child: Image.asset(backgrounds[_currentImageIndex]),
-                  ),
-                  Center(
-                    child: Container(
-                      height: height / 2,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage(widget.sketch.url),
-                        ),
-                      ),
-                      //  child: DrawingCanvas(),
-                    ),
-                  ),
-                  GestureDetector(
-                    onPanStart: (details) {
-                      setState(() {
-                        drawingPoints.add(
-                          DrawingPoint(
-                            details.localPosition,
-                            Paint()
-                              ..color = selectedColor
-                              ..isAntiAlias = true
-                              ..strokeWidth = strokeWidth
-                              ..strokeCap = StrokeCap.round,
-                          ),
-                        );
-                      });
-                    },
-                    onPanUpdate: (details) {
-                      setState(() {
-                        drawingPoints.add(
-                          DrawingPoint(
-                            details.localPosition,
-                            Paint()
-                              ..color = selectedColor
-                              ..isAntiAlias = true
-                              ..strokeWidth = strokeWidth
-                              ..strokeCap = StrokeCap.round,
-                          ),
-                        );
-                      });
-                    },
-                    onPanEnd: (val) {
-                      setState(() {
-                        drawingPoints.add(null);
-                      });
-                    },
-                    child: CustomPaint(
-                      painter: DrawingPainter(drawingPoints),
-                      child: SizedBox(
-                        height: 500,
-                        width: MediaQuery.of(context).size.width,
-                      ),
-                    ),
-                  ),
-
-                  // Positioned(
-                  //     top: 40,
-                  //     right: 30,
-                  //     child: Row(
-                  //       children: [
-                  //         Slider(
-                  //             thumbColor: const Color.fromRGBO(178, 145, 186, 1),
-                  //             activeColor: const Color.fromRGBO(178, 145, 186, 1),
-                  //             min: 0,
-                  //             max: 40,
-                  //             value: strokeWidth,
-                  //             onChanged: (val) => setState(() => strokeWidth = val)),
-                  //         ElevatedButton.icon(
-                  //           style: ElevatedButton.styleFrom(
-                  //               primary: const Color.fromRGBO(178, 145, 186, 1)),
-                  //           onPressed: () => setState(() => drawingPoints = []),
-                  //           icon: const Icon(Icons.clear),
-                  //           label: const Text("Clear Board"),
-                  //         )
-                  //       ],
-                  //     ))
-                ],
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  CupertinoIcons.left_chevron,
+                  color: Colors.black,
+                ),
               ),
-            ),
-            // Container(
-            //   height: 100,
-            //   child: ListView.builder(
-            //     scrollDirection: Axis.horizontal,
-            //     itemCount: backgrounds.length,
-            //     itemBuilder: (context, index) {
-            //       return ListTile(
-            //         onTap: () {
-            //           setState(() {
-            //             _currentImageIndex = index;
-            //           });
-            //         },
-            //         leading: Image.asset(
-            //           backgrounds[index],
-            //           height: 50,
-            //           width: 50,
-            //           fit: BoxFit.cover,
-            //         ),
-            //         title: Text('Image ${index + 1}'),
-            //         selected: _currentImageIndex == index,
-            //         selectedTileColor: Colors.grey,
-            //       );
-            //     },
-            //   ),
-            // ),
-            SizedBox(
-                height: 100,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: backgrounds.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _currentImageIndex = index;
-                          });
-                        },
-                        child: Container(
-                          margin: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage(backgrounds[index]),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          width: 100,
-                          height: 100,
+              IconButton(
+                onPressed: () {
+                  // _undoDrawing();
+                },
+                icon: Icon(
+                  CupertinoIcons.left_chevron,
+                  color: Colors.black,
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  //   changetexture();
+                },
+                icon: Icon(
+                  Icons.check_box_rounded,
+                  color: Colors.black,
+                ),
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: Icon(
+                  Icons.redo_sharp,
+                  color: Colors.black,
+                ),
+              ),
+              IconButton(
+                onPressed: () {
+                  onPressed:
+                  () async {
+                    Uint8List? pngBytes = await getBytes();
+                    if (pngBytes != null) saveFile(pngBytes, 'png');
+                  };
+                },
+                icon: Icon(
+                  Icons.download,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+          RepaintBoundary(
+            key: canvaskey,
+            child: Stack(
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      // increment the current image index and wrap around if necessary
+                      _currentImageIndex =
+                          (_currentImageIndex + 1) % backgrounds.length;
+                    });
+                  },
+                  child: Image.asset(
+                    backgrounds[_currentImageIndex],
+                    height: height / 2,
+                    width: width,
+                  ),
+                ),
+                Center(
+                  child: Container(
+                    height: height / 2,
+                    width: width,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage(widget.sketch.url),
+                      ),
+                    ),
+                    //  child: DrawingCanvas(),
+                  ),
+                ),
+                GestureDetector(
+                  onPanStart: (details) {
+                    setState(() {
+                      drawingPoints.add(
+                        DrawingPoint(
+                          details.localPosition,
+                          Paint()
+                            ..color = selectedColor
+                            ..isAntiAlias = true
+                            ..strokeWidth = strokeWidth
+                            ..strokeCap = StrokeCap.round,
                         ),
                       );
-                    })),
-            IconButton(
-                onPressed: () async {
-                  MyColorPallet result = await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const PalletScreen()),
-                  );
-                  setState(() {
-                    colors = result.mycolors;
-                  });
+                    });
+                  },
+                  onPanUpdate: (details) {
+                    setState(() {
+                      drawingPoints.add(
+                        DrawingPoint(
+                          details.localPosition,
+                          Paint()
+                            ..color = selectedColor
+                            ..isAntiAlias = true
+                            ..strokeWidth = strokeWidth
+                            ..strokeCap = StrokeCap.round,
+                        ),
+                      );
+                    });
+                  },
+                  onPanEnd: (val) {
+                    setState(() {
+                      drawingPoints.add(null);
+                    });
+                  },
+                  child: CustomPaint(
+                    painter: DrawingPainter(drawingPoints),
+                    child: SizedBox(
+                      height: height / 3,
+                      width: MediaQuery.of(context).size.width,
+                    ),
+                  ),
+                ),
 
-                  print(result.pallete_nme);
-                  print(result.mycolors);
-                },
-                icon: const Icon(Icons.circle))
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Container(
-          color: Colors.grey.shade200,
-          padding: const EdgeInsets.all(14),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: List.generate(
-              colors.length,
-              (index) => _buildColorChoose(colors[index]),
+                // Positioned(
+                //     top: 40,
+                //     right: 30,
+                //     child: Row(
+                //       children: [
+                //         Slider(
+                //             thumbColor: const Color.fromRGBO(178, 145, 186, 1),
+                //             activeColor: const Color.fromRGBO(178, 145, 186, 1),
+                //             min: 0,
+                //             max: 40,
+                //             value: strokeWidth,
+                //             onChanged: (val) => setState(() => strokeWidth = val)),
+                //         ElevatedButton.icon(
+                //           style: ElevatedButton.styleFrom(
+                //               primary: const Color.fromRGBO(178, 145, 186, 1)),
+                //           onPressed: () => setState(() => drawingPoints = []),
+                //           icon: const Icon(Icons.clear),
+                //           label: const Text("Clear Board"),
+                //         )
+                //       ],
+                //     ))
+              ],
             ),
           ),
-        ),
+          // Container(
+          //   height: 100,
+          //   child: ListView.builder(
+          //     scrollDirection: Axis.horizontal,
+          //     itemCount: backgrounds.length,
+          //     itemBuilder: (context, index) {
+          //       return ListTile(
+          //         onTap: () {
+          //           setState(() {
+          //             _currentImageIndex = index;
+          //           });
+          //         },
+          //         leading: Image.asset(
+          //           backgrounds[index],
+          //           height: 50,
+          //           width: 50,
+          //           fit: BoxFit.cover,
+          //         ),
+          //         title: Text('Image ${index + 1}'),
+          //         selected: _currentImageIndex == index,
+          //         selectedTileColor: Colors.grey,
+          //       );
+          //     },
+          //   ),
+          // ),
+          check
+              ? Container(
+                  color: Colors.red,
+                  height: height / 7,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: backgrounds.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _currentImageIndex = index;
+                            });
+                          },
+                          child: Container(
+                            margin: EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage(backgrounds[index]),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            width: 100,
+                            height: 140,
+                          ),
+                        );
+                      }))
+              : SizedBox(
+                  height: 70,
+                  child: ListView(scrollDirection: Axis.horizontal, children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          onPressed: () async {
+                            MyColorPallet result = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const PalletScreen()),
+                            );
+                            setState(() {
+                              colors = result.mycolors;
+                            });
+
+                            print(result.pallete_nme);
+                            print(result.mycolors);
+                          },
+                          icon: const Icon(Icons.circle),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.all(14),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: List.generate(
+                              colors.length,
+                              (index) => _buildColorChoose(colors[index]),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ]),
+                ),
+        ],
       ),
     );
   }
