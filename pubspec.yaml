@@ -51,6 +51,7 @@ dependencies:
   image_gallery_saver: ^1.7.1
   merge_images: ^2.0.0-nullsafety
   image: ^4.0.17
+  responsive_framework: ^1.0.0
 
 dev_dependencies:
   flutter_test:

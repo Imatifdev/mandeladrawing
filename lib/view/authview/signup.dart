@@ -453,6 +453,7 @@ class _SignupPageState extends State<SignupPage> {
                           final user = userCredential.user;
                           final displayName = user!.displayName;
                           final email = user.email;
+                          final phone = user.phoneNumber;
 
                           // Save user data to Firestore
                           FirebaseFirestore.instance
@@ -461,8 +462,10 @@ class _SignupPageState extends State<SignupPage> {
                               .set({
                             'First Name': displayName,
                             'Email': email,
+                            'Phone': phone
                             // Add more fields as needed
                           });
+                          Get.to(() => Home());
                         },
                         child: Image(
                             fit: BoxFit.cover,

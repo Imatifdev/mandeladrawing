@@ -50,7 +50,7 @@ class ViewMandelas extends StatelessWidget {
       body: Column(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 1 / 13,
+            height: MediaQuery.of(context).size.height * 1 / 9,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [gd2, gd1],

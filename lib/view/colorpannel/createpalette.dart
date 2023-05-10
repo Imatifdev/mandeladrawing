@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mandeladrawing/view/colorpannel/colorslistpage.dart';
 import 'package:mandeladrawing/view/colorpannel/detailmandela.dart';
 
 import '../../models/colorpalletemodel.dart';
-
 
 class PalletScreen extends StatefulWidget {
   static const routeName = "pallet_screen";
@@ -15,16 +15,15 @@ class PalletScreen extends StatefulWidget {
 }
 
 class _PalletScreenState extends State<PalletScreen> {
-
   final userId = FirebaseAuth.instance.currentUser!.uid;
 
   Widget _buildListItem(MyColorPallet pallet) {
     return InkWell(
       splashColor: Colors.blue,
-      onTap: (){
+      onTap: () {
         print("Tapped");
         Navigator.pop(context, pallet);
-        },
+      },
       child: Column(
         children: [
           Text(pallet.pallete_nme),
@@ -34,16 +33,18 @@ class _PalletScreenState extends State<PalletScreen> {
             child: ListView.builder(
               itemCount: pallet.mycolors.length,
               itemBuilder: (context, index) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                  height: 50,
-                  width: MediaQuery.of(context).size.width-20,
-                  color: Color(pallet.mycolors[index]),
-                )],
-              );
-            },),
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 50,
+                      width: MediaQuery.of(context).size.width - 20,
+                      color: Color(pallet.mycolors[index]),
+                    )
+                  ],
+                );
+              },
+            ),
           ),
         ],
       ),
@@ -70,8 +71,11 @@ class _PalletScreenState extends State<PalletScreen> {
       padding: const EdgeInsets.all(8.0),
       child: Column(children: [
         StreamBuilder<QuerySnapshot>(
-            stream:
-                FirebaseFirestore.instance.collection("Pallets").doc("$userId Pallet").collection("User Pallets").snapshots(),
+            stream: FirebaseFirestore.instance
+                .collection("Pallets")
+                .doc("$userId Pallet")
+                .collection("User Pallets")
+                .snapshots(),
             builder: ((context, snapshot) {
               if (!snapshot.hasData) return const LinearProgressIndicator();
               return Expanded(child: _buildList(snapshot.data));
@@ -79,11 +83,23 @@ class _PalletScreenState extends State<PalletScreen> {
       ]),
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text("Pallets")),
-      body: _buildBody(context),
+      body: Column(
+        children: [
+          Expanded(child: _buildBody(context)),
+          FloatingActionButton.extended(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const ColorsScreen(),
+                ));
+              },
+              label: Text("Create New Pallete"))
+        ],
+      ),
     );
   }
 }

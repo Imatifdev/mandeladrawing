@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../../utils/mycolors.dart';
 import '../../widgets/mybutton.dart';
@@ -13,13 +15,28 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
+  final userId = FirebaseAuth.instance.currentUser!.uid;
   final TextEditingController _emailController = TextEditingController();
 
   final TextEditingController _passController = TextEditingController();
 
-  final TextEditingController _fnameController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _lastnameController = TextEditingController();
   final TextEditingController _mobilecontroller = TextEditingController();
+  Future<void> updateUserData(String uid, String newUsername, String newEmail,
+      String phoneNumber) async {
+    try {
+      await FirebaseFirestore.instance.collection('users').doc(uid).update(
+          {'First Name': newUsername, 'Email': newEmail, "Phone": phoneNumber});
+      print('Document updated successfully.');
+    } catch (e) {
+      print('Error updating document: $e');
+    }
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .set({'First Name': newUsername}, SetOptions(merge: true));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +49,7 @@ class _EditProfileState extends State<EditProfile> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: Icon(
+            icon: const Icon(
               CupertinoIcons.left_chevron,
               color: Colors.black,
               size: 30,
@@ -87,12 +104,12 @@ class _EditProfileState extends State<EditProfile> {
                   }
                   return null;
                 },
-                textEditingController: _lastnameController,
+                textEditingController: _nameController,
                 hintText: "Abc",
                 textInputType: TextInputType.emailAddress,
                 action: TextInputAction.next,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               TextFieldInput(
@@ -108,7 +125,7 @@ class _EditProfileState extends State<EditProfile> {
                 textInputType: TextInputType.emailAddress,
                 action: TextInputAction.next,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               TextFieldInput(
@@ -123,7 +140,7 @@ class _EditProfileState extends State<EditProfile> {
                 textInputType: TextInputType.emailAddress,
                 action: TextInputAction.next,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               TextFieldInput(
@@ -139,7 +156,7 @@ class _EditProfileState extends State<EditProfile> {
                 textInputType: TextInputType.emailAddress,
                 action: TextInputAction.next,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 30,
               ),
               Row(
@@ -155,14 +172,17 @@ class _EditProfileState extends State<EditProfile> {
                         color2: red,
                         width: MediaQuery.of(context).size.width),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 20,
                   ),
                   Expanded(
                     child: MyCustomButton(
                         title: "Save",
                         borderrad: 25,
-                        onaction: () {},
+                        onaction: () {
+                          updateUserData(userId, _nameController.text,
+                              _emailController.text, _mobilecontroller.text);
+                        },
                         color1: green,
                         color2: green,
                         width: MediaQuery.of(context).size.width),

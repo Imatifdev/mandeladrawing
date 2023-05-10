@@ -3,7 +3,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mandeladrawing/models/sketch.dart';
 import 'package:mandeladrawing/models/sketchmodel.dart';
+import 'package:mandeladrawing/my.dart';
 import 'package:mandeladrawing/view/colorpannel/detailmandela.dart';
 import 'package:mandeladrawing/view/settings/settingsscreen.dart';
 import 'package:mandeladrawing/utils/mycolors.dart';
@@ -234,12 +236,14 @@ class PurchasedMandelas extends StatelessWidget {
                             borderRadius: BorderRadius.circular(20)),
                         child: InkWell(
                             onTap: () {
-                              // Navigator.push(
-                              // context,
-                              // MaterialPageRoute(
-                              //   builder: (context) => DetailMandela(
-                              //     sketch:selectedImages.length. ,
-                              //   ),
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DrawingBoard(
+                                          sketch: SketchModel(
+                                              selectedImages[index]),
+                                        )),
+                              );
                             },
                             child: Image.asset(selectedImages[index])));
                   }),

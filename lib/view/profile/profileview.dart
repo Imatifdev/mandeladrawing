@@ -56,7 +56,7 @@ class _ProfileViewState extends State<ProfileView> {
   int check = 0;
   String name = "name";
   String email = "example@gmail.com";
-  String phone = '9999999999';
+  String phone = 'null';
 
   void getInfo() async {
     var collection = FirebaseFirestore.instance.collection('users');
@@ -67,7 +67,7 @@ class _ProfileViewState extends State<ProfileView> {
       setState(() {
         name = data?["First Name"];
         email = data?["Email"];
-        phone = data?["Phone"];
+        //phone = data?["Phone"];
       });
     }
     print(userId);

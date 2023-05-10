@@ -11,7 +11,8 @@ class MyColorPallet {
     final map = snapshot.data() as Map<String, dynamic>;
     final id = snapshot.id;
     final Map<String, dynamic> colorMap = map["Pallet Colors"];
-    return MyColorPallet(map["Pallet Name"] as String ,colorMap.values.toList());
+    return MyColorPallet(
+        map["Pallet Name"] as String, colorMap.values.toList());
   }
 }
 

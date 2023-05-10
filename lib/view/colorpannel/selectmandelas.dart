@@ -105,6 +105,9 @@ class _SelectMandelasState extends State<SelectMandelas> {
       //           content: Text("Success "),
       // ));
       print(response.body);
+      body = jsonDecode(response.body);
+      print(body["id"]);
+      // showPaymentInfo(body["id"]);
       return jsonDecode(response.body);
     } catch (err) {
       if (kDebugMode) {
@@ -116,6 +119,21 @@ class _SelectMandelasState extends State<SelectMandelas> {
   calculateAmount(String amount) {
     final a = (int.parse(amount)) * 100;
     return a.toString();
+  }
+
+  Future<void> showPaymentInfo(String paymentIntentId) async {
+    try {
+      PaymentIntent paymentIntent =
+          await Stripe.instance.retrievePaymentIntent(paymentIntentId);
+      String amount = (paymentIntent.amount / 100).toStringAsFixed(2);
+      String currency = paymentIntent.currency.toUpperCase();
+      PaymentIntentsStatus status = paymentIntent.status;
+
+      // Display the payment information to the user
+      print('Payment of $amount $currency was $status.');
+    } catch (e) {
+      print('Error retrieving payment information: $e');
+    }
   }
 
   List<String> _selectedImages = [];
@@ -380,8 +398,17 @@ class _SelectMandelasState extends State<SelectMandelas> {
                   if (check) {
                     showDialog(
                         context: context,
-                        builder: (_) => const AlertDialog(
-                              content: Text("Success"),
+                        builder: (_) => AlertDialog(
+                              content: InkWell(
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                            builder: (context) => MyLibrary(
+                                                  selectedImages:
+                                                      _selectedImages,
+                                                )));
+                                  },
+                                  child: Text("Success")),
                             ));
                   } else {
                     showDialog(

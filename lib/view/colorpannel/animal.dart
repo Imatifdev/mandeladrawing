@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mandeladrawing/models/sketch.dart';
+import 'package:mandeladrawing/my.dart';
 import 'package:mandeladrawing/utils/mycolors.dart';
 import 'package:mandeladrawing/view/colorpannel/detailmandela.dart';
 
@@ -102,7 +103,7 @@ class AnimalMandel extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => DetailMandela(
+                              builder: (context) => DrawingBoard(
                                 sketch: show,
                               ),
                             ),
