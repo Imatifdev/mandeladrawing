@@ -1,11 +1,13 @@
-// ignore_for_file: sized_box_for_whitespace, prefer_const_literals_to_create_immutables, prefer_const_constructors, prefer_final_fields
+// ignore_for_file: sized_box_for_whitespace, prefer_const_literals_to_create_immutables, prefer_const_constructors, prefer_final_fields, use_build_context_synchronously, avoid_unnecessary_containers
 
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:mandeladrawing/models/sketchmodel.dart';
@@ -16,13 +18,11 @@ import 'package:mandeladrawing/view/colorpannel/animal.dart';
 
 class SelectMandelas extends StatefulWidget {
   final int package;
-  final int price;
   final String money;
 
   const SelectMandelas(
       {super.key,
       required this.package,
-      required this.price,
       required this.money});
 
   @override
@@ -31,6 +31,7 @@ class SelectMandelas extends StatefulWidget {
 
 class _SelectMandelasState extends State<SelectMandelas> {
   Map<String, dynamic>? paymentIntentData;
+  final userId = FirebaseAuth.instance.currentUser!.uid;
 
   payFee() {
     try {
@@ -136,7 +137,8 @@ class _SelectMandelasState extends State<SelectMandelas> {
     }
   }
 
-  List<String> _selectedImages = [];
+  Map<String, String> _selectedImages = {};
+  int itemCount = 0;
   List<String> _imageList = [
     'assets/art/2.png',
     'assets/art/3.png',
@@ -171,11 +173,12 @@ class _SelectMandelasState extends State<SelectMandelas> {
 
   void _onImageSelected(String imageUrl) {
     setState(() {
-      if (_selectedImages.contains(imageUrl)) {
-        _selectedImages.remove(imageUrl);
+      if (_selectedImages.values.contains(imageUrl)) {
+        _selectedImages.removeWhere((key, value) => value == imageUrl);
       } else {
         if (_selectedImages.length < widget.package) {
-          _selectedImages.add(imageUrl);
+          _selectedImages.addAll({"image$itemCount":imageUrl});
+          itemCount++;
         } else {
           // Show an error message or other feedback to the user
           ScaffoldMessenger.of(context).showSnackBar(
@@ -359,7 +362,7 @@ class _SelectMandelasState extends State<SelectMandelas> {
                         child: Stack(
                           children: [
                             Center(child: Image.asset(_imageList[index])),
-                            if (_selectedImages.contains(_imageList[index]))
+                            if (_selectedImages.values.contains(_imageList[index]))
                               Positioned(
                                 top: 0,
                                 right: 0,
@@ -368,7 +371,7 @@ class _SelectMandelasState extends State<SelectMandelas> {
                                   color: Colors.green,
                                 ),
                               ),
-                            if (!_selectedImages.contains(_imageList[index]))
+                            if (!_selectedImages.values.contains(_imageList[index]))
                               Positioned(
                                 top: 0,
                                 right: 0,
@@ -405,7 +408,7 @@ class _SelectMandelasState extends State<SelectMandelas> {
                                         .push(MaterialPageRoute(
                                             builder: (context) => MyLibrary(
                                                   selectedImages:
-                                                      _selectedImages,
+                                                      _selectedImages.values.toList(),
                                                 )));
                                   },
                                   child: Text("Success")),
@@ -417,12 +420,13 @@ class _SelectMandelasState extends State<SelectMandelas> {
                               content: Text("Cancelled "),
                             ));
                   }
-                  // Navigator.pushReplacement(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (context) =>
-                  //           MyLibrary(selectedImages: _selectedImages),
-                  //    ));
+                await FirebaseFirestore.instance.collection("Payment Details").doc(userId).set({
+                  "Billing Date" : DateTime.now(),
+                  "Next Billing Date" : DateTime.now().add(Duration(days: 365)),
+                  "Plan Name" : "Ksh ${widget.money}/year",
+                  "Images": _selectedImages,
+                  "Payment Method" : "Stripe"
+                 }); 
                 },
                 label: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 80),

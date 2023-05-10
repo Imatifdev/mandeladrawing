@@ -20,13 +20,13 @@ class Plans extends StatelessWidget {
         elevation: 0,
         leading: GestureDetector(
           onTap: () => Navigator.pop(context),
-          child: Icon(
+          child: const Icon(
             CupertinoIcons.left_chevron,
             color: Colors.black,
             size: 30,
           ),
         ),
-        title: Text(
+        title: const Text(
           "Packages",
           style: TextStyle(fontSize: 26, color: appbartitle),
         ),
@@ -36,7 +36,7 @@ class Plans extends StatelessWidget {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => SettingsScreen()));
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.settings,
               color: Colors.black,
               size: 30,
@@ -59,10 +59,10 @@ class Plans extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SelectMandelas(
+                          builder: (context) => const SelectMandelas(
                                 package: 9,
-                                price: 2000,
                                 money: "2000",
+                                
                               )));
                 },
                 color1: gd2,
@@ -79,9 +79,8 @@ class Plans extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SelectMandelas(
+                          builder: (context) => const SelectMandelas(
                                 package: 2,
-                                price: 50,
                                 money: "50",
                               )));
                 },
@@ -99,9 +98,8 @@ class Plans extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SelectMandelas(
+                          builder: (context) => const SelectMandelas(
                                 package: 5,
-                                price: 100,
                                 money: "100",
                               )));
                 },
@@ -119,9 +117,8 @@ class Plans extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SelectMandelas(
+                          builder: (context) => const SelectMandelas(
                                 package: 11,
-                                price: 200,
                                 money: "200",
                               )));
                 },
@@ -139,9 +136,8 @@ class Plans extends StatelessWidget {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => SelectMandelas(
+                          builder: (context) => const SelectMandelas(
                                 package: 29,
-                                price: 500,
                                 money: '',
                               )));
                 },

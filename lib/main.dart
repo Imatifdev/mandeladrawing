@@ -36,6 +36,8 @@ import 'my2.dart';
 import 'package:stripe_android/stripe_android.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
+import 'subscription_screen.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Stripe.publishableKey =

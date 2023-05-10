@@ -9,6 +9,8 @@ import 'package:mandeladrawing/utils/mycolors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mandeladrawing/view/authview/login.dart';
 
+import '../../subscription_screen.dart';
+
 class SettingsScreen extends StatelessWidget {
   void _signOut() {
     FirebaseAuth.instance.signOut();
@@ -59,6 +61,9 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   subtitle: Text(
                       "Get unlimited access to all pictures and remove adds"),
+                  onTap: (){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => SubscriptionScreen()));
+                  },    
                 ),
               ),
             ),
@@ -146,15 +151,13 @@ class SettingsScreen extends StatelessWidget {
                   selectedColor: Colors.white,
                   leading: IconButton(
                     onPressed: () {
-                      final FirebaseAuth auth = FirebaseAuth.instance;
-                      signOut() async {
-                        print('object');
-                        await auth.signOut();
-                        Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginPage()));
-                      }
+
+                     // final FirebaseAuth auth = FirebaseAuth.instance;
+                      // signOut() async {
+                      //   print('object');
+                      //   await auth.signOut();
+                       
+                      // }
                     },
                     icon: Icon(Icons.logout_rounded),
                   ),
@@ -165,6 +168,14 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
             ),
+            ElevatedButton(onPressed: ()async{
+            await  FirebaseAuth.instance.signOut();
+               Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginPage()));
+
+            }, child: Text("log out"))
           ],
         ),
       ),

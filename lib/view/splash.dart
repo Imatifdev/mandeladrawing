@@ -6,7 +6,6 @@ import 'dart:async';
 import 'package:mandeladrawing/view/authview/authhome.dart';
 import 'package:mandeladrawing/view/authview/login.dart';
 import 'package:get/get.dart';
-import 'package:mandeladrawing/view/plans/showmainpage.dart';
 // Import dart:async for Timer
 
 class SplashScreen extends StatefulWidget {
@@ -22,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
     // Delay for 2 seconds before navigating to the next screen
     Timer(Duration(seconds: 5), () {
       // Replace the below code with your navigation logic
-      Get.to(() => ShowingMainPage());
+      Get.to(() => LoginPage());
     });
   }
 

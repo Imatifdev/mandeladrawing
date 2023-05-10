@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mandeladrawing/view/plans/showmainpage.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -365,7 +366,7 @@ class _SignupPageState extends State<SignupPage> {
                               });
                             }
 
-                            Get.to(() => Home());
+                            Get.to(() => ShowingMainPage());
                           }
                           print(controller.email);
                         }
@@ -465,7 +466,7 @@ class _SignupPageState extends State<SignupPage> {
                             'Phone': phone
                             // Add more fields as needed
                           });
-                          Get.to(() => Home());
+                          Get.to(() => ShowingMainPage());
                         },
                         child: Image(
                             fit: BoxFit.cover,
