@@ -27,6 +27,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
 import 'package:image_painter/image_painter.dart';
 
+import '../utils/mycolors.dart';
+
 class MyDrawing extends HookWidget {
   final ValueNotifier<Color> selectedColor;
   final ValueNotifier<double> strokeSize;
@@ -56,6 +58,41 @@ class MyDrawing extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    Future<Uint8List?> getBytes() async {
+      print("test 1 okay");
+      RenderRepaintBoundary boundary = canvasGlobalKey.currentContext!
+          .findRenderObject() as RenderRepaintBoundary;
+      print("test 2 okay");
+      ui.Image image = await boundary.toImage();
+      print("test 3 okay");
+      ByteData? byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
+      print("test 4 okay");
+      Uint8List? pngBytes = byteData?.buffer.asUint8List();
+      print("test 5 okay");
+      return pngBytes;
+    }
+
+    void saveFile(Uint8List bytes, String extension) async {
+      String fileName =
+          'FlutterLetsDraw-${DateTime.now().toIso8601String()}.$extension';
+      if (kIsWeb) {
+        // Saving files not supported on web
+        return;
+      } else {
+        Directory? appDocDir = await getExternalStorageDirectory();
+
+        if (appDocDir != null) {
+          String filePath = '${appDocDir.path}/$fileName';
+
+          await File(filePath).writeAsBytes(bytes);
+
+          // Refresh media gallery to show the saved file
+          await ImageGallerySaver.saveFile(filePath);
+        }
+      }
+    }
+
     final undoRedoStack = useState(_UndoRedoStack(
       sketchesNotifier: allSketches,
       currentSketchNotifier: currentSketch,
@@ -78,9 +115,15 @@ class MyDrawing extends HookWidget {
                       : null,
                   icon: Icon(Icons.redo)),
               IconButton(
-                  onPressed: () {
-                    print("object");
-                    saveDrawing();
+                  onPressed: () async {
+                    {
+                      Uint8List? pngBytes = await getBytes();
+                      if (pngBytes != null) saveFile(pngBytes, 'png');
+                    }
+                    Get.snackbar("Image", "Your Image has been saved",
+                        snackPosition: SnackPosition.BOTTOM,
+                        colorText: Colors.black,
+                        backgroundColor: appbg);
                   },
                   icon: Icon(Icons.check_circle)),
               IconButton(

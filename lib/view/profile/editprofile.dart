@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
+import 'package:mandeladrawing/view/dashboard.dart';
 
 import '../../utils/mycolors.dart';
 import '../../widgets/mybutton.dart';
@@ -182,6 +184,11 @@ class _EditProfileState extends State<EditProfile> {
                         onaction: () {
                           updateUserData(userId, _nameController.text,
                               _emailController.text, _mobilecontroller.text);
+                          Get.to(() => Home());
+                          Get.snackbar("Message", "Your has has been updated",
+                              snackPosition: SnackPosition.BOTTOM,
+                              colorText: Colors.black,
+                              backgroundColor: appbg);
                         },
                         color1: green,
                         color2: green,

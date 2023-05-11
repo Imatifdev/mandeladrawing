@@ -17,6 +17,7 @@ import 'package:mandeladrawing/view/createpannel/drawpage.dart';
 import 'package:mandeladrawing/view/plans/showmainpage.dart';
 import 'package:mandeladrawing/view/plans/showplans.dart';
 import 'package:mandeladrawing/view/plans/stripepayment.dart';
+import 'package:mandeladrawing/view/purchasedDashboard.dart';
 import 'package:mandeladrawing/view/splash.dart';
 import 'package:mandeladrawing/widgets/create.dart';
 import 'package:mandeladrawing/view/profile/profileview.dart';
@@ -79,9 +80,7 @@ class MyApp extends StatelessWidget {
           size: 24.0,
         ),
       ),
-      home: FirebaseAuth.instance.currentUser != null
-          ? AnimalMandel()
-          : SplashScreen(),
+      home: FirebaseAuth.instance.currentUser != null ? Home() : SplashScreen(),
       routes: {PalletScreen.routeName: (ctx) => PalletScreen()},
     );
   }

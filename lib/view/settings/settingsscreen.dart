@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -61,9 +61,10 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   subtitle: Text(
                       "Get unlimited access to all pictures and remove adds"),
-                  onTap: (){
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => SubscriptionScreen()));
-                  },    
+                  onTap: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => SubscriptionScreen()));
+                  },
                 ),
               ),
             ),
@@ -150,14 +151,10 @@ class SettingsScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10)),
                   selectedColor: Colors.white,
                   leading: IconButton(
-                    onPressed: () {
-
-                     // final FirebaseAuth auth = FirebaseAuth.instance;
-                      // signOut() async {
-                      //   print('object');
-                      //   await auth.signOut();
-                       
-                      // }
+                    onPressed: () async {
+                      await FirebaseAuth.instance.signOut();
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => LoginPage()));
                     },
                     icon: Icon(Icons.logout_rounded),
                   ),
@@ -168,14 +165,6 @@ class SettingsScreen extends StatelessWidget {
                 ),
               ),
             ),
-            ElevatedButton(onPressed: ()async{
-            await  FirebaseAuth.instance.signOut();
-               Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => LoginPage()));
-
-            }, child: Text("log out"))
           ],
         ),
       ),

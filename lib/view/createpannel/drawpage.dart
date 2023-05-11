@@ -135,9 +135,6 @@ class DrawingPage extends HookWidget {
                     child: DrawingBoardCanvas(
                       width: 300,
                       height: 300,
-
-                      // width: MediaQuery.of(context).size.width,
-                      // height: MediaQuery.of(context).size.height,
                       drawingMode: drawingMode,
                       selectedColor: selectedColor,
                       strokeSize: strokeSize,

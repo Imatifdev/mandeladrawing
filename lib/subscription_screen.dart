@@ -12,7 +12,7 @@ class SubscriptionScreen extends StatefulWidget {
 class _SubscriptionScreenState extends State<SubscriptionScreen> {
   String email = "";
   String phone = "";
-  Timestamp dateOfPayment  = Timestamp(152, 5);
+  Timestamp dateOfPayment = Timestamp(152, 5);
   Timestamp nextDate = Timestamp(152, 5);
   String plan = "";
   String paymentMethod = "";
@@ -20,7 +20,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
   int check = 0;
   final userId = FirebaseAuth.instance.currentUser!.uid;
 
-  void getPaymentInfo()async{
+  void getPaymentInfo() async {
     var collection = FirebaseFirestore.instance.collection('Payment Details');
     var docSnapshot = await collection.doc(userId).get();
     if (docSnapshot.exists) {
@@ -36,7 +36,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     }
   }
 
-  void getUserInfo()async{
+  void getUserInfo() async {
     var collection = FirebaseFirestore.instance.collection('users');
     var docSnapshot = await collection.doc(userId).get();
     if (docSnapshot.exists) {
@@ -48,7 +48,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
     }
   }
 
-  void getInfo(){
+  void getInfo() {
     getPaymentInfo();
     getUserInfo();
   }
@@ -63,34 +63,69 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
       body: SafeArea(
         child: SizedBox(
           width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-            Row(children: const [
-              BackButton(color: Colors.black),
-              Text("Subscription", style: TextStyle(fontSize: 24),)
-            ],),
+          child: Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+            Row(
+              children: const [
+                BackButton(color: Colors.black),
+                Text(
+                  "Subscription",
+                  style: TextStyle(fontSize: 24),
+                )
+              ],
+            ),
             SizedBox(
               width: 300,
+              height: 500,
               child: Card(
                 elevation: 5,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children:  [
-                  const Text("Membership & Billing", style: TextStyle(fontSize: 20),),
-                  const SizedBox(height: 20,),
-                  Text("Email: $email"),
-                  const Text("Password: *****"),
-                  Text("Phone: $phone"),
-                  const SizedBox(height: 50,),
-                  const Text("Billing Details", style: TextStyle(fontSize: 20),),
-                  const SizedBox(height: 20,),
-                  Text("Next Billing Date: ${nextDate.toDate().year}-${nextDate.toDate().month}-${nextDate.toDate().day}"),
-                  const SizedBox(height: 20,),
-                  Text("Plan: $plan"),
-                  const SizedBox(height: 20,),
-                  Text("Payment Mode: $paymentMethod")
-                ]),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Membership & Billing",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Text("Email: $email"),
+                        const Text("Password: *****"),
+                        Text("Phone: $phone"),
+                        const SizedBox(
+                          height: 50,
+                        ),
+                        const Text(
+                          "Billing Details",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                            "Next Billing Date: ${nextDate.toDate().year}-${nextDate.toDate().month}-${nextDate.toDate().day}"),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Text("Plan: $plan"),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Text(
+                          "Payment Mode",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text("$paymentMethod")
+                      ]),
+                ),
               ),
             )
           ]),

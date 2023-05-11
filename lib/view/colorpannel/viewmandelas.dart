@@ -50,7 +50,7 @@ class ViewMandelas extends StatelessWidget {
       body: Column(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 1 / 9,
+            height: MediaQuery.of(context).size.height / 12,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [gd2, gd1],
@@ -116,13 +116,18 @@ class ViewMandelas extends StatelessWidget {
                   Container(
                     height: MediaQuery.of(context).size.height * 1 / 5,
                     child: ListView.builder(
-                        itemCount: UsersData.users.length,
+                        itemCount: 3,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
                           return Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: ShowGrid(
-                                skectpic: UsersData.users[index],
+                              child: InkWell(
+                                onTap: () {
+                                  Get.to(() => AnimalMandel());
+                                },
+                                child: ShowGrid(
+                                  skectpic: UsersData.users[index],
+                                ),
                               ));
                         }),
                   ),
@@ -259,11 +264,15 @@ class ShowGrid extends StatelessWidget {
   const ShowGrid({super.key, required this.skectpic});
   @override
   Widget build(BuildContext context) {
-    return Image(
-      fit: BoxFit.cover,
-      height: 200,
-      width: 200,
-      image: AssetImage(skectpic.url),
+    return Card(
+      elevation: 5,
+      color: Colors.white,
+      child: Image(
+        fit: BoxFit.contain,
+        height: 150,
+        width: 150,
+        image: AssetImage(skectpic.url),
+      ),
     );
   }
 }

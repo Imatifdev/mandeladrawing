@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
+import 'package:mandeladrawing/utils/mycolors.dart';
 import 'package:mandeladrawing/view/colorpannel/colorslistpage.dart';
 import 'package:mandeladrawing/view/colorpannel/detailmandela.dart';
+import 'package:mandeladrawing/view/settings/settingsscreen.dart';
 
 import '../../models/colorpalletemodel.dart';
 
@@ -87,7 +90,23 @@ class _PalletScreenState extends State<PalletScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Pallets")),
+      backgroundColor: appbg,
+      appBar: AppBar(
+        elevation: 0,
+        actionsIconTheme: IconThemeData(color: Colors.black),
+        backgroundColor: appbg,
+        title: const Text(
+          "Select Your Pallete",
+          style: TextStyle(color: Colors.black),
+        ),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Get.to(() => SettingsScreen());
+              },
+              icon: Icon(Icons.settings))
+        ],
+      ),
       body: Column(
         children: [
           Expanded(child: _buildBody(context)),

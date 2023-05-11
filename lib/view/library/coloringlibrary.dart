@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mandeladrawing/view/colorpannel/createpalette.dart';
 
-import 'models/sketchmodel.dart';
 import 'dart:io';
 import 'dart:ui';
 

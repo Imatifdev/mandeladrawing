@@ -91,7 +91,7 @@ class AnimalMandel extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: GridView.builder(
-                  itemCount: UsersData.users.length,
+                  itemCount: 3,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       mainAxisSpacing: 15,
                       crossAxisSpacing: 15,

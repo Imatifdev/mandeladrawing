@@ -16,14 +16,13 @@ import 'package:mandeladrawing/view/settings/settingsscreen.dart';
 import 'package:mandeladrawing/utils/mycolors.dart';
 import 'package:mandeladrawing/view/colorpannel/animal.dart';
 
+import '../purchasedDashboard.dart';
+
 class SelectMandelas extends StatefulWidget {
   final int package;
   final String money;
 
-  const SelectMandelas(
-      {super.key,
-      required this.package,
-      required this.money});
+  const SelectMandelas({super.key, required this.package, required this.money});
 
   @override
   State<SelectMandelas> createState() => _SelectMandelasState();
@@ -177,7 +176,7 @@ class _SelectMandelasState extends State<SelectMandelas> {
         _selectedImages.removeWhere((key, value) => value == imageUrl);
       } else {
         if (_selectedImages.length < widget.package) {
-          _selectedImages.addAll({"image$itemCount":imageUrl});
+          _selectedImages.addAll({"image$itemCount": imageUrl});
           itemCount++;
         } else {
           // Show an error message or other feedback to the user
@@ -362,7 +361,8 @@ class _SelectMandelasState extends State<SelectMandelas> {
                         child: Stack(
                           children: [
                             Center(child: Image.asset(_imageList[index])),
-                            if (_selectedImages.values.contains(_imageList[index]))
+                            if (_selectedImages.values
+                                .contains(_imageList[index]))
                               Positioned(
                                 top: 0,
                                 right: 0,
@@ -371,7 +371,8 @@ class _SelectMandelasState extends State<SelectMandelas> {
                                   color: Colors.green,
                                 ),
                               ),
-                            if (!_selectedImages.values.contains(_imageList[index]))
+                            if (!_selectedImages.values
+                                .contains(_imageList[index]))
                               Positioned(
                                 top: 0,
                                 right: 0,
@@ -408,8 +409,13 @@ class _SelectMandelasState extends State<SelectMandelas> {
                                         .push(MaterialPageRoute(
                                             builder: (context) => MyLibrary(
                                                   selectedImages:
-                                                      _selectedImages.values.toList(),
+                                                      _selectedImages.values
+                                                          .toList(),
                                                 )));
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                PurchasedDashboard()));
                                   },
                                   child: Text("Success")),
                             ));
@@ -420,13 +426,17 @@ class _SelectMandelasState extends State<SelectMandelas> {
                               content: Text("Cancelled "),
                             ));
                   }
-                await FirebaseFirestore.instance.collection("Payment Details").doc(userId).set({
-                  "Billing Date" : DateTime.now(),
-                  "Next Billing Date" : DateTime.now().add(Duration(days: 365)),
-                  "Plan Name" : "Ksh ${widget.money}/year",
-                  "Images": _selectedImages,
-                  "Payment Method" : "Stripe"
-                 }); 
+                  await FirebaseFirestore.instance
+                      .collection("Payment Details")
+                      .doc(userId)
+                      .set({
+                    "Billing Date": DateTime.now(),
+                    "Next Billing Date":
+                        DateTime.now().add(Duration(days: 365)),
+                    "Plan Name": "Ksh ${widget.money}/year",
+                    "Images": _selectedImages,
+                    "Payment Method": "Stripe"
+                  });
                 },
                 label: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 80),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mandeladrawing/view/authview/login.dart';
 import 'package:mandeladrawing/view/colorpannel/viewmandelas.dart';
+import 'package:mandeladrawing/view/dashboard.dart';
 import 'package:mandeladrawing/view/plans/showplans.dart';
 
 import '../../utils/mycolors.dart';
@@ -41,7 +42,7 @@ class ShowingMainPage extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Get.to(() => LoginPage());
+                Get.to(() => Home());
               },
               child: Text(
                 "Or Continue with a limited version",
@@ -79,7 +80,7 @@ class ShowingMainPage extends StatelessWidget {
                 title: "Try free and subscribe anually",
                 borderrad: 25,
                 onaction: () {
-                  Get.to(() => LoginPage());
+                  Get.to(() => Plans());
                 },
                 color1: gd2,
                 color2: gd1),
