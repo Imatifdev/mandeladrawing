@@ -41,13 +41,14 @@ class _ColorsScreenState extends State<ColorsScreen> {
   }
 
   void onColorChanged(Color color) {
+   if(index<=7){
     setState(() {
       currentColor = color;
       colorMap.update("color$index", (value) => color.value);
       print(color);
       // colorMap.length < 8;
       index++;
-    });
+    });}
   }
 
   @override
