@@ -43,13 +43,13 @@ class ColorPalette extends HookWidget {
     final selectedColor = useState<Color>(initialColor);
     final selectedOpacity = useState<double>(initialOpacity);
     navFunc()async{
-       MyColorPallet result =  await Navigator.push(
-    context,
-    MaterialPageRoute(builder: (context) => const PalletScreen()),
-  );
-  colorsX = result.mycolors;
-  print(result.pallete_nme);
-  print(result.mycolors);
+  //      MyColorPallet result =  await Navigator.push(
+  //   context,
+  //   MaterialPageRoute(builder: (context) => PalletScreen(sketch: ,)),
+  // );
+  // colorsX = result.mycolors;
+  // print(result.pallete_nme);
+  // print(result.mycolors);
     }
     useEffect(() {
       final newColorList = colorPallet.mycolors;

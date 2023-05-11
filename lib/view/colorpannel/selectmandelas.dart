@@ -407,15 +407,11 @@ class _SelectMandelasState extends State<SelectMandelas> {
                                   onTap: () {
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(
-                                            builder: (context) => MyLibrary(
-                                                  selectedImages:
-                                                      _selectedImages.values
-                                                          .toList(),
-                                                )));
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                PurchasedDashboard()));
+                                            builder: (context) => MyLibrary()));
+                                    // Navigator.of(context).push(
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             PurchasedDashboard()));
                                   },
                                   child: Text("Success")),
                             ));

@@ -229,7 +229,7 @@ class _ColorsScreenState extends State<ColorsScreen> {
                           "Pallet Name": controller.text.trim(),
                           "Pallet Colors": colorMap
                         });
-                        Navigator.of(context).pushNamed(PalletScreen.routeName);
+                        Navigator.of(context).pop();
 
                         print("all okayyy");
                       }

@@ -81,7 +81,7 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: FirebaseAuth.instance.currentUser != null ? Home() : SplashScreen(),
-      routes: {PalletScreen.routeName: (ctx) => PalletScreen()},
+     // routes: {PalletScreen.routeName: (ctx) => PalletScreen()},
     );
   }
 }

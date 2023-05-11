@@ -27,9 +27,7 @@ class _PurchasedDashboard extends State<PurchasedDashboard> {
   final List<Widget> pages = [
     ViewMandelas(),
     DrawingPage(),
-    MyLibrary(
-      selectedImages: [],
-    ),
+    MyLibrary(),
     ProfileView(),
   ];
   List<int> listofpages = [];

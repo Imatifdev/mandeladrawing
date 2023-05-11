@@ -3,6 +3,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mandeladrawing/models/colorpalletemodel.dart';
 import 'package:mandeladrawing/models/sketch.dart';
 import 'package:mandeladrawing/my.dart';
 import 'package:mandeladrawing/utils/mycolors.dart';
@@ -10,6 +11,7 @@ import 'package:mandeladrawing/view/colorpannel/detailmandela.dart';
 
 import '../../models/sketchmodel.dart';
 import '../createpannel/drawpage.dart';
+import '../library/coloringlibrary.dart';
 import '../settings/settingsscreen.dart';
 
 class AnimalMandel extends StatelessWidget {
@@ -105,6 +107,19 @@ class AnimalMandel extends StatelessWidget {
                             MaterialPageRoute(
                               builder: (context) => DrawingBoard(
                                 sketch: show,
+                                colorPallet: MyColorPallet("Example", [
+    Colors.pink.value,
+    Colors.black87.value,
+    Colors.yellow.value,
+    Colors.red.value,
+    Colors.amberAccent.value,
+    Colors.purple.value,
+    Colors.green.value,
+    Colors.red.value,
+    Colors.amberAccent.value,
+    Colors.purple.value,
+    Colors.green.value,
+  ]),
                               ),
                             ),
                           );

@@ -1,23 +1,51 @@
 // ignore_for_file: sized_box_for_whitespace, prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mandeladrawing/models/colorpalletemodel.dart';
 import 'package:mandeladrawing/models/sketch.dart';
 import 'package:mandeladrawing/models/sketchmodel.dart';
 import 'package:mandeladrawing/my.dart';
 import 'package:mandeladrawing/view/colorpannel/detailmandela.dart';
+import 'package:mandeladrawing/view/library/coloringlibrary.dart';
 import 'package:mandeladrawing/view/settings/settingsscreen.dart';
 import 'package:mandeladrawing/utils/mycolors.dart';
 import 'package:mandeladrawing/view/colorpannel/animal.dart';
 
-class MyLibrary extends StatelessWidget {
-  final List<String> selectedImages;
+class MyLibrary extends StatefulWidget {
 
-  MyLibrary({super.key, required this.selectedImages});
+  MyLibrary({super.key});
+
+  @override
+  State<MyLibrary> createState() => _MyLibraryState();
+}
+
+class _MyLibraryState extends State<MyLibrary> {
+  final userId = FirebaseAuth.instance.currentUser!.uid;
+  Map<String, dynamic> selectedImages = {};
+  int check = 0;
+
+  void getInfo() async {
+    var collection = FirebaseFirestore.instance.collection('Payment Details');
+    var docSnapshot = await collection.doc(userId).get();
+    if (docSnapshot.exists) {
+      print("ok");
+      Map<String, dynamic>? data = docSnapshot.data();
+      setState(() {
+        selectedImages = data?["Images"];
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (check == 0) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => getInfo());
+      check++;
+    }
     return Scaffold(
       backgroundColor: appbg,
       appBar: AppBar(
@@ -107,7 +135,7 @@ class MyLibrary extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => PurchasedMandelas(
-                                        selectedImages: selectedImages,
+                                        selectedImages: selectedImages.values.toList(),
                                       )));
                         },
                         child: Text(
@@ -129,7 +157,7 @@ class MyLibrary extends StatelessWidget {
                       itemBuilder: (context, index) {
                         return Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Image.asset(selectedImages[index]));
+                            child: Image.asset(selectedImages.values.toList()[index]));
                       }),
                 ),
               ]),
@@ -142,7 +170,7 @@ class MyLibrary extends StatelessWidget {
 }
 
 class PurchasedMandelas extends StatelessWidget {
-  final List<String> selectedImages;
+  final List<dynamic> selectedImages;
 
   const PurchasedMandelas({
     super.key,
@@ -241,7 +269,19 @@ class PurchasedMandelas extends StatelessWidget {
                                 MaterialPageRoute(
                                     builder: (context) => DrawingBoard(
                                           sketch: SketchModel(
-                                              selectedImages[index]),
+                                              selectedImages[index]),colorPallet: MyColorPallet("example", [
+    Colors.pink.value,
+    Colors.black87.value,
+    Colors.yellow.value,
+    Colors.red.value,
+    Colors.amberAccent.value,
+    Colors.purple.value,
+    Colors.green.value,
+    Colors.red.value,
+    Colors.amberAccent.value,
+    Colors.purple.value,
+    Colors.green.value,
+  ]),
                                         )),
                               );
                             },

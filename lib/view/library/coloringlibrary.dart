@@ -27,8 +27,9 @@ import '../../widgets/create.dart';
 
 class DrawingBoard extends StatefulWidget {
   final SketchModel sketch;
+  final MyColorPallet colorPallet;
 
-  const DrawingBoard({Key? key, required this.sketch}) : super(key: key);
+  const DrawingBoard({Key? key, required this.sketch, required this.colorPallet}) : super(key: key);
 
   @override
   State<DrawingBoard> createState() => _DrawingBoardState();
@@ -80,19 +81,19 @@ class _DrawingBoardState extends State<DrawingBoard> {
   Color selectedColor = Colors.black;
   double strokeWidth = 5;
   List<DrawingPoint?> drawingPoints = [];
-  List colors = [
-    Colors.pink.value,
-    Colors.black87.value,
-    Colors.yellow.value,
-    Colors.red.value,
-    Colors.amberAccent.value,
-    Colors.purple.value,
-    Colors.green.value,
-    Colors.red.value,
-    Colors.amberAccent.value,
-    Colors.purple.value,
-    Colors.green.value,
-  ];
+  // List colors = [
+  //   Colors.pink.value,
+  //   Colors.black87.value,
+  //   Colors.yellow.value,
+  //   Colors.red.value,
+  //   Colors.amberAccent.value,
+  //   Colors.purple.value,
+  //   Colors.green.value,
+  //   Colors.red.value,
+  //   Colors.amberAccent.value,
+  //   Colors.purple.value,
+  //   Colors.green.value,
+  // ];
   final List<String> backgrounds = [
     'assets/textures/1.jpg',
     'assets/textures/2.jpg',
@@ -404,18 +405,12 @@ class _DrawingBoardState extends State<DrawingBoard> {
                               children: [
                                 InkWell(
                                   onTap: () async {
-                                    MyColorPallet result = await Navigator.push(
+                                   await Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const PalletScreen()),
+                                               PalletScreen(sketch: widget.sketch.url ,)),
                                     );
-                                    setState(() {
-                                      colors = result.mycolors;
-                                    });
-
-                                    print(result.pallete_nme);
-                                    print(result.mycolors);
                                   },
                                   child: Image(
                                       height: 40,
@@ -427,9 +422,9 @@ class _DrawingBoardState extends State<DrawingBoard> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                     children: List.generate(
-                                      colors.length,
+                                      widget.colorPallet.mycolors.length,
                                       (index) =>
-                                          _buildColorChoose(colors[index]),
+                                          _buildColorChoose(widget.colorPallet.mycolors[index]),
                                     ),
                                   ),
                                 ),
