@@ -64,7 +64,7 @@ class _EditProfileState extends State<EditProfile> {
           Padding(
             padding: EdgeInsets.all(12.0),
             child: Icon(
-              CupertinoIcons.settings,
+              Icons.settings,
               color: Colors.black,
               size: 30,
             ),

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously
 
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,11 +6,18 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mandeladrawing/view/plans/showmainpage.dart';
 
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mandeladrawing/models/usermodel.dart';
 import 'package:mandeladrawing/view/dashboard.dart';
+import 'package:mandeladrawing/view/profile/profileview.dart';
 import 'package:mandeladrawing/widgets/pickimages.dart';
 import 'package:mandeladrawing/widgets/textformfield.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -30,6 +37,8 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  File? _selectedImage;
+  String? _imageUrl;
   RegisterViewModel registerVM = RegisterViewModel();
   //controllers for managing data
   final TextEditingController _emailController = TextEditingController();
@@ -432,41 +441,52 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                       GestureDetector(
                         onTap: () async {
-                          // User? user =
-                          //     await FirebaseAuthMethod().signInWithGoogle();
-                          // if (user != null) {
-                          //   await FirebaseAuthMethod().addUserToFirestore(user);
-                          // }
+                          try {
+                            final googleSignIn = GoogleSignIn();
+                            final googleUser = await googleSignIn.signIn();
+                            final googleAuth = await googleUser!.authentication;
 
-                          // FirebaseAuthMethod().signInWithGoogle();
-                          final googleSignIn = GoogleSignIn();
-                          final googleUser = await googleSignIn.signIn();
-                          final googleAuth = await googleUser!.authentication;
+                            final credential = GoogleAuthProvider.credential(
+                              accessToken: googleAuth.accessToken,
+                              idToken: googleAuth.idToken,
+                            );
 
-                          final credential = GoogleAuthProvider.credential(
-                            accessToken: googleAuth.accessToken,
-                            idToken: googleAuth.idToken,
-                          );
+                            final userCredential = await FirebaseAuth.instance
+                                .signInWithCredential(credential);
 
-                          final userCredential = await FirebaseAuth.instance
-                              .signInWithCredential(credential);
-
-                          final user = userCredential.user;
-                          final displayName = user!.displayName;
-                          final email = user.email;
-                          final phone = user.phoneNumber;
-
-                          // Save user data to Firestore
-                          FirebaseFirestore.instance
-                              .collection('users')
-                              .doc(user.uid)
-                              .set({
-                            'First Name': displayName,
-                            'Email': email,
-                            'Phone': phone
-                            // Add more fields as needed
-                          });
-                          Get.to(() => ShowingMainPage());
+                            final user = userCredential.user;
+                            final displayName = user!.displayName;
+                            final email = user.email;
+                            final phone = user.phoneNumber;
+                            //ssave data in firestore
+                            FirebaseFirestore.instance
+                                .collection('users')
+                                .doc(user.uid)
+                                .set({
+                              'First Name': displayName,
+                              'Email': email,
+                              'Phone': phone
+                              // Add more fields as needed
+                            });
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (ctx) => ShowingMainPage()));
+                            Get.to(() => ShowingMainPage());
+                          } catch (e) {
+                            if (e is FirebaseAuthException) {
+                              if (e.code ==
+                                  'account-exists-with-different-credential') {
+                                _showetoast(
+                                    'An account with the same email already exists');
+                              } else {
+                                _showetoast(
+                                    'Failed to sign up with Google: ${e.message}');
+                              }
+                            } else {
+                              _showetoast('Failed to sign up with Google: $e');
+                            }
+                          }
                         },
                         child: Image(
                             fit: BoxFit.cover,

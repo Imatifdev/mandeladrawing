@@ -8,6 +8,7 @@ import 'package:mandeladrawing/methods/authmodels.dart';
 import 'package:mandeladrawing/utils/mycolors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mandeladrawing/view/authview/login.dart';
+import 'package:mandeladrawing/view/plans/showplans.dart';
 
 import '../../subscription_screen.dart';
 
@@ -132,6 +133,29 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   title: Text(
                     "Privacy Policy ",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+            ),
+            Card(
+              elevation: 5,
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10)),
+                child: ListTile(
+                  onTap: () {
+                    Get.to(() => Plans());
+                  },
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  selectedColor: Colors.white,
+                  leading: Icon(
+                    CupertinoIcons.money_dollar_circle,
+                  ),
+                  title: Text(
+                    "Buy Plans",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),

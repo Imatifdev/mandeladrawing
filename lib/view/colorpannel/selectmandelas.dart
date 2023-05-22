@@ -403,21 +403,43 @@ class _SelectMandelasState extends State<SelectMandelas> {
                     showDialog(
                         context: context,
                         builder: (_) => AlertDialog(
-                              content: InkWell(
-                                  onTap: () {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                            builder: (context) => MyLibrary(
-                                                  selectedImages:
-                                                      _selectedImages.values
-                                                          .toList(),
-                                                )));
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                PurchasedDashboard()));
-                                  },
-                                  child: Text("Success")),
+                              title: Text("Message"),
+                              content: SizedBox(
+                                height: 150,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.check_circle_outline,
+                                      size: 60,
+                                    ),
+                                    ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      MyLibrary(
+                                                        selectedImages:
+                                                            _selectedImages
+                                                                .values
+                                                                .toList(),
+                                                      )));
+
+                                          Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      PurchasedDashboard(
+                                                        selectedImages:
+                                                            _selectedImages
+                                                                .values
+                                                                .toList(),
+                                                      )));
+                                        },
+                                        child: Text("Ready to Go")),
+                                  ],
+                                ),
+                              ),
                             ));
                   } else {
                     showDialog(
@@ -448,109 +470,3 @@ class _SelectMandelasState extends State<SelectMandelas> {
     );
   }
 }
-
-// class SelectMandelasGrid extends StatefulWidget {
-  
-//   const SelectMandelasGrid({super.key});
-
-//   @override
-//   State<SelectMandelasGrid> createState() => _SelectMandelasGridState();
-// }
-
-// class _SelectMandelasGridState extends State<SelectMandelasGrid> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return GridView.builder(
-//         itemCount: UsersData.users.length,
-//         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-//             mainAxisSpacing: 15, crossAxisSpacing: 15, crossAxisCount: 2),
-//         itemBuilder: (context, index) {
-//           final show = UsersData.users[index];
-//           return InkWell(
-//               onTap: () {
-//                 Navigator.push(
-//                   context,
-//                   MaterialPageRoute(
-//                     builder: (context) => DetailMandela(
-//                       sketch: show,
-//                     ),
-//                   ),
-//                 );
-//               },
-//               child: ShowGrid(sketchpic: show));
-//         });
-//   }
-// }
-// // class ShowGrid extends StatefulWidget {
-// //   final SketchModel skectpic;
-
-// //   const  ShowGrid({super.key, required this.skectpic});
-
-// //   @override
-// //   State<ShowGrid> createState() => _ShowGridState();
-// // }
-
-// // class _ShowGridState extends State<ShowGrid> {
-// // List<String> _selectedImages = [];
-// //   List<String> _imageList = [
-// //     'assets/art/2.png',
-// //     'assets/art/3.png',
-// //     'assets/art/4.png',
-// //     'assets/art/5.png',
-// //     'assets/art/6.png',
-// //     'assets/art/7.png',
-// //     'assets/art/8.png',
-// //     'assets/art/9.png',
-// //     'assets/art/12.png',
-// //     'assets/art/11.png'
-// //   ];
-// //   int _maxImages = 3;
-
-
-// //   void _onImageSelected(String imageUrl) {
-// //     setState(() {
-// //       if (_selectedImages.contains(imageUrl)) {
-// //         _selectedImages.remove(imageUrl);
-// //       } else {
-// //         if (_selectedImages.length < _maxImages) {
-// //           _selectedImages.add(imageUrl);
-// //         } else {
-// //           // Show an error message or other feedback to the user
-// //           Get.snackbar("Message","You have reached the maximum number of images.");
-         
-// //         }
-// //       }
-// //     });
-// //   }
-
-// //   @override
-
-// //   Widget build(BuildContext context) {
-// //     return
-// //  GestureDetector(
-// //             onTap: () {
-// //               _onImageSelected(_imageLis);
-// //             },
-// //             child: Stack(
-// //               children: [
-// //                 Image.asset(_imageList[index]),
-// //                 if (_selectedImages.contains(_imageList[index]))
-// //                   Positioned(
-// //                     bottom: 0,
-// //                     right: 0,
-// //                     child: Icon(
-// //                       Icons.check_circle,
-// //                       color: Colors.green,
-// //                     ),
-// //                   ),
-// //               ],
-// //             ),
-// //           );
-// //      //  Image(
-// //     //   fit: BoxFit.cover,
-// //     //   height: 200,
-// //     //   width: 200,
-// //     //   image: AssetImage(skectpic.url),
-// //     // );
-// //   }
-// // }

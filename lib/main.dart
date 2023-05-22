@@ -29,6 +29,7 @@ import 'package:mandeladrawing/view/dashboard.dart';
 import 'package:responsive_framework/breakpoint.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 
+import 'checkpage.dart';
 import 'checkscreen.dart';
 import 'controllers/authenticationmodels.dart';
 import 'firebase_options.dart';
@@ -80,7 +81,7 @@ class MyApp extends StatelessWidget {
           size: 24.0,
         ),
       ),
-      home: FirebaseAuth.instance.currentUser != null ? Home() : SplashScreen(),
+      home: FirebaseAuth.instance.currentUser != null ? Home() : LoginPage(),
       routes: {PalletScreen.routeName: (ctx) => PalletScreen()},
     );
   }

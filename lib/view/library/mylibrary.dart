@@ -11,10 +11,37 @@ import 'package:mandeladrawing/view/settings/settingsscreen.dart';
 import 'package:mandeladrawing/utils/mycolors.dart';
 import 'package:mandeladrawing/view/colorpannel/animal.dart';
 
-class MyLibrary extends StatelessWidget {
+import '../colorpannel/viewmandelas.dart';
+import '../createpannel/drawpage.dart';
+import '../profile/profileview.dart';
+
+class MyLibrary extends StatefulWidget {
   final List<String> selectedImages;
 
   MyLibrary({super.key, required this.selectedImages});
+
+  @override
+  State<MyLibrary> createState() => _MyLibraryState();
+}
+
+class _MyLibraryState extends State<MyLibrary> {
+  int pgindex = 0;
+
+  void selindex(int index) {
+    setState(() {});
+    pgindex = index;
+  }
+
+  final List<Widget> pages = [
+    ViewMandelas(),
+    DrawingPage(),
+    MyLibrary(
+      selectedImages: [],
+    ),
+    ProfileView(),
+  ];
+
+  List<int> listofpages = [];
 
   @override
   Widget build(BuildContext context) {
@@ -107,7 +134,7 @@ class MyLibrary extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => PurchasedMandelas(
-                                        selectedImages: selectedImages,
+                                        selectedImages: widget.selectedImages,
                                       )));
                         },
                         child: Text(
@@ -124,17 +151,18 @@ class MyLibrary extends StatelessWidget {
                 Container(
                   height: MediaQuery.of(context).size.height * 1 / 5,
                   child: ListView.builder(
-                      itemCount: selectedImages.length,
+                      itemCount: widget.selectedImages.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         return Padding(
                             padding: const EdgeInsets.all(8.0),
-                            child: Image.asset(selectedImages[index]));
+                            child: Image.asset(widget.selectedImages[index]));
                       }),
                 ),
               ]),
             ]),
           ),
+          //Expanded(child: pages[pgindex])
         ],
       ),
     );

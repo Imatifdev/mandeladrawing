@@ -113,7 +113,9 @@ class _ProfileViewState extends State<ProfileView> {
         backgroundColor: appbar,
         leading: IconButton(
             onPressed: () {
-              Get.to(() => Home());
+              Get.to(() => Home(
+                  //  selectedImagesList: [],
+                  ));
             },
             icon: Icon(
               CupertinoIcons.left_chevron,
@@ -127,7 +129,7 @@ class _ProfileViewState extends State<ProfileView> {
           const Padding(
             padding: EdgeInsets.all(12.0),
             child: Icon(
-              CupertinoIcons.settings,
+              Icons.settings,
               color: Colors.black,
               size: 30,
             ),

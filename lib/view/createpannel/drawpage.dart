@@ -29,7 +29,7 @@ class DrawingPage extends HookWidget {
     }
 
     final selectedColor = useState(Colors.black);
-    final strokeSize = useState<double>(10);
+    final strokeSize = useState<double>(1);
     final eraserSize = useState<double>(30);
     final drawingMode = useState(DrawingMode.pencil);
     final filled = useState<bool>(false);

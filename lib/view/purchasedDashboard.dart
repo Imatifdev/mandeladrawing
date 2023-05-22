@@ -11,7 +11,9 @@ import 'createpannel/drawpage.dart';
 import 'library/mylibrary.dart';
 
 class PurchasedDashboard extends StatefulWidget {
-  const PurchasedDashboard({super.key});
+  final List<String> selectedImages;
+
+  const PurchasedDashboard({super.key, required this.selectedImages});
 
   @override
   State<PurchasedDashboard> createState() => _PurchasedDashboard();
