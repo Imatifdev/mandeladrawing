@@ -34,20 +34,21 @@ class TextFieldInput extends StatelessWidget {
         border: OutlineInputBorder(
           borderSide: const BorderSide(color: Colors.transparent),
 
-          borderRadius: BorderRadius.circular(20), // Set border radius here
+          borderRadius: BorderRadius.circular(50), // Set border radius here
         ),
         focusedBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: Colors.transparent),
 
-          borderRadius: BorderRadius.circular(20), // Set border radius here
+          borderRadius: BorderRadius.circular(50), // Set border radius here
         ),
         enabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: Colors.transparent),
-          borderRadius: BorderRadius.circular(20), // Set border radius here
+          borderRadius: BorderRadius.circular(50), // Set border radius here
         ),
         filled: true,
         fillColor: const Color(0xffeceff6),
-        contentPadding: const EdgeInsets.all(8),
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       ),
       keyboardType: textInputType,
       obscureText: isPass,

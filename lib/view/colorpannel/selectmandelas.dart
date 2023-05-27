@@ -192,12 +192,45 @@ class _SelectMandelasState extends State<SelectMandelas> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+    double title;
+    double heading;
+
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 13.0;
+      title = 20;
+      heading = 20; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 15.0;
+      title = 28;
+
+      heading = 21; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 17.0;
+      title = 32;
+
+      heading = 25; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 19.0;
+      title = 36;
+
+      heading = 27; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 22.0;
+      title = 40;
+
+      heading = 30; // Extra large screen or unknown device
+    }
+
     return Scaffold(
       backgroundColor: appbg,
       appBar: AppBar(
         title: Text(
           "All Mandelas",
-          style: TextStyle(fontSize: 30, color: Colors.black),
+          style: TextStyle(fontSize: title, color: Colors.black),
         ),
         toolbarHeight: MediaQuery.of(context).size.height * 1 / 10,
         leading: GestureDetector(
@@ -229,7 +262,7 @@ class _SelectMandelasState extends State<SelectMandelas> {
       body: Column(
         children: [
           Container(
-            height: MediaQuery.of(context).size.height * 1 / 13,
+            height: screenheight / 12,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: [gd2, gd1],
@@ -237,7 +270,7 @@ class _SelectMandelasState extends State<SelectMandelas> {
             ),
             width: double.infinity,
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -245,14 +278,14 @@ class _SelectMandelasState extends State<SelectMandelas> {
                     "Get All Pictures!",
                     style: TextStyle(
                         color: appbg,
-                        fontSize: 20,
+                        fontSize: fontSize,
                         fontWeight: FontWeight.bold),
                   ),
                   Text(
                     "Try Premium",
                     style: TextStyle(
                         color: appbg,
-                        fontSize: 16,
+                        fontSize: fontSize,
                         fontWeight: FontWeight.bold),
                   )
                 ],

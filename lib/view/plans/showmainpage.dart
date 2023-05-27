@@ -1,7 +1,12 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:mandeladrawing/view/authview/login.dart';
 import 'package:mandeladrawing/view/colorpannel/viewmandelas.dart';
 import 'package:mandeladrawing/view/dashboard.dart';
@@ -11,26 +16,85 @@ import '../../utils/mycolors.dart';
 import '../../widgets/mybutton.dart';
 import '../authview/signup.dart';
 
-class ShowingMainPage extends StatelessWidget {
+class ShowingMainPage extends StatefulWidget {
   const ShowingMainPage({super.key});
 
   @override
+  State<ShowingMainPage> createState() => _ShowingMainPageState();
+}
+
+class _ShowingMainPageState extends State<ShowingMainPage> {
+  late StreamSubscription subscription;
+
+  bool isDeviceConnected = false;
+
+  bool isAlertSet = false;
+
+  @override
+  void initState() {
+    getConnectivity();
+    super.initState();
+  }
+
+  getConnectivity() =>
+      subscription = Connectivity().onConnectivityChanged.listen(
+        (ConnectivityResult result) async {
+          isDeviceConnected = await InternetConnectionChecker().hasConnection;
+          if (!isDeviceConnected && isAlertSet == false) {
+            showDialogBox();
+            setState(() => isAlertSet = true);
+          }
+        },
+      );
+
+  @override
+  void dispose() {
+    subscription.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final screenheight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    double fontSize;
+
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 18.0; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 40.0; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 45.0; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 55.0; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 60.0; // Extra large screen or unknown device
+    }
+
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40),
+        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image(
-              height: 200,
+              height: screenheight / 8,
               width: double.infinity,
-              image: AssetImage('assets/topman.png'),
+              image: AssetImage(
+                'assets/flow.png',
+              ),
+            ),
+            SizedBox(
+              height: screenheight / 12,
             ),
             Text(
               "Full Access",
-              style: TextStyle(fontSize: 55, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(
+              height: 5,
             ),
             Text(
               "Get it now",
@@ -78,7 +142,7 @@ class ShowingMainPage extends StatelessWidget {
             MyCustomButton(
                 width: MediaQuery.of(context).size.width - 70,
                 title: "Try free and subscribe anually",
-                borderrad: 25,
+                borderrad: 50,
                 onaction: () {
                   Get.to(() => Plans());
                 },
@@ -90,7 +154,7 @@ class ShowingMainPage extends StatelessWidget {
             MyCustomButton(
                 width: MediaQuery.of(context).size.width - 70,
                 title: "View Packages",
-                borderrad: 25,
+                borderrad: 50,
                 onaction: () {
                   Get.to(() => Plans());
                 },
@@ -101,4 +165,27 @@ class ShowingMainPage extends StatelessWidget {
       ),
     );
   }
+
+  showDialogBox() => showCupertinoDialog<String>(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          title: const Text('No Connection'),
+          content: const Text('Please check your internet connectivity'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context, 'Cancel');
+                setState(() => isAlertSet = false);
+                isDeviceConnected =
+                    await InternetConnectionChecker().hasConnection;
+                if (!isDeviceConnected && isAlertSet == false) {
+                  showDialogBox();
+                  setState(() => isAlertSet = true);
+                }
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
 }

@@ -13,6 +13,39 @@ class Plans extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+    double title;
+    double heading;
+
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 13.0;
+      title = 20;
+      heading = 20; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 17.0;
+      title = 28;
+
+      heading = 21; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 19.0;
+      title = 32;
+
+      heading = 25; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 21.0;
+      title = 36;
+
+      heading = 27; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 25.0;
+      title = 40;
+
+      heading = 30; // Extra large screen or unknown device
+    }
+
     return Scaffold(
       backgroundColor: appbg,
       appBar: AppBar(
@@ -26,9 +59,9 @@ class Plans extends StatelessWidget {
             size: 30,
           ),
         ),
-        title: const Text(
+        title: Text(
           "Packages",
-          style: TextStyle(fontSize: 26, color: appbartitle),
+          style: TextStyle(fontSize: title, color: appbartitle),
         ),
         actions: [
           IconButton(
@@ -62,7 +95,6 @@ class Plans extends StatelessWidget {
                           builder: (context) => const SelectMandelas(
                                 package: 9,
                                 money: "2000",
-                                
                               )));
                 },
                 color1: gd2,
@@ -193,6 +225,39 @@ class MyPlanButton extends StatelessWidget {
       required this.width});
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+    double title;
+    double heading;
+
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 10.0;
+      title = 20;
+      heading = 20; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 13.0;
+      title = 28;
+
+      heading = 21; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 15.0;
+      title = 32;
+
+      heading = 25; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 18.0;
+      title = 36;
+
+      heading = 27; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 25.0;
+      title = 40;
+
+      heading = 30; // Extra large screen or unknown device
+    }
+
     return InkWell(
       onTap: onaction,
       child: Container(
@@ -211,15 +276,15 @@ class MyPlanButton extends StatelessWidget {
               children: [
                 Text(
                   lefttitle,
-                  style: const TextStyle(
-                      fontSize: 22,
+                  style: TextStyle(
+                      fontSize: heading,
                       color: Colors.white,
                       fontWeight: FontWeight.bold),
                 ),
                 Text(
                   righttitle,
-                  style: const TextStyle(
-                      fontSize: 13,
+                  style: TextStyle(
+                      fontSize: fontSize,
                       color: Colors.white,
                       fontWeight: FontWeight.bold),
                 ),

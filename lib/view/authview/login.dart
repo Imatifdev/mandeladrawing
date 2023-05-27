@@ -110,6 +110,22 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(LoginController());
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 10.0; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 13.0; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 14.0; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 15.0; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 20.0; // Extra large screen or unknown device
+    }
 
     return GestureDetector(
       onTap: () {
@@ -138,7 +154,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
         body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30),
+          padding: const EdgeInsets.symmetric(horizontal: 0),
           child: SingleChildScrollView(
             child: Form(
               key: formGlobalKey,
@@ -147,141 +163,157 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: MediaQuery.of(context).size.height / 8,
+                    height: screenheight / 10,
                   ),
-                  TextFieldInput(
-                      validator: (value) {
-                        if (!RegExp(
-                                r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
-                            .hasMatch(value)) {
-                          return 'Please enter a valid email address';
-                        }
-                        return null;
-                      },
-                      onChanged: _handleTextFieldChanged,
-                      action: TextInputAction.next,
-                      textEditingController: _emailController,
-                      hintText: "Email",
-                      textInputType: TextInputType.emailAddress),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: TextFieldInput(
+                        validator: (value) {
+                          if (!RegExp(
+                                  r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$')
+                              .hasMatch(value)) {
+                            return 'Please enter a valid email address';
+                          }
+                          return null;
+                        },
+                        onChanged: _handleTextFieldChanged,
+                        action: TextInputAction.next,
+                        textEditingController: _emailController,
+                        hintText: "Email",
+                        textInputType: TextInputType.emailAddress),
+                  ),
                   SizedBox(
-                    height: 16,
+                    height: screenheight / 25,
                   ),
-                  TextFieldInput(
-                      validator: (value) {
-                        if (value.length < 6) {
-                          return 'Password must be at least 6 characters long';
-                        }
-                        return null;
-                      },
-                      onChanged: _handleTextFieldChanged,
-                      action: TextInputAction.next,
-                      textEditingController: _passController,
-                      hintText: "Password",
-                      textInputType: TextInputType.emailAddress),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: TextFieldInput(
+                        validator: (value) {
+                          if (value.length < 6) {
+                            return 'Password must be at least 6 characters long';
+                          }
+                          return null;
+                        },
+                        onChanged: _handleTextFieldChanged,
+                        action: TextInputAction.next,
+                        textEditingController: _passController,
+                        hintText: "Password",
+                        textInputType: TextInputType.emailAddress),
+                  ),
 
                   SizedBox(
-                    height: MediaQuery.of(context).size.height / 55,
+                    height: screenheight / 30,
                   ),
                   //remember me sec
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Checkbox(
-                            value: _isChecked,
-                            onChanged: _handleCheckboxChanged,
-                          ),
-                          Text(
-                            "Remember Me ",
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Checkbox(
+                              value: _isChecked,
+                              onChanged: _handleCheckboxChanged,
+                            ),
+                            Text(
+                              "Remember Me ",
+                              style: TextStyle(
+                                  fontSize: fontSize,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Get.to(() => ForgitPassword());
+                          },
+                          child: Text(
+                            "FORGOT PASSWORD?",
                             style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w400),
+                                color: Colors.deepPurple,
+                                fontSize: fontSize,
+                                fontWeight: FontWeight.w400),
                           ),
-                        ],
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Get.to(() => ForgitPassword());
-                        },
-                        child: Text(
-                          "Forgot Password?",
-                          style: TextStyle(
-                              color: Colors.deepPurple,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height / 45,
+                    height: screenheight / 15,
                   ),
 
-                  MyCustomButton(
-                      title: "Sign In ",
-                      borderrad: 25,
-                      onaction: () async {
-                        if (formGlobalKey.currentState!.validate()) {
-                          bool loggedIn = false;
-                          try {
-                            UserCredential userCredential = await FirebaseAuth
-                                .instance
-                                .signInWithEmailAndPassword(
-                              email: _emailController.text.trim(),
-                              password: _passController.text.trim(),
-                            );
-                            // User is signed in
-                          } on FirebaseAuthException catch (e) {
-                            if (e.code == 'user-not-found') {
-                              print('No user found for that email.');
-                            } else if (e.code == 'wrong-password') {
-                              print('Wrong password provided for that user.');
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: MyCustomButton(
+                        title: "Sign In ",
+                        borderrad: 50,
+                        onaction: () async {
+                          if (formGlobalKey.currentState!.validate()) {
+                            bool loggedIn = false;
+                            try {
+                              UserCredential userCredential = await FirebaseAuth
+                                  .instance
+                                  .signInWithEmailAndPassword(
+                                email: _emailController.text.trim(),
+                                password: _passController.text.trim(),
+                              );
+                              // User is signed in
+                            } on FirebaseAuthException catch (e) {
+                              if (e.code == 'user-not-found') {
+                                print('No user found for that email.');
+                              } else if (e.code == 'wrong-password') {
+                                print('Wrong password provided for that user.');
+                              }
                             }
-                          }
 
-                          // loggedIn =
-                          // await loginVM.login(
-                          //     controller.email.text.trim(),
-                          //     controller.pass.text.trim());
-                          // if (loggedIn) {
-                          print("ok");
-                          Get.to(() => Home());
-                          //   _showetoast("Sigin Successfully");
-                          // } else {
-                          //   _showetoast(loginVM.message);
-                          // }
-                        } else
-                          _showetoast("Please enter valid pass or email");
-                      },
-                      color1: gd2,
-                      color2: gd1,
-                      width: MediaQuery.of(context).size.width - 40),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 25,
-                  ),
-
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          thickness: 1,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Text("Or"),
-                      ),
-                      Expanded(
-                        child: Divider(
-                          thickness: 1,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
+                            // loggedIn =
+                            // await loginVM.login(
+                            //     controller.email.text.trim(),
+                            //     controller.pass.text.trim());
+                            // if (loggedIn) {
+                            print("ok");
+                            Get.to(() => Home());
+                            //   _showetoast("Sigin Successfully");
+                            // } else {
+                            //   _showetoast(loginVM.message);
+                            // }
+                          } else
+                            _showetoast("Please enter valid pass or email");
+                        },
+                        color1: gd2,
+                        color2: gd1,
+                        width: MediaQuery.of(context).size.width - 40),
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height / 30,
+                    height: MediaQuery.of(context).size.height / 18,
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Divider(
+                            thickness: 1,
+                            color: Colors.grey.shade200,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Text("or"),
+                        ),
+                        Expanded(
+                          child: Divider(
+                            thickness: 1,
+                            color: Colors.grey.shade200,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height / 18,
                   ),
 
                   Row(
@@ -305,8 +337,8 @@ class _LoginPageState extends State<LoginPage> {
                         },
                         child: Image(
                             fit: BoxFit.cover,
-                            height: 50,
-                            width: 50,
+                            height: 40,
+                            width: 40,
                             image: AssetImage('assets/facebook.png')),
                       ),
                       SizedBox(
@@ -323,7 +355,7 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height / 25,
+                    height: MediaQuery.of(context).size.height / 15,
                   ),
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 0),
@@ -333,7 +365,7 @@ class _LoginPageState extends State<LoginPage> {
                         Text(
                           "Don't have an Accound?",
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: fontSize,
                           ),
                         ),
                         SizedBox(
@@ -346,7 +378,8 @@ class _LoginPageState extends State<LoginPage> {
                           child: Text(
                             "Create new one",
                             style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
+                                fontSize: fontSize,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
                       ],

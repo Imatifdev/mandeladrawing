@@ -1,5 +1,6 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, unnecessary_string_interpolations, prefer_const_constructors, curly_braces_in_flow_control_structures
+// ignore_for_file: prefer_const_literals_to_create_immutables, unnecessary_string_interpolations, prefer_const_constructors, curly_braces_in_flow_control_structures, unused_import, duplicate_import
 
+import 'dart:async';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,6 +12,8 @@ import 'package:mandeladrawing/controllers/profilecontroller.dart';
 import 'package:mandeladrawing/methods/authmodels.dart';
 import 'package:mandeladrawing/view/authview/login.dart';
 import 'package:mandeladrawing/widgets/mybutton.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 import '../../models/usermodel.dart';
 import '../../utils/mycolors.dart';
@@ -24,25 +27,6 @@ class ProfileView extends StatefulWidget {
   State<ProfileView> createState() => _ProfileViewState();
 }
 
-// String? documentId;
-
-// FirebaseFirestore firestore = FirebaseFirestore.instance;
-// CollectionReference usersRef = firestore.collection('Users');
-// Future<void> getData() async {
-//   QuerySnapshot? users = await usersRef.get();
-//   if (users != null) {
-//     users.docs.forEach((doc) {
-//       print(doc.data());
-//     });
-//   }
-// }
-// User? user = FirebaseAuth.instance.currentUser;
-
-// // Check if the user is signed in
-// if (user != null) {
-//   String uid = user.uid; // <-- User ID
-//   String? email = user.email; // <-- Their email
-// }
 class _ProfileViewState extends State<ProfileView> {
   final FirebaseAuth auth = FirebaseAuth.instance;
   signOut() async {
@@ -54,9 +38,9 @@ class _ProfileViewState extends State<ProfileView> {
 
   final userId = FirebaseAuth.instance.currentUser!.uid;
   int check = 0;
-  String name = "name";
-  String email = "example@gmail.com";
-  String phone = 'null';
+  String name = "loading....";
+  String email = "loading....";
+  String phone = 'loading....';
 
   void getInfo() async {
     var collection = FirebaseFirestore.instance.collection('users');
@@ -72,32 +56,33 @@ class _ProfileViewState extends State<ProfileView> {
     }
     print(userId);
   }
-  // double num = 0;
-  // void getEmissionLevel(BuildContext context) async {
-  //   //double emission = 0;
-  //   var collection = FirebaseFirestore.instance.collection('users');
-  //   var docSnapshot = await collection.doc(userid).get();
-  //   if (docSnapshot.exists) {
-  //     print("object");
-  //     Map<String, dynamic>? data = docSnapshot.data();
-  //     var value1 = data?["Email"];
-  //     var value2 = data?["Phone"];
-  //     print(value1);
-  //     setState(() {
-  //       email = value1;
-  //       phone = value2;
-  //     });
-  //   }
-  // }
-  // final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  // void getCurrentUserEmail() {
-  //   User? user = _auth.currentUser;
-  //   if (user != null) {
-  //     String email = user.email.toString();
-  //     print('User email: $email');
-  //   }
-  // }
+  late StreamSubscription subscription;
+  bool isDeviceConnected = false;
+  bool isAlertSet = false;
+
+  @override
+  void initState() {
+    getConnectivity();
+    super.initState();
+  }
+
+  getConnectivity() =>
+      subscription = Connectivity().onConnectivityChanged.listen(
+        (ConnectivityResult result) async {
+          isDeviceConnected = await InternetConnectionChecker().hasConnection;
+          if (!isDeviceConnected && isAlertSet == false) {
+            showDialogBox();
+            setState(() => isAlertSet = true);
+          }
+        },
+      );
+
+  @override
+  void dispose() {
+    subscription.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -126,21 +111,24 @@ class _ProfileViewState extends State<ProfileView> {
           style: TextStyle(fontSize: 26, color: appbartitle),
         ),
         actions: [
-          const Padding(
+          Padding(
             padding: EdgeInsets.all(12.0),
-            child: Icon(
-              Icons.settings,
-              color: Colors.black,
-              size: 30,
-            ),
+            child: IconButton(
+                onPressed: () {
+                  Get.to(() => Settings());
+                },
+                icon: Icon(
+                  CupertinoIcons.left_chevron,
+                  color: Colors.black,
+                )),
           ),
         ],
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            const SizedBox(
-              height: 20,
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 30,
             ),
             Center(
               child: Stack(children: [
@@ -167,10 +155,10 @@ class _ProfileViewState extends State<ProfileView> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(children: [
                 Container(
-                    height: 50,
+                    height: MediaQuery.of(context).size.height / 14,
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
-                        color: appbg, borderRadius: BorderRadius.circular(20)),
+                        color: appbg, borderRadius: BorderRadius.circular(50)),
                     child: ListTile(
                       leading: Icon(Icons.mark_email_read_sharp),
                       title: Text(
@@ -178,11 +166,14 @@ class _ProfileViewState extends State<ProfileView> {
                         style: TextStyle(fontSize: 14),
                       ),
                     )),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 50,
+                ),
                 Container(
-                    height: 50,
+                    height: MediaQuery.of(context).size.height / 14,
                     width: MediaQuery.of(context).size.width,
                     decoration: BoxDecoration(
-                        color: appbg, borderRadius: BorderRadius.circular(20)),
+                        color: appbg, borderRadius: BorderRadius.circular(50)),
                     child: ListTile(
                       leading: Icon(Icons.phone_callback_sharp),
                       title: Text(
@@ -197,7 +188,7 @@ class _ProfileViewState extends State<ProfileView> {
             ),
             MyCustomButton(
                 title: "Edit Profile",
-                borderrad: 25,
+                borderrad: 50,
                 onaction: () {
                   Get.to(() => EditProfile());
                 },
@@ -223,6 +214,9 @@ class _ProfileViewState extends State<ProfileView> {
                         color: red,
                         size: 40,
                       )),
+                  SizedBox(
+                    width: 10,
+                  ),
                   const Text(
                     "Log out",
                     style: TextStyle(
@@ -234,114 +228,29 @@ class _ProfileViewState extends State<ProfileView> {
           ],
         ),
       ),
-//         body: Padding(
-//             padding: const EdgeInsets.symmetric(horizontal: 20),
-//             child: SingleChildScrollView(
-//               child: StreamBuilder(
-// //                future: controller.getUserData(),
-//                 stream: FirebaseFirestore.instance
-//                     .collection('Users')
-//                     .doc(documentId)
-//                     .snapshots(),
-//                 builder: (context, snapshot) {
-//                   if (snapshot.connectionState == ConnectionState.done) {
-//                     if (snapshot.hasData) {
-//                       final data =
-//                           snapshot.data!.data() as Map<String, dynamic>;
-//                       final email = data['Email'] as String?;
-//                       print(email);
-//                       // UserModel userdata = snapshot.data as UserModel;
-//                       return Column(
-//                         children: [
-//                           const SizedBox(
-//                             height: 20,
-//                           ),
-//                           Center(
-//                             child: Stack(children: [
-//                               const CircleAvatar(
-//                                 radius: 80,
-//                                 backgroundImage: AssetImage('assets/dp.jpg'),
-//                               ),
-//                             ]),
-//                           ),
-//                           SizedBox(
-//                             height: MediaQuery.of(context).size.height * 1 / 40,
-//                           ),
-//                           Text(
-//                             fname,
-//                             //                   user!.email,
-//                             style: TextStyle(
-//                                 fontSize: 40, fontWeight: FontWeight.w400),
-//                           ),
-//                           SizedBox(
-//                             height: MediaQuery.of(context).size.height * 1 / 20,
-//                           ),
-//                           TextFormField(
-//                             initialValue: documentId,
-//                             // user.email.toString(),
-//                             style: TextStyle(fontSize: 20),
-//                           ),
-//                           TextFormField(
-//                             initialValue: email,
-//                             // user.email.toString(),
-//                             style: TextStyle(fontSize: 20),
-//                           ),
-//                           SizedBox(
-//                             height:
-//                                 MediaQuery.of(context).size.height * 1 / 7.5,
-//                           ),
-//                           MyCustomButton(
-//                               title: "Edit Profile",
-//                               borderrad: 25,
-//                               onaction: () {
-//                                 Get.to(() => EditProfile());
-//                               },
-//                               color1: gd2,
-//                               color2: gd1,
-//                               width: MediaQuery.of(context).size.width - 40),
-//                           const SizedBox(
-//                             height: 30,
-//                           ),
-//                           Row(
-//                             mainAxisAlignment: MainAxisAlignment.center,
-//                             children: [
-//                               IconButton(
-//                                   onPressed: () {
-//                                     // FirebaseAuthMethod().signOut();
-//                                   },
-//                                   icon: Icon(
-//                                     Icons.logout_rounded,
-//                                     color: red,
-//                                     size: 40,
-//                                   )),
-//                               const Text(
-//                                 "Log out",
-//                                 style: TextStyle(
-//                                     color: red,
-//                                     fontSize: 20,
-//                                     fontWeight: FontWeight.bold),
-//                               )
-//                             ],
-//                           )
-//                         ],
-//                       );
-//                     } else if (snapshot.hasError) {
-//                       return Center(
-//                         child: Text(snapshot.error.toString()),
-//                       );
-//                     } else {
-//                       return Center(
-//                         child: Text("Something went wrong"),
-//                       );
-//                     }
-//                   } else {
-//                     return Center(
-//                       child: CircularProgressIndicator(),
-//                     );
-//                   }
-//                 },
-//               ),
-//             )));
     );
   }
+
+  showDialogBox() => showCupertinoDialog<String>(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          title: const Text('No Connection'),
+          content: const Text('Please check your internet connectivity'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context, 'Cancel');
+                setState(() => isAlertSet = false);
+                isDeviceConnected =
+                    await InternetConnectionChecker().hasConnection;
+                if (!isDeviceConnected && isAlertSet == false) {
+                  showDialogBox();
+                  setState(() => isAlertSet = true);
+                }
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
 }

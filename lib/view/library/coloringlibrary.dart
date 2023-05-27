@@ -1,8 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'dart:async';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:mandeladrawing/view/colorpannel/createpalette.dart';
 
 import 'dart:io';
@@ -29,7 +33,9 @@ class DrawingBoard extends StatefulWidget {
   final SketchModel sketch;
   final MyColorPallet colorPallet;
 
-  const DrawingBoard({Key? key, required this.sketch, required this.colorPallet}) : super(key: key);
+  const DrawingBoard(
+      {Key? key, required this.sketch, required this.colorPallet})
+      : super(key: key);
 
   @override
   State<DrawingBoard> createState() => _DrawingBoardState();
@@ -131,6 +137,33 @@ class _DrawingBoardState extends State<DrawingBoard> {
     drawingPoints.removeLast();
   }
 
+  late StreamSubscription subscription;
+  bool isDeviceConnected = false;
+  bool isAlertSet = false;
+
+  @override
+  void initState() {
+    getConnectivity();
+    super.initState();
+  }
+
+  getConnectivity() =>
+      subscription = Connectivity().onConnectivityChanged.listen(
+        (ConnectivityResult result) async {
+          isDeviceConnected = await InternetConnectionChecker().hasConnection;
+          if (!isDeviceConnected && isAlertSet == false) {
+            showDialogBox();
+            setState(() => isAlertSet = true);
+          }
+        },
+      );
+
+  @override
+  void dispose() {
+    subscription.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -171,7 +204,7 @@ class _DrawingBoardState extends State<DrawingBoard> {
                     changeTexture();
                   },
                   icon: Icon(
-                    Icons.check_box_rounded,
+                    CupertinoIcons.check_mark_circled,
                     color: Colors.black,
                   ),
                 ),
@@ -405,11 +438,12 @@ class _DrawingBoardState extends State<DrawingBoard> {
                               children: [
                                 InkWell(
                                   onTap: () async {
-                                   await Navigator.push(
+                                    await Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                               PalletScreen(sketch: widget.sketch.url ,)),
+                                          builder: (context) => PalletScreen(
+                                                sketch: widget.sketch.url,
+                                              )),
                                     );
                                   },
                                   child: Image(
@@ -423,8 +457,8 @@ class _DrawingBoardState extends State<DrawingBoard> {
                                         MainAxisAlignment.spaceAround,
                                     children: List.generate(
                                       widget.colorPallet.mycolors.length,
-                                      (index) =>
-                                          _buildColorChoose(widget.colorPallet.mycolors[index]),
+                                      (index) => _buildColorChoose(
+                                          widget.colorPallet.mycolors[index]),
                                     ),
                                   ),
                                 ),
@@ -460,6 +494,29 @@ class _DrawingBoardState extends State<DrawingBoard> {
       ),
     );
   }
+
+  showDialogBox() => showCupertinoDialog<String>(
+        context: context,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+          title: const Text('No Connection'),
+          content: const Text('Please check your internet connectivity'),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () async {
+                Navigator.pop(context, 'Cancel');
+                setState(() => isAlertSet = false);
+                isDeviceConnected =
+                    await InternetConnectionChecker().hasConnection;
+                if (!isDeviceConnected && isAlertSet == false) {
+                  showDialogBox();
+                  setState(() => isAlertSet = true);
+                }
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
 }
 
 class DrawingPainter extends CustomPainter {

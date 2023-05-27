@@ -20,6 +20,39 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenheight = MediaQuery.of(context).size.height;
+    double fontSize;
+    double title;
+    double heading;
+
+    // Adjust the font size based on the screen width
+    if (screenWidth < 320) {
+      fontSize = 13.0;
+      title = 20;
+      heading = 20; // Small screen (e.g., iPhone 4S)
+    } else if (screenWidth < 375) {
+      fontSize = 17.0;
+      title = 28;
+
+      heading = 21; // Medium screen (e.g., iPhone 6, 7, 8)
+    } else if (screenWidth < 414) {
+      fontSize = 19.0;
+      title = 32;
+
+      heading = 25; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else if (screenWidth < 600) {
+      fontSize = 21.0;
+      title = 36;
+
+      heading = 27; // Large screen (e.g., iPhone 6 Plus, 7 Plus, 8 Plus)
+    } else {
+      fontSize = 25.0;
+      title = 40;
+
+      heading = 30; // Extra large screen or unknown device
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -58,7 +91,8 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   title: Text(
                     "Subscription",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: fontSize, fontWeight: FontWeight.bold),
                   ),
                   subtitle: Text(
                       "Get unlimited access to all pictures and remove adds"),
@@ -87,7 +121,8 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   title: Text(
                     "Rate App ",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: fontSize, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -110,7 +145,8 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   title: Text(
                     "Share App",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: fontSize, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -133,7 +169,8 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   title: Text(
                     "Privacy Policy ",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: fontSize, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -156,7 +193,8 @@ class SettingsScreen extends StatelessWidget {
                   ),
                   title: Text(
                     "Buy Plans",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: fontSize, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -171,20 +209,22 @@ class SettingsScreen extends StatelessWidget {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(10)),
                 child: ListTile(
+                  onTap: () async {
+                    await FirebaseAuth.instance.signOut();
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => LoginPage()));
+                  },
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10)),
                   selectedColor: Colors.white,
                   leading: IconButton(
-                    onPressed: () async {
-                      await FirebaseAuth.instance.signOut();
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => LoginPage()));
-                    },
+                    onPressed: () {},
                     icon: Icon(Icons.logout_rounded),
                   ),
                   title: Text(
                     "Logout",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: fontSize, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),

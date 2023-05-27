@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:mpesa_flutter_plugin/mpesa_flutter_plugin.dart';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -33,6 +34,7 @@ import 'checkpage.dart';
 import 'checkscreen.dart';
 import 'controllers/authenticationmodels.dart';
 import 'firebase_options.dart';
+import 'mpesaint.dart';
 import 'my.dart';
 import 'my2.dart';
 import 'package:stripe_android/stripe_android.dart';
@@ -42,6 +44,9 @@ import 'subscription_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  MpesaFlutterPlugin.setConsumerKey("wi0NyUDOJsFV0Egtn1fPqEAMzQvWjTVq");
+  MpesaFlutterPlugin.setConsumerSecret("WZAXOR3nUrWlt5QY");
+
   Stripe.publishableKey =
       'pk_test_51N3ozXKuYtdF845ofkT3mnJPklviwqoYWXmh4rBRta7f4ULTStn7H5FPUizInnktKg2yDp2YdeiU9liipwYjv8hj00OyAY8oAp';
 

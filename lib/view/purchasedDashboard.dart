@@ -26,15 +26,17 @@ class _PurchasedDashboard extends State<PurchasedDashboard> {
     pgindex = index;
   }
 
-  final List<Widget> pages = [
-    ViewMandelas(),
-    DrawingPage(),
-    MyLibrary(),
-    ProfileView(),
-  ];
   List<int> listofpages = [];
   @override
   Widget build(BuildContext context) {
+    final List<Widget> pages = [
+      ViewMandelas(),
+      DrawingPage(),
+      MyLibrary(
+        selectedImages: widget.selectedImages,
+      ),
+      ProfileView(),
+    ];
     return Scaffold(
         bottomNavigationBar: BottomNavigationBar(
             backgroundColor: Colors.white,
