@@ -2,16 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:mandeladrawing/models/sketchmodel.dart';
+import 'package:mandeladrawing/my.dart';
 import 'package:mandeladrawing/utils/mycolors.dart';
 import 'package:mandeladrawing/view/colorpannel/colorslistpage.dart';
 import 'package:mandeladrawing/view/colorpannel/detailmandela.dart';
 import 'package:mandeladrawing/view/settings/settingsscreen.dart';
 
 import '../../models/colorpalletemodel.dart';
+import '../library/coloringlibrary.dart';
 
 class PalletScreen extends StatefulWidget {
+  final String sketch;
   static const routeName = "pallet_screen";
-  const PalletScreen({super.key});
+  const PalletScreen({super.key, required this.sketch, });
 
   @override
   State<PalletScreen> createState() => _PalletScreenState();
@@ -25,7 +29,7 @@ class _PalletScreenState extends State<PalletScreen> {
       splashColor: Colors.blue,
       onTap: () {
         print("Tapped");
-        Navigator.pop(context, pallet);
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => DrawingBoard(sketch: SketchModel(widget.sketch), colorPallet: pallet, )));
       },
       child: Column(
         children: [

@@ -27,9 +27,7 @@ class _HomeState extends State<Home> {
   final List<Widget> pages = [
     ViewMandelas(),
     DrawingPage(),
-    MyLibrary(
-      selectedImages: [],
-    ),
+    MyLibrary(),
     ProfileView(),
   ];
   List<int> listofpages = [];

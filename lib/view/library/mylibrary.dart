@@ -1,12 +1,16 @@
 // ignore_for_file: sized_box_for_whitespace, prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mandeladrawing/models/colorpalletemodel.dart';
 import 'package:mandeladrawing/models/sketch.dart';
 import 'package:mandeladrawing/models/sketchmodel.dart';
 import 'package:mandeladrawing/my.dart';
 import 'package:mandeladrawing/view/colorpannel/detailmandela.dart';
+import 'package:mandeladrawing/view/library/coloringlibrary.dart';
 import 'package:mandeladrawing/view/settings/settingsscreen.dart';
 import 'package:mandeladrawing/utils/mycolors.dart';
 import 'package:mandeladrawing/view/colorpannel/animal.dart';
@@ -45,6 +49,10 @@ class _MyLibraryState extends State<MyLibrary> {
 
   @override
   Widget build(BuildContext context) {
+    if (check == 0) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => getInfo());
+      check++;
+    }
     return Scaffold(
       backgroundColor: appbg,
       appBar: AppBar(
@@ -170,7 +178,7 @@ class _MyLibraryState extends State<MyLibrary> {
 }
 
 class PurchasedMandelas extends StatelessWidget {
-  final List<String> selectedImages;
+  final List<dynamic> selectedImages;
 
   const PurchasedMandelas({
     super.key,
@@ -270,6 +278,20 @@ class PurchasedMandelas extends StatelessWidget {
                                     builder: (context) => DrawingBoard(
                                           sketch: SketchModel(
                                               selectedImages[index]),
+                                          colorPallet:
+                                              MyColorPallet("example", [
+                                            Colors.pink.value,
+                                            Colors.black87.value,
+                                            Colors.yellow.value,
+                                            Colors.red.value,
+                                            Colors.amberAccent.value,
+                                            Colors.purple.value,
+                                            Colors.green.value,
+                                            Colors.red.value,
+                                            Colors.amberAccent.value,
+                                            Colors.purple.value,
+                                            Colors.green.value,
+                                          ]),
                                         )),
                               );
                             },
